@@ -16,17 +16,6 @@ public class TransfertServiceImpl implements ITansfertService {
 	private TransfertRepository transfertRepo;
 
 
-	@Override
-	public Transfert findTransfert(String id) {
-		if(transfertRepo.findById(id).isPresent()) {
-			return transfertRepo.findById(id).get();
-		}else
-		{
-			return null;
-		}
-		
-	}
-
 
 	@Override
 	public List<Transfert> getAllTransferts() {

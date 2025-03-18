@@ -1,10 +1,15 @@
 package com.projetPfe.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import com.projetPfe.Iservice.IDossierDelegueService;
 import com.projetPfe.entities.DossierDelegue;
@@ -12,13 +17,22 @@ import com.projetPfe.entities.DossierDelegue;
 
 
 @RestController
+@RequestMapping("/dossiersDelegues")
 public class DossierDelegueController {
 	@Autowired
-	private IDossierDelegueService dossDelRepo;
+	private IDossierDelegueService dossDelService;
 	
-	@GetMapping("/dossiersDelegues")
-	public List<DossierDelegue> getAllDossierDelegue() {
-		return dossDelRepo.getAllDossierDelegues();	}
+	@GetMapping
+    public ResponseEntity<List<DossierDelegue>> getAllDossiers() {
+        return ResponseEntity.ok(dossDelService.getAllDossierDelegues());
+    }
+	
+	 @GetMapping("/{id}")
+	    public ResponseEntity<DossierDelegue> getDossierById(@PathVariable String id) {
+	        Optional<DossierDelegue> dossier = dossDelService.getDossierById(id);
+	        return dossier.map(ResponseEntity::ok)
+	                .orElseGet(() -> ResponseEntity.notFound().build());
+	    }
 
 	
 
