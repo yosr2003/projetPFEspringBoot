@@ -16,7 +16,7 @@ public class DossierDelegue {
 	private String idDossier;
 	private String anneedoss;
 	private LocalDateTime  dateCre;
-	private String etatDoss;
+	private EtatDoss etatDoss;
 	private LocalDateTime  datclo;
 	private String motifclo;
 	private LocalDate dateDebut;
@@ -91,11 +91,11 @@ public class DossierDelegue {
 		this.dateCre = dateCre;
 	}
 
-	public String getEtatDoss() {
+	public EtatDoss getEtatDoss() {
 		return etatDoss;
 	}
 
-	public void setEtatDoss(String etatDoss) {
+	public void setEtatDoss(EtatDoss etatDoss) {
 		this.etatDoss = etatDoss;
 	}
 
