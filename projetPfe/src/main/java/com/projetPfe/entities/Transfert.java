@@ -4,11 +4,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Transfert {
@@ -29,6 +29,11 @@ public class Transfert {
 	@ManyToOne
 	@JoinColumn(name = "idDossDelegue")
 	private DossierDelegue dossierDelegue;
+	
+	
+	@OneToOne(mappedBy = "transfert")
+	private Swift swift;
+	
 
 /// getters and setters 
 	public String getRefTransfert() {

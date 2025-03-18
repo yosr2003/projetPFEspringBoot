@@ -1,32 +1,52 @@
 package com.projetPfe.entities;
 
-import java.time.LocalDate;
+
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Swift {
 	@Id
-	private String idSwift;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int idSwift;
 	private String module="TRF";
 	private String typemsg;
 	private String seq97;
-	private LocalDate datgen;
+	private LocalDateTime datgen;
 	private String message;
+	private String format;
+	
 	
 	public Swift() {
 		super();
 	}
 	
+	@OneToOne
+	@JoinColumn(name = "idTransfert")
+	private Transfert transfert;
+
+
+
+	
 	
 	///getters et setters
-	public String getIdSwift() {
+	
+	public String getFormat() {
+		return format;
+	}
+	public void setFormat(String format) {
+		this.format = format;
+	}
+	public int getIdSwift() {
 		return idSwift;
 	}
-	public void setIdSwift(String idSwift) {
+	public void setIdSwift(int idSwift) {
 		this.idSwift = idSwift;
 	}
 	public String getModule() {
@@ -47,10 +67,10 @@ public class Swift {
 	public void setSeq97(String seq97) {
 		this.seq97 = seq97;
 	}
-	public LocalDate getDatgen() {
+	public LocalDateTime getDatgen() {
 		return datgen;
 	}
-	public void setDatgen(LocalDate datgen) {
+	public void setDatgen(LocalDateTime datgen) {
 		this.datgen = datgen;
 	}
 	public String getMessage() {
@@ -59,7 +79,7 @@ public class Swift {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-
+	///getters et setters
 	
 
 }
