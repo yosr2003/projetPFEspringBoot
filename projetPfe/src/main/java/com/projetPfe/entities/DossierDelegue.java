@@ -22,6 +22,7 @@ public class DossierDelegue {
 	private LocalDate dateDebut;
 	private LocalDate dateExpiration;
 	private Double solde;
+	private DossierDelegueType type;
 	
 	
 
@@ -34,8 +35,17 @@ public class DossierDelegue {
 	
 	
 /// getters and setters
+	
 	public LocalDate getDateDebut() {
 		return dateDebut;
+	}
+
+	public DossierDelegueType getType() {
+		return type;
+	}
+
+	public void setType(DossierDelegueType type) {
+		this.type = type;
 	}
 
 	public void setDateDebut(LocalDate dateDebut) {
