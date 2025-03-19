@@ -42,7 +42,6 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
 				HttpHeaders headers = new HttpHeaders();
 				headers.add("code",String.valueOf(HttpStatus.OK.value()));
 				headers.add("libelle","SERVICE_OK");
-				
 				return new ResponseEntity<>(dossierDelegueRepo.save(dossier),headers,HttpStatus.OK);
 				//return ResponseEntity.status(HttpStatus.OK).headers(headers).body(dossier);
 			}else {return new ResponseEntity<>(HttpStatus.BAD_REQUEST); }
