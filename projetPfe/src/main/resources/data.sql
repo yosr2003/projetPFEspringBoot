@@ -1,0 +1,2 @@
+DELETE FROM transfert WHERE refTransfert = 'A4500';
+INSERT INTO transfert (refTransfert,typeTransfert , montantTransfert , deviseTransfert ,etat , natureTransfert , frais) VALUES ('A4500','FINANCIER','400','EUR','TRAITEMENT','COURANT',1400)

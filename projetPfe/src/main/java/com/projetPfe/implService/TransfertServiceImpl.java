@@ -1,6 +1,7 @@
 package com.projetPfe.implService;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,10 @@ public class TransfertServiceImpl implements ITansfertService {
 	@Override
 	public List<Transfert> getAllTransferts() {
 		return transfertRepo.findAll();
+	}
+
+	public Optional<Transfert> getTransfertById(String refTransfert){
+		return transfertRepo.findByrefTransfert(refTransfert);
 	}
 
 }

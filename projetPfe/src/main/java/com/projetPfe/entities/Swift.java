@@ -26,12 +26,12 @@ public class Swift {
 	public Swift() {
 		super();
 	}
-	
+	/* 
 	@OneToOne
 	@JoinColumn(name = "idTransfert")
 	private Transfert transfert;
 
-
+*/
 
 	
 	
