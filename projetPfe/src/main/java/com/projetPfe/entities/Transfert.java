@@ -12,25 +12,29 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table (name = "transfert")
 public class Transfert {
 	@Id
-	@Column(name = "refTransfert")
+	@Column(name = "ref_transfert")
 	private String refTransfert;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "typeTransfert")
+	@Column(name = "type_transfert")
 	private TransfertType typeTransfert;
 
-	@Column(name = "montantTransfert")
+	@Column(name = "montant_transfert")
 	private Double montantTransfert;
 
-	@Column(name = "deviseTransfert")
-	private String deviseTransfert;
+	@ManyToOne
+	@JoinColumn(name = "devise_source_id")
+	private TauxChange deviseSource;
+
+	@ManyToOne
+	@JoinColumn(name = "devise_cible_id")
+	private TauxChange deviseCible;
 
 	@Column(name = "datecre")
 	private LocalDateTime  datecre;
@@ -38,15 +42,23 @@ public class Transfert {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "etat")
 	private EtatDoss etat;
-	@Column(name = "dateEcheance")
+	@Column(name = "date_echeance")
 	private LocalDate dateEcheance;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "natureTransfert")
+	@Column(name = "nature_transfert")
 	private TransfertNature natureTransfert;
 	
 	@Column(name = "frais")
 	private Double frais;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "type_frais")
+	private FraisType typeFrais;
+
+	@Column(name="montant_final")
+	private double MontantFinal;
+
 
 	public Transfert() {
 		super();
@@ -65,6 +77,14 @@ public class Transfert {
 	public String getRefTransfert() {
 		return refTransfert;
 	}
+	
+	public double getMontantFinal(){
+		return this.MontantFinal;
+	}
+	
+	public void setMontantFinal(double montantFinal){
+		this.MontantFinal = montantFinal;
+	}
 
 
 	public void setRefTransfert(String refTransfert) {
@@ -82,13 +102,21 @@ public class Transfert {
 	}
 
 
-	public String getDeviseTransfert() {
-		return deviseTransfert;
+	public TauxChange getDeviseSource() {
+		return this.deviseSource;
+	}
+
+	public TauxChange getDeviseCible() {
+		return this.deviseCible;
 	}
 
 
-	public void setDeviseTransfert(String deviseTransfert) {
-		this.deviseTransfert = deviseTransfert;
+	public void setDeviseSource(TauxChange devise) {
+		this.deviseSource = devise;
+	}
+
+	public void setDeviseCible(TauxChange devise) {
+		this.deviseCible = devise;
 	}
 
 
@@ -139,6 +167,14 @@ public class Transfert {
 
 	public void setEtat(EtatDoss etat) {
 		this.etat = etat;
+	}
+
+	public FraisType getTypeFrais(){
+		return this.typeFrais;
+	}
+
+	public void setTypeFrais(FraisType type){
+		this.typeFrais = type;
 	}
 
 
