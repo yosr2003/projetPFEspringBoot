@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.projetPfe.Iservice.ITansfertService;
+import com.projetPfe.entities.EtatDoss;
 import com.projetPfe.entities.Transfert;
 import com.projetPfe.repositories.TransfertRepository;
 
@@ -21,5 +22,9 @@ public class TransfertServiceImpl implements ITansfertService {
 	public List<Transfert> getAllTransferts() {
 		return transfertRepo.findAll();
 	}
+    @Override
+    public List<Transfert> AlerteTransfertAttente() {
+        return transfertRepo.findByEtat(EtatDoss.Traitement);
+    }
 
 }
