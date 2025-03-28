@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import com.projetPfe.Iservice.IDossierDelegueService;
 import com.projetPfe.entities.DossierDelegue;
 import com.projetPfe.entities.EtatDoss;
-import com.projetPfe.entities.Response;
 import com.projetPfe.repositories.DossierDelegueRepository;
 
 
@@ -35,10 +34,10 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
 	public ResponseEntity<DossierDelegue> cloturerDossier(DossierDelegue d,String id) {
 		if(dossierDelegueRepo.findById(id).isPresent()) {
 			DossierDelegue dossier=dossierDelegueRepo.findById(id).get();
-			if (dossier.getEtatDoss().equals(EtatDoss.Validé)) {
+			if (dossier.getEtatDoss().equals(EtatDoss.VALIDE)) {
 				dossier.setDatclo(d.getDatclo());
 				dossier.setMotifclo(d.getMotifclo());
-				dossier.setEtatDoss(EtatDoss.Clôturé);
+				dossier.setEtatDoss(EtatDoss.CLOTURE);
 				HttpHeaders headers = new HttpHeaders();
 				headers.add("code",String.valueOf(HttpStatus.OK.value()));
 				headers.add("libelle","SERVICE_OK");

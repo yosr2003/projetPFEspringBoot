@@ -29,10 +29,10 @@ public class DossierDelegue {
 	public DossierDelegue() {
 		super();
 	}
-	
+
 	@OneToMany(mappedBy = "dossierDelegue")
 	private List<Transfert> transferts;
-	
+
 	
 /// getters and setters
 	

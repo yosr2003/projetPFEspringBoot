@@ -3,41 +3,87 @@ package com.projetPfe.entities;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.springframework.http.ResponseEntity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table (name = "transfert")
 public class Transfert {
 	@Id
+	@Column(name = "ref_transfert")
 	private String refTransfert;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "type_transfert")
+	private TransfertType typeTransfert;
+
+	@Column(name = "montant_transfert")
 	private Double montantTransfert;
-	private String deviseTransfert;
+
+	@ManyToOne
+	@JoinColumn(name = "devise_source_id")
+	private TauxChange deviseSource;
+
+	@ManyToOne
+	@JoinColumn(name = "devise_cible_id")
+	private TauxChange deviseCible;
+
+	@Column(name = "datecre")
 	private LocalDateTime  datecre;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "etat")
 	private EtatDoss etat;
+	@Column(name = "date_echeance")
 	private LocalDate dateEcheance;
-	private String natureTransfert;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "nature_transfert")
+	private TransfertNature natureTransfert;
+	
+	@Column(name = "frais")
 	private Double frais;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "type_frais")
+	private FraisType typeFrais;
+
+	@Column(name="montant_final")
+	private double MontantFinal;
+
 
 	public Transfert() {
 		super();
 	}
 	
-	@ManyToOne
+	/*@ManyToOne
 	@JoinColumn(name = "idDossDelegue")
 	private DossierDelegue dossierDelegue;
 	
 	
 	@OneToOne(mappedBy = "transfert")
 	private Swift swift;
-	
+	*/
 
 /// getters and setters 
 	public String getRefTransfert() {
 		return refTransfert;
+	}
+	
+	public double getMontantFinal(){
+		return this.MontantFinal;
+	}
+	
+	public void setMontantFinal(double montantFinal){
+		this.MontantFinal = montantFinal;
 	}
 
 
@@ -56,13 +102,21 @@ public class Transfert {
 	}
 
 
-	public String getDeviseTransfert() {
-		return deviseTransfert;
+	public TauxChange getDeviseSource() {
+		return this.deviseSource;
+	}
+
+	public TauxChange getDeviseCible() {
+		return this.deviseCible;
 	}
 
 
-	public void setDeviseTransfert(String deviseTransfert) {
-		this.deviseTransfert = deviseTransfert;
+	public void setDeviseSource(TauxChange devise) {
+		this.deviseSource = devise;
+	}
+
+	public void setDeviseCible(TauxChange devise) {
+		this.deviseCible = devise;
 	}
 
 
@@ -76,12 +130,12 @@ public class Transfert {
 	}
 
 
-	public String getNatureTransfert() {
+	public TransfertNature getNatureTransfert() {
 		return natureTransfert;
 	}
 
 
-	public void setNatureTransfert(String natureTransfert) {
+	public void setNatureTransfert(TransfertNature natureTransfert) {
 		this.natureTransfert = natureTransfert;
 	}
 
@@ -113,6 +167,20 @@ public class Transfert {
 
 	public void setEtat(EtatDoss etat) {
 		this.etat = etat;
+	}
+
+	public FraisType getTypeFrais(){
+		return this.typeFrais;
+	}
+
+	public void setTypeFrais(FraisType type){
+		this.typeFrais = type;
+	}
+
+
+	public ResponseEntity<Transfert> orElseGet(Object object) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'orElseGet'");
 	}
 	
 /// getters and setters 
