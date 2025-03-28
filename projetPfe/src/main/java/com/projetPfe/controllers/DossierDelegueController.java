@@ -1,6 +1,7 @@
 package com.projetPfe.controllers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,10 @@ public class DossierDelegueController {
 	 public ResponseEntity<DossierDelegue> cloturerDossier(@RequestBody DossierDelegue d,@PathVariable("id") String id){
 		 return dossDelService.cloturerDossier(d,id);
 	 }
-	 
+	 @PutMapping("/dupliquerDossier/{id}")
+	 public ResponseEntity<Map<String, String>> dupliquerDossier(@PathVariable("id") String id){
+		 return dossDelService.dupliquerDossier(id);
+	 }
 	 
 
 	

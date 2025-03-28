@@ -2,8 +2,11 @@ package com.projetPfe.implService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -24,7 +27,7 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
 
 	@Override
 	public List<DossierDelegue> getAllDossierDelegues() {
-		// TODO Auto-generated method stub
+		// ////TODO Auto-generated method stub
 		return dossierDelegueRepo.findAll();}
 	@Override
 	public Optional<DossierDelegue> getDossierById(String id) {
@@ -65,5 +68,59 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
 //		}
 //		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response<>(500, "INTERNAL_SERVER_ERROR", null));
 //	}
+	
+	@Override
+	public ResponseEntity<Map<String, String>> dupliquerDossier(String id) {
+	    Optional<DossierDelegue> optionalDossier = dossierDelegueRepo.findById(id);
+
+	    if (optionalDossier.isPresent()) {
+	        DossierDelegue dossier = optionalDossier.get();
+
+	        if (dossier.getEtatDoss().equals(EtatDoss.VALIDE)) {
+	            String newId = genererIdentifiantUnique("DOS");
+	            DossierDelegue copie = new DossierDelegue();
+	            copie.setIdDossier(newId);
+	            copie.setDateDebut(dossier.getDateDebut());
+	            copie.setEtatDoss(dossier.getEtatDoss()); 
+	            copie.setDateExpiration(dossier.getDateExpiration());
+	            copie.setAnneedoss(dossier.getAnneedoss());
+	            copie.setType(dossier.getType());
+	            copie.setSolde(dossier.getSolde());
+	            copie.setDateCre(LocalDateTime.now()); 
+	            copie.setDateFinProlong(dossier.getDateFinProlong());
+	            copie.setMotifProlong(dossier.getMotifProlong());
+
+	   
+	            dossierDelegueRepo.save(copie);
+
+
+	            Map<String, String> response = new HashMap<>();
+	            response.put("idDossier", newId);
+	            return new ResponseEntity<>(response, HttpStatus.CREATED);
+
+	        } else {
+	            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
+	        }
+	    }
+
+	    return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
+	}
+
+
+	private String genererIdentifiantUnique(String prefix) {
+	    String newId;
+	    Random random = new Random();
+
+	    do {
+	        String randomDigits = String.format("%08d", random.nextInt(100_000_000));
+	        newId = prefix + randomDigits;
+	    } while (dossierDelegueRepo.existsById(newId));
+
+	    return newId;
+	}
+
+	
+	
+	
 
 }
