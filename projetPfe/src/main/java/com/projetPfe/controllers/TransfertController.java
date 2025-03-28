@@ -30,6 +30,12 @@ public class TransfertController {
 	public List<Transfert> getAllTransfert() {
 		return transfertService.getAllTransferts();	}
 
+	
+	@GetMapping("/alerteTransfertAttente")
+	public List<Transfert> AlerteTransfertAttente() {
+		return transfertService.AlerteTransfertAttente();	}
+	
+	
 
     @GetMapping("/{refTransfert}/status")
     public ResponseEntity<TransfertDTO> getTransfertStatus(@PathVariable String refTransfert) {
