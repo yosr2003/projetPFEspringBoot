@@ -25,7 +25,7 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
 
 	@Override
 	public List<DossierDelegue> getAllDossierDelegues() {
-		// TODO Auto-generated method stub
+		// ////TODO Auto-generated method stub
 		return dossierDelegueRepo.findAll();}
 	@Override
 	public Optional<DossierDelegue> getDossierById(String id) {
