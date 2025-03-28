@@ -37,7 +37,7 @@ public class DossierDelegueTest {
         // GIVEN : Un dossier existant avec état "Validé"
         String id = "123";
         DossierDelegue dossierExistant = new DossierDelegue();
-        dossierExistant.setEtatDoss(EtatDoss.Validé);
+        dossierExistant.setEtatDoss(EtatDoss.VALIDE);
 
         DossierDelegue dossierInput = new DossierDelegue();
         dossierInput.setDatclo(LocalDateTime.now());
@@ -51,7 +51,7 @@ public class DossierDelegueTest {
 
         // THEN : Vérification
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(EtatDoss.Clôturé, response.getBody().getEtatDoss());
+        assertEquals(EtatDoss.CLOTURE, response.getBody().getEtatDoss());
         assertEquals("Motif test", response.getBody().getMotifclo());
         verify(dossierDelegueRepo).save(dossierExistant);
     }
@@ -61,7 +61,7 @@ public class DossierDelegueTest {
         // GIVEN : Un dossier existant mais non validé
         String id = "123";
         DossierDelegue dossierExistant = new DossierDelegue();
-        dossierExistant.setEtatDoss(EtatDoss.Traitement);
+        dossierExistant.setEtatDoss(EtatDoss.TRAITEMENT);
 
         when(dossierDelegueRepo.findById(id)).thenReturn(Optional.of(dossierExistant));
 
