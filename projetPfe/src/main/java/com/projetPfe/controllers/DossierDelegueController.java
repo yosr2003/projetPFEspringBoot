@@ -18,8 +18,6 @@ import com.projetPfe.entities.DossierDelegueType;
 import com.projetPfe.entities.EtatDoss;
 import com.projetPfe.entities.Response;
 
-import jakarta.validation.Valid;
-
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +51,7 @@ public class DossierDelegueController {
 	 @PutMapping(value = "/prolonger/{id}", produces = "application/json")
 	 public ResponseEntity<Response<DossierDelegue>> prolongerDossier(
 	         @PathVariable("id") String id,
-	         @Valid @RequestBody DossierDelegue request) {
+	         @RequestBody DossierDelegue request) {
 
 	     log.info("Requête reçue pour prolonger le dossier avec ID : {}", id);
 
