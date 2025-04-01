@@ -1,5 +1,6 @@
 package com.projetPfe.entities;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -12,11 +13,12 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table (name = "transfert")
-public class Transfert {
+public class Transfert implements Serializable{
 	@Id
 	@Column(name = "ref_transfert")
 	private String refTransfert;
@@ -28,12 +30,10 @@ public class Transfert {
 	@Column(name = "montant_transfert")
 	private Double montantTransfert;
 
-	@ManyToOne
-	@JoinColumn(name = "devise_source_id")
+	@Column(name ="devise_source_id")
 	private TauxChange deviseSource;
 
-	@ManyToOne
-	@JoinColumn(name = "devise_cible_id")
+	@Column(name = "devise_cible_id")
 	private TauxChange deviseCible;
 
 	@Column(name = "datecre")
@@ -56,36 +56,25 @@ public class Transfert {
 	@Column(name = "type_frais")
 	private FraisType typeFrais;
 
-	@Column(name="montant_final")
-	private double MontantFinal;
 
 
 	public Transfert() {
 		super();
 	}
 	
-	/*@ManyToOne
-	@JoinColumn(name = "idDossDelegue")
+	@ManyToOne
+	@JoinColumn(name = "idDossier")
 	private DossierDelegue dossierDelegue;
 	
 	
 	@OneToOne(mappedBy = "transfert")
 	private Swift swift;
-	*/
 
 /// getters and setters 
 	public String getRefTransfert() {
 		return refTransfert;
 	}
 	
-	public double getMontantFinal(){
-		return this.MontantFinal;
-	}
-	
-	public void setMontantFinal(double montantFinal){
-		this.MontantFinal = montantFinal;
-	}
-
 
 	public void setRefTransfert(String refTransfert) {
 		this.refTransfert = refTransfert;

@@ -1,8 +1,6 @@
 package com.projetPfe.controllers;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +31,11 @@ public class TransfertController {
 
     @GetMapping("/{refTransfert}/status")
     public ResponseEntity<TransfertDTO> getTransfertStatus(@PathVariable String refTransfert) {
+        System.out.println("I AM HERE");
         Optional<TransfertDTO> dto = transfertService.getTransfertStatus(refTransfert);
+        if(dto.isEmpty()){
+            System.out.println("IS EMPTY");
+        }
         return dto.map(ResponseEntity::ok)
                   .orElseGet(() -> ResponseEntity.notFound().build());
     }

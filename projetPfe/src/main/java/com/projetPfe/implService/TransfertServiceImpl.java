@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.projetPfe.Iservice.ITansfertService;
-import com.projetPfe.dto.TauxChangeDTO;
 import com.projetPfe.dto.TransfertDTO;
 import com.projetPfe.entities.Transfert;
 import com.projetPfe.repositories.TauxChangeRepository;
@@ -45,21 +44,19 @@ public class TransfertServiceImpl implements ITansfertService {
 		double taux_change=0.0;
 		Map<String, Object> result = new HashMap<>();
 		double montantFinal = 0.0;
-		double montantConverti;
-		if (deviseSource.equals("TND")) {
-			Optional<TauxChange> deviseCIBLEinfo =Optional.of(getTauxChangeByDevise(deviseCible).orElseThrow(() -> new Exception("Devise cible not found")));
+		double montantConverti = montant;
+		if ("TND".equals(deviseSource)) {
+			Optional<TauxChange> deviseCIBLEinfo =getTauxChangeByDevise(deviseCible);
 			
-			montantConverti = (montant*deviseCIBLEinfo.map(TauxChange::getCoursVente).orElse(0.0));
-			taux_change = deviseCIBLEinfo.map(TauxChange::getCoursVente).get();
-		}else{
-		montantConverti = montant;
+			if (deviseCIBLEinfo.isEmpty()){
+				throw new Exception("Devise cible not found");
+			}
+			TauxChange tauxChangeInfo = deviseCIBLEinfo.get();
+			double tauxChange = tauxChangeInfo.getCoursVente();
+			montantConverti *= tauxChange;
 		}
 
-		if (typefrais.equals("BEN")){
-			montantFinal = montantConverti - montantFrais;
-		}else{
-			montantFinal = montantConverti;
-		}
+		montantFinal = "BEN".equals(typefrais)? montantFinal - montantFrais : montantConverti ; 
 		
 		result.put("montantInitial",montant);
 		result.put("DeviseCible",deviseCible);

@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
-
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
@@ -16,12 +16,14 @@ public class DossierDelegue {
 	private String idDossier;
 	private String anneedoss;
 	private LocalDateTime  dateCre;
+	@Enumerated(EnumType.STRING)
 	private EtatDoss etatDoss;
 	private LocalDateTime  datclo;
 	private String motifclo;
 	private LocalDate dateDebut;
 	private LocalDate dateExpiration;
 	private Double solde;
+	@Enumerated(EnumType.STRING)
 	private DossierDelegueType type;
 	
 	

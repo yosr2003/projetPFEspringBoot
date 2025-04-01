@@ -28,7 +28,7 @@ public class Swift {
 	}
 
 	@OneToOne
-	@JoinColumn(name = "idTransfert")
+	@JoinColumn(name = "ref_transfert")
 	private Transfert transfert;
 
 
