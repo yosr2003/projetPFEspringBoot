@@ -15,8 +15,10 @@ public interface ITansfertService {
   public Optional<Object>  calculerFrais(Double montant, String deviseCible,String deviseSource , String typefrais, double montantFrais);
 
 
+List<Transfert> AlerteTransfertAttente();
 
-	/*List<Transfert> AlerteTransfertAttente();*/
+
+
 
 	
 

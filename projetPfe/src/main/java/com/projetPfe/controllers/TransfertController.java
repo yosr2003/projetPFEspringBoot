@@ -31,9 +31,9 @@ public class TransfertController {
 		return transfertService.getAllTransferts();	}
 	
 
-	/*@GetMapping("/alerteTransfertAttente")
+	@GetMapping("/alerteTransfertAttente")
 	public List<Transfert> AlerteTransfertAttente() {
-		return transfertService.AlerteTransfertAttente();	}*/
+		return transfertService.AlerteTransfertAttente();	}
 
 	
 

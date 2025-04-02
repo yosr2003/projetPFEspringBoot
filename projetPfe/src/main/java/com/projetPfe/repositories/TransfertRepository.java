@@ -12,6 +12,8 @@ public interface TransfertRepository extends JpaRepository<Transfert, String> {
 
   Optional<Transfert> findByrefTransfert(String refTransfert);
 
+List<Transfert> findByEtat(EtatDoss traitement);
+
 
 
 }
