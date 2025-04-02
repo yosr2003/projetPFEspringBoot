@@ -12,6 +12,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -64,14 +65,14 @@ public class Transfert {
 		super();
 	}
 	
-	/*@ManyToOne
+	@ManyToOne
 	@JoinColumn(name = "idDossDelegue")
 	private DossierDelegue dossierDelegue;
 	
 	
 	@OneToOne(mappedBy = "transfert")
 	private Swift swift;
-	*/
+	
 
 /// getters and setters 
 	public String getRefTransfert() {
