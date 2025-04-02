@@ -10,7 +10,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 
-
 @Entity
 public class Swift {
 	@Id
@@ -27,10 +26,11 @@ public class Swift {
 	public Swift() {
 		super();
 	}
-
+	
 	@OneToOne
-	@JoinColumn(name = "ref_tranfert")
+	@JoinColumn(name = "idTransfert")
 	private Transfert transfert;
+
 
 
 	
@@ -83,5 +83,3 @@ public class Swift {
 	
 
 }
-
-

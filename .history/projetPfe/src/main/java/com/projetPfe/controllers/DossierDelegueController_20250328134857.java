@@ -18,6 +18,8 @@ import com.projetPfe.entities.DossierDelegueType;
 import com.projetPfe.entities.EtatDoss;
 import com.projetPfe.entities.Response;
 
+import jakarta.validation.Valid;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +28,7 @@ import org.slf4j.LoggerFactory;
 @RestController
 @RequestMapping("/dossiersDelegues")
 public class DossierDelegueController {
-
+	//////////////////////
 	@Autowired
 	private IDossierDelegueService dossDelService;
 	private static final Logger log = LoggerFactory.getLogger(DossierDelegue.class);
@@ -42,10 +44,16 @@ public class DossierDelegueController {
 	        return dossier.map(ResponseEntity::ok)
 	                .orElseGet(() -> ResponseEntity.notFound().build());
 	    }
+	 
+	 @PutMapping("/{id}")
+	 public ResponseEntity<DossierDelegue> cloturerDossier(@RequestBody DossierDelegue d,@PathVariable("id") String id){
+		 return dossDelService.cloturerDossier(d,id);
+	 }
+	 
 	 @PutMapping(value = "/prolonger/{id}", produces = "application/json")
 	 public ResponseEntity<Response<DossierDelegue>> prolongerDossier(
 	         @PathVariable("id") String id,
-	         @RequestBody DossierDelegue request) {
+	         @Valid @RequestBody DossierDelegue request) {
 
 	     log.info("Requête reçue pour prolonger le dossier avec ID : {}", id);
 
@@ -114,5 +122,6 @@ public class DossierDelegueController {
 
 	     return ResponseEntity.ok(new Response<>(200, "Dossier prolongé avec succès", updatedDossier));
 	 }
+	
 
 }
