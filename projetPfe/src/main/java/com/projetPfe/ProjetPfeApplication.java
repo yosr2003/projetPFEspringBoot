@@ -20,43 +20,5 @@ public class ProjetPfeApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ProjetPfeApplication.class, args);
 	}
-	 @Bean
-	    CommandLineRunner initDatabase(DossierDelegueRepository dossierDelegueRepository) {
-	        return args -> {
-	            DossierDelegue dossier1 = new DossierDelegue(
-	                "D001", 
-	                "2025", 
-	                EtatDoss.VALIDE, 
-	                null, 
-	                null, 
-	                null, 
-	                LocalDateTime.now(), 
-	                LocalDate.of(2025, 3, 1), 
-	                LocalDate.of(2025, 12, 31), 
-	                null, 
-	                10000.0, 
-	                DossierDelegueType.SCOLARITE, 
-	                List.of()
-	            );
-
-	            DossierDelegue dossier2 = new DossierDelegue(
-	                "D002", 
-	                "2024", 
-	                EtatDoss.CLOTURE, 
-	                LocalDateTime.now().minusDays(30), 
-	                "Dossier terminé", 
-	                null, 
-	                LocalDateTime.now().minusMonths(6), 
-	                LocalDate.of(2024, 1, 15), 
-	                LocalDate.of(2024, 10, 15), 
-	                LocalDate.of(2024, 11, 15), 
-	                5000.0, 
-	                DossierDelegueType.ECONOMIE_SUR_SALAIRE, 
-	                List.of()
-	            );
-
-	            dossierDelegueRepository.save(dossier1);
-	            dossierDelegueRepository.save(dossier2);
-	        };
-	    }
+	
 }
