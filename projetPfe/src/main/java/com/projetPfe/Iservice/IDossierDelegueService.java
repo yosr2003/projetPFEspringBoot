@@ -14,7 +14,7 @@ public interface IDossierDelegueService {
 	public ResponseEntity<DossierDelegue> cloturerDossier(DossierDelegue d, String id);
 //	public ResponseEntity<Response<DossierDelegue>> clotureDossier(DossierDelegue d, String id);
 	
-	ResponseEntity<Map<String, String>> dupliquerDossier(String id);
+	ResponseEntity<Map<String, Object>> dupliquerDossier(String id);
 	
 
 }
