@@ -18,6 +18,8 @@ import com.projetPfe.Iservice.IDossierDelegueService;
 import com.projetPfe.entities.DossierDelegue;
 import com.projetPfe.entities.EtatDoss;
 import com.projetPfe.entities.Response;
+import com.projetPfe.entities.ResponseBodyDTO;
+import com.projetPfe.entities.ResponseHeaderDTO;
 import com.projetPfe.repositories.DossierDelegueRepository;
 
 
@@ -71,7 +73,7 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
 //	}
 	
 	@Override
-	public ResponseEntity<Map<String, String>> dupliquerDossier(String id) {
+	public ResponseEntity<Map<String, Object>> dupliquerDossier(String id) {
 	    Optional<DossierDelegue> optionalDossier = dossierDelegueRepo.findById(id);
 
 	    if (optionalDossier.isPresent()) {
@@ -91,21 +93,36 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
 	            copie.setDateFinProlong(dossier.getDateFinProlong());
 	            copie.setMotifProlong(dossier.getMotifProlong());
 
-	   
 	            dossierDelegueRepo.save(copie);
 
+	            // Création de la réponse avec header et body
+	            Map<String, Object> response = new HashMap<>();
 
-	            Map<String, String> response = new HashMap<>();
-	            response.put("idDossier", newId);
+	            // Créer le header
+	            ResponseHeaderDTO header = new ResponseHeaderDTO(200, "SERVICE_OK", "dupliqué avec succès");
+	            response.put("header", header);
+
+	            // Créer le body
+	            ResponseBodyDTO body = new ResponseBodyDTO(newId);
+	            response.put("body", body);
+
 	            return new ResponseEntity<>(response, HttpStatus.CREATED);
-
 	        } else {
-	            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
+	            // Dossier non validé
+	            ResponseHeaderDTO header = new ResponseHeaderDTO(400, "BAD_REQUEST", "Échec : le dossier n'est pas validé");
+	            Map<String, Object> response = new HashMap<>();
+	            response.put("header", header);
+	            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	        }
 	    }
 
-	    return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
+	    // Dossier non trouvé
+	    ResponseHeaderDTO header = new ResponseHeaderDTO(404, "NOT_FOUND", "Dossier non trouvé");
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("header", header);
+	    return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
+
 
 
 	private String genererIdentifiantUnique(String prefix) {
