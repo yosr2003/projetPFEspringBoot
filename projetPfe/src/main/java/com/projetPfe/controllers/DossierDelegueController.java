@@ -60,7 +60,7 @@ public class DossierDelegueController {
 	     DossierDelegue dossier = dossierOptional.get();
 
 	     // Vérification du type de dossier (doit être SCOLARITE)
-	     int TYPE_SCOLARITE = 0; // Assurez-vous que SCOLARITE correspond bien à 0 en base
+	     int TYPE_SCOLARITE = 0;
 	     if (dossier.getType().ordinal() != TYPE_SCOLARITE) {
 	         log.warn("Seuls les dossiers de type SCOLARITE peuvent être prolongés. ID : {}", id);
 	         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -68,7 +68,7 @@ public class DossierDelegueController {
 	     }
 
 	     // Vérification de l'état du dossier (doit être Validé)
-	     int ETAT_VALIDE = 3; // Vérifiez que "Validé" correspond bien à 3 en base
+	     int ETAT_VALIDE = 3;
 	     if (dossier.getEtatDoss().ordinal() != ETAT_VALIDE) {
 	         log.warn("Le dossier avec ID {} ne peut être prolongé que s'il est validé.", id);
 	         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -96,15 +96,12 @@ public class DossierDelegueController {
 	                 .body(new Response<>(400, "Le motif de prolongation ne doit pas être vide", null));
 	     }
 
-	     // Mise à jour de la date de prolongation et du motif
+	     // Mise à jour de la date de prolongation et du motif, sans modifier la date d'expiration
 	     dossier.setDateFinProlong(request.getDateFinProlong());
 	     dossier.setMotifProlong(request.getMotifProlong());
 
-	     // Mise à jour de la date d'expiration avec la nouvelle date de prolongation
-	     dossier.setDateExpiration(request.getDateFinProlong());
-
 	     // Mise à jour de l'état du dossier en "Prolongé"
-	     int ETAT_PROLONGE = 7; // Vérifiez que "Prolongé" correspond bien à 7 en base
+	     int ETAT_PROLONGE = 7;
 	     dossier.setEtatDoss(EtatDoss.values()[ETAT_PROLONGE]);
 
 	     // Sauvegarde du dossier mis à jour
