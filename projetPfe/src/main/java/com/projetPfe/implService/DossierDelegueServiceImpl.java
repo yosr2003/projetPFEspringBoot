@@ -37,21 +37,31 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
         return dossierDelegueRepo.findById(id);
     }
 	@Override
-	public ResponseEntity<DossierDelegue> cloturerDossier(DossierDelegue d,String id) {
+	public ResponseEntity<Map<String, Object>> cloturerDossier(DossierDelegue d,String id) {
+		// Création de la réponse avec header et body
+        Map<String, Object> response = new HashMap<>();
+        ResponseHeaderDTO header = new ResponseHeaderDTO(404, "NOT_FOUND", "Dossier non trouvé");
+        response.put("header", header);
 		if(dossierDelegueRepo.findById(id).isPresent()) {
 			DossierDelegue dossier=dossierDelegueRepo.findById(id).get();
 			if (dossier.getEtatDoss().equals(EtatDoss.VALIDE)) {
 				dossier.setDatclo(d.getDatclo());
 				dossier.setMotifclo(d.getMotifclo());
 				dossier.setEtatDoss(EtatDoss.CLOTURE);
-				HttpHeaders headers = new HttpHeaders();
-				headers.add("code",String.valueOf(HttpStatus.OK.value()));
-				headers.add("libelle","SERVICE_OK");
-				return new ResponseEntity<>(dossierDelegueRepo.save(dossier),headers,HttpStatus.OK);
-				//return ResponseEntity.status(HttpStatus.OK).headers(headers).body(dossier);
-			}else {return new ResponseEntity<>(HttpStatus.BAD_REQUEST); }
+				
+				dossierDelegueRepo.save(dossier);
+				header = new ResponseHeaderDTO(200, "SERVICE_OK", "clôturé avec succès");
+	            response.put("header", header);
+	            ResponseBodyDTO body = new ResponseBodyDTO(dossier);
+	            response.put("body", body);
+	            return new ResponseEntity<>(response,HttpStatus.OK);
+			}else {
+				header = new ResponseHeaderDTO(400, "BAD_REQUEST", "dossier non validé");
+	            response.put("header", header);
+				return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+				}
 		}
-		return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
 	
 //	@Override
