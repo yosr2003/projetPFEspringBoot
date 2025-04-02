@@ -15,12 +15,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.projetPfe.Iservice.IDossierDelegueService;
+import com.projetPfe.dto.ResponseBodyDTO;
+import com.projetPfe.dto.ResponseHeaderDTO;
 import com.projetPfe.entities.DossierDelegue;
 import com.projetPfe.entities.EtatDoss;
-
-
-import com.projetPfe.entities.ResponseBodyDTO;
-import com.projetPfe.entities.ResponseHeaderDTO;
 
 import com.projetPfe.repositories.DossierDelegueRepository;
 
