@@ -6,6 +6,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ public class DossierDelegueTest {
         // GIVEN : Un dossier existant avec état "Validé"
         String id = "123";
         DossierDelegue dossierExistant = new DossierDelegue();
-        dossierExistant.setEtatDoss(EtatDoss.Validé);
+        dossierExistant.setEtatDoss(EtatDoss.VALIDE);
 
         DossierDelegue dossierInput = new DossierDelegue();
         dossierInput.setDatclo(LocalDateTime.now());
@@ -47,12 +48,12 @@ public class DossierDelegueTest {
         when(dossierDelegueRepo.save(any(DossierDelegue.class))).thenReturn(dossierExistant);
 
         // WHEN : On appelle la méthode
-        ResponseEntity<DossierDelegue> response = dossierDelegueService.cloturerDossier(dossierInput, id);
+        ResponseEntity<Map<String, Object>> response = dossierDelegueService.cloturerDossier(dossierInput, id);
 
         // THEN : Vérification
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(EtatDoss.Clôturé, response.getBody().getEtatDoss());
-        assertEquals("Motif test", response.getBody().getMotifclo());
+        assertEquals(EtatDoss.CLOTURE, ((DossierDelegue) response.getBody()).getEtatDoss());
+        assertEquals("Motif test", ((DossierDelegue) response.getBody()).getMotifclo());
         verify(dossierDelegueRepo).save(dossierExistant);
     }
     
@@ -61,12 +62,12 @@ public class DossierDelegueTest {
         // GIVEN : Un dossier existant mais non validé
         String id = "123";
         DossierDelegue dossierExistant = new DossierDelegue();
-        dossierExistant.setEtatDoss(EtatDoss.Traitement);
+        dossierExistant.setEtatDoss(EtatDoss.TRAITEMENT);
 
         when(dossierDelegueRepo.findById(id)).thenReturn(Optional.of(dossierExistant));
 
         // WHEN
-        ResponseEntity<DossierDelegue> response = dossierDelegueService.cloturerDossier(new DossierDelegue(), id);
+        ResponseEntity<Map<String, Object>> response = dossierDelegueService.cloturerDossier(new DossierDelegue(), id);
 
         // THEN
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -80,7 +81,7 @@ public class DossierDelegueTest {
         when(dossierDelegueRepo.findById(id)).thenReturn(Optional.empty());
 
         // WHEN
-        ResponseEntity<DossierDelegue> response = dossierDelegueService.cloturerDossier(new DossierDelegue(), id);
+        ResponseEntity<Map<String, Object>> response = dossierDelegueService.cloturerDossier(new DossierDelegue(), id);
 
         // THEN
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
