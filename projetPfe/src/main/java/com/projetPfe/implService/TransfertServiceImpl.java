@@ -56,7 +56,7 @@ public class TransfertServiceImpl implements ITansfertService {
 			montantConverti *= tauxChange;
 		}
 
-		montantFinal = "BEN".equals(typefrais)? montantFinal - montantFrais : montantConverti ; 
+		montantFinal = "BEN".equals(typefrais)? montantConverti - montantFrais : montantConverti ; 
 		
 		result.put("montantInitial",montant);
 		result.put("DeviseCible",deviseCible);
