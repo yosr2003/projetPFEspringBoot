@@ -22,9 +22,9 @@ public class TransfertController {
 	public List<Transfert> getAllTransfert() {
 		return transfertService.getAllTransferts();	}
 	
-	@GetMapping("/alerteTransfertAttente")
+	/*@GetMapping("/alerteTransfertAttente")
 	public List<Transfert> AlerteTransfertAttente() {
-		return transfertService.AlerteTransfertAttente();	}
+		return transfertService.AlerteTransfertAttente();	}*/
 	
 	
 

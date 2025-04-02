@@ -7,7 +7,7 @@ import com.projetPfe.entities.Transfert;
 public interface ITansfertService {
 	public List<Transfert> getAllTransferts() ;
 
-	List<Transfert> AlerteTransfertAttente();
+	/*List<Transfert> AlerteTransfertAttente();*/
 	
 
 }
