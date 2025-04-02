@@ -11,10 +11,10 @@ import com.projetPfe.entities.DossierDelegue;
 public interface IDossierDelegueService {
 	public List<DossierDelegue> getAllDossierDelegues();
 	public Optional<DossierDelegue> getDossierById(String id);
-	public ResponseEntity<DossierDelegue> cloturerDossier(DossierDelegue d, String id);
+	public ResponseEntity<Map<String, Object>> cloturerDossier(DossierDelegue d, String id);
 //	public ResponseEntity<Response<DossierDelegue>> clotureDossier(DossierDelegue d, String id);
 	
-	ResponseEntity<Map<String, Object>> dupliquerDossier(String id);
+	public ResponseEntity<Map<String, Object>> dupliquerDossier(String id);
 	
 
 }

@@ -38,7 +38,7 @@ public class DossierDelegueController {
 	    }
 	 
 	 @PutMapping("/{id}")
-	 public ResponseEntity<DossierDelegue> cloturerDossier(@RequestBody DossierDelegue d,@PathVariable("id") String id){
+	 public ResponseEntity<Map<String, Object>> cloturerDossier(@RequestBody DossierDelegue d,@PathVariable("id") String id){
 		 return dossDelService.cloturerDossier(d,id);
 	 }
 	 @PutMapping("/dupliquerDossier/{id}")
