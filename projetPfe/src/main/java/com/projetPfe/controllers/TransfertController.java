@@ -30,14 +30,15 @@ public class TransfertController {
 
 
     @GetMapping("/{refTransfert}/status")
-    public ResponseEntity<TransfertDTO> getTransfertStatus(@PathVariable String refTransfert) {
-        System.out.println("I AM HERE");
-        Optional<TransfertDTO> dto = transfertService.getTransfertStatus(refTransfert);
-        if(dto.isEmpty()){
-            System.out.println("IS EMPTY");
+    public ResponseEntity<Object> getTransfertStatus(@PathVariable String refTransfert) {
+        Optional<Object> result = transfertService.getTransfertStatus(refTransfert);
+        if (result.isPresent()) {
+            return ResponseEntity.ok(result.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Error: Unable to calculate frais, missing data or invalid parameters.");
         }
-        return dto.map(ResponseEntity::ok)
-                  .orElseGet(() -> ResponseEntity.notFound().build());
+        
     }
 
 

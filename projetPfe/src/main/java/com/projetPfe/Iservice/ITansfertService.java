@@ -9,7 +9,7 @@ import com.projetPfe.entities.Transfert;
 public interface ITansfertService {
 	public List<Transfert> getAllTransferts() ;
 
-	public Optional<TransfertDTO> getTransfertStatus(String refTransfert);
+	public Optional<Object> getTransfertStatus(String refTransfert);
 
   public Optional<Object>  calculerFrais(Double montant, String deviseCible,String deviseSource , String typefrais, double montantFrais);
 

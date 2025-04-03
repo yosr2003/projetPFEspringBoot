@@ -1,8 +1,12 @@
 package com.projetPfe.dto;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.projetPfe.entities.EtatDoss;
 
 public class TransfertDTO {
+  @JsonProperty("ref_transfert")
   private String refTransfert;
+  
+  @JsonProperty("etat")
   private EtatDoss etat;
 
   public TransfertDTO(String refTransfert, EtatDoss etat) {
@@ -11,11 +15,11 @@ public class TransfertDTO {
   }
 
   public String getRefTransfert() {
-      return refTransfert;
+      return this.refTransfert;
   }
 
   public EtatDoss getEtat() {
-      return etat;
+      return this.etat;
   }
 }
 

@@ -30,10 +30,10 @@ public class Transfert implements Serializable{
 	@Column(name = "montant_transfert")
 	private Double montantTransfert;
 
-	@Column(name ="devise_source_id")
+	@Column(name ="devise_source")
 	private TauxChange deviseSource;
 
-	@Column(name = "devise_cible_id")
+	@Column(name = "devise_cible")
 	private TauxChange deviseCible;
 
 	@Column(name = "datecre")

@@ -31,10 +31,21 @@ public class TransfertServiceImpl implements ITansfertService {
 		return transfertRepo.findAll();
 	}
 
-	public Optional<TransfertDTO> getTransfertStatus(String refTransfert) {
-		return transfertRepo.findByrefTransfert(refTransfert)
-						.map(transfert -> new TransfertDTO(transfert.getRefTransfert(), transfert.getEtat()));
+	public Optional<Object> getTransfertStatus(String refTransfert) {
+		Map<String , Object> result = new HashMap<>();
+
+		Transfert TransfertInfo = transfertRepo.findByrefTransfert(refTransfert).get();
+
+		System.out.println(TransfertInfo.getRefTransfert());
+		System.out.println(TransfertInfo.getEtat());
+		result.put("Reference Transfert", refTransfert);
+		result.put("Statut Transfert",TransfertInfo.getEtat());
+
+
+		return Optional.of(result);
+
 	}
+
 	public Optional<TauxChange> getTauxChangeByDevise(String devise) {
 		return tauxchangeRepo.findByDevise(devise);
 	}
