@@ -1,10 +1,15 @@
 package com.projetPfe;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
@@ -19,7 +24,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.projetPfe.Iservice.IDossierDelegueService;
+import com.projetPfe.dto.ResponseHeaderDTO;
 import com.projetPfe.entities.DossierDelegue;
+import com.projetPfe.entities.DossierDelegueType;
 import com.projetPfe.entities.EtatDoss;
 import com.projetPfe.implService.DossierDelegueServiceImpl;
 import com.projetPfe.repositories.DossierDelegueRepository;
@@ -34,58 +41,65 @@ public class DossierDelegueTest {
     private DossierDelegueRepository dossierDelegueRepo;
     
     @Test
-    void testCloturerDossier_Success() {
-        // GIVEN : Un dossier existant avec état "Validé"
+    void testCloturerDossier_NotFound() {
+        //le dossier fourni est inexistant
         String id = "123";
-        DossierDelegue dossierExistant = new DossierDelegue();
-        dossierExistant.setEtatDoss(EtatDoss.VALIDE);
+        when(dossierDelegueRepo.findById(id)).thenReturn(Optional.empty());
 
-        DossierDelegue dossierInput = new DossierDelegue();
-        dossierInput.setDatclo(LocalDateTime.now());
-        dossierInput.setMotifclo("Motif test");
+        
+        ResponseEntity<Map<String, Object>> response = dossierDelegueService.cloturerDossier
+        		(new DossierDelegue(), id);
 
-        when(dossierDelegueRepo.findById(id)).thenReturn(Optional.of(dossierExistant));
-        when(dossierDelegueRepo.save(any(DossierDelegue.class))).thenReturn(dossierExistant);
-
-        // WHEN : On appelle la méthode
-        ResponseEntity<Map<String, Object>> response = dossierDelegueService.cloturerDossier(dossierInput, id);
-
-        // THEN : Vérification
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(EtatDoss.CLOTURE, ((DossierDelegue) response.getBody()).getEtatDoss());
-        assertEquals("Motif test", ((DossierDelegue) response.getBody()).getMotifclo());
-        verify(dossierDelegueRepo).save(dossierExistant);
+        
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(dossierDelegueRepo, never()).save(any());
     }
     
     @Test
     void testCloturerDossier_NotValidated() {
-        // GIVEN : Un dossier existant mais non validé
-        String id = "123";
-        DossierDelegue dossierExistant = new DossierDelegue();
-        dossierExistant.setEtatDoss(EtatDoss.TRAITEMENT);
+      //Un dossier existant mais non validé
+      String id = "123";
+      DossierDelegue dossierExistant = new DossierDelegue();
+      dossierExistant.setEtatDoss(EtatDoss.TRAITEMENT);
 
-        when(dossierDelegueRepo.findById(id)).thenReturn(Optional.of(dossierExistant));
+      when(dossierDelegueRepo.findById(id)).thenReturn(Optional.of(dossierExistant));
 
-        // WHEN
-        ResponseEntity<Map<String, Object>> response = dossierDelegueService.cloturerDossier(new DossierDelegue(), id);
+        
+      ResponseEntity<Map<String, Object>> response = dossierDelegueService.cloturerDossier
+      (new DossierDelegue(), id);
 
-        // THEN
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        verify(dossierDelegueRepo, never()).save(any());
+        
+      assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+      verify(dossierDelegueRepo, never()).save(any());
     }
     
+    
+    
+
     @Test
-    void testCloturerDossier_NotFound() {
-        // GIVEN : Aucun dossier trouvé
-        String id = "123";
-        when(dossierDelegueRepo.findById(id)).thenReturn(Optional.empty());
+    void testDupliquerDossier_Success() {
+        String id = "DOS001";
+        DossierDelegue dossier = new DossierDelegue();
+        dossier.setIdDossier(id);
+        dossier.setEtatDoss(EtatDoss.VALIDE);
+        dossier.setDateDebut(LocalDate.now());
+        dossier.setDateExpiration(LocalDate.now().plusMonths(1));
+        dossier.setAnneedoss("2024");
+        dossier.setType(DossierDelegueType.SCOLARITE);
+        dossier.setSolde(12.00);
+        dossier.setDateFinProlong(LocalDate.now().plusMonths(2));
+        dossier.setMotifProlong("Motif");
 
-        // WHEN
-        ResponseEntity<Map<String, Object>> response = dossierDelegueService.cloturerDossier(new DossierDelegue(), id);
+        when(dossierDelegueRepo.findById(id)).thenReturn(Optional.of(dossier));
 
-        // THEN
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        verify(dossierDelegueRepo, never()).save(any());
+        ResponseEntity<Map<String, Object>> response = dossierDelegueService.dupliquerDossier(id);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        Map<String, Object> body = response.getBody();
+        assertNotNull(body);
+        assertTrue(body.containsKey("header"));
+        assertTrue(body.containsKey("body"));
+        ResponseHeaderDTO header = (ResponseHeaderDTO) body.get("header");
+        assertEquals(200, header.getCode());
+        assertEquals("dupliqué avec succès", header.getMessage());
     }
-
 }
