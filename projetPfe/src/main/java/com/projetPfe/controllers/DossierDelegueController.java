@@ -46,77 +46,79 @@ public class DossierDelegueController {
      public ResponseEntity<DossierDelegue> cloturerDossier(@RequestBody DossierDelegue d,@PathVariable("id") String id){
             return dossDelService.cloturerDossier(d,id);
         }
-	 @PutMapping(value = "/prolonger/{id}", produces = "application/json")
-	 public ResponseEntity<Response<DossierDelegue>> prolongerDossier(
-	         @PathVariable("id") String id,
-	         @RequestBody DossierDelegue request) {
+     @PutMapping(value = "/prolonger/{id}", produces = "application/json")
+     public ResponseEntity<Response<DossierDelegue>> prolongerDossier(
+             @PathVariable("id") String id,
+             @RequestBody DossierDelegue request) {
 
-	     log.info("Requête reçue pour prolonger le dossier avec ID : {}", id);
+         log.info("Requête reçue pour prolonger le dossier avec ID : {}", id);
 
-	     // Récupération du dossier depuis la base de données
-	     Optional<DossierDelegue> dossierOptional = dossDelService.getDossierById(id);
-	     if (dossierOptional.isEmpty()) {
-	         log.warn("Dossier non trouvé avec ID : {}", id);
-	         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-	                 .body(new Response<>(404, "Dossier non trouvé", null));
-	     }
+         // Récupération du dossier depuis la base de données
+         Optional<DossierDelegue> dossierOptional = dossDelService.getDossierById(id);
+         if (dossierOptional.isEmpty()) {
+             log.warn("Dossier non trouvé avec ID : {}", id);
+             return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                     .body(new Response<>(404, "Dossier non trouvé", null));
+         }
 
-	     DossierDelegue dossier = dossierOptional.get();
+         DossierDelegue dossier = dossierOptional.get();
 
-	     // Vérification du type de dossier (doit être SCOLARITE)
-	     int TYPE_SCOLARITE = 0; // Assurez-vous que SCOLARITE correspond bien à 0 en base
-	     if (dossier.getType().ordinal() != TYPE_SCOLARITE) {
-	         log.warn("Seuls les dossiers de type SCOLARITE peuvent être prolongés. ID : {}", id);
-	         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-	                 .body(new Response<>(400, "Seuls les dossiers de type SCOLARITE peuvent être prolongés", null));
-	     }
+         // Vérification du type de dossier (doit être SCOLARITE)
+         int TYPE_SCOLARITE = 0; // Assurez-vous que SCOLARITE correspond bien à 0 en base
+         if (dossier.getType().ordinal() != TYPE_SCOLARITE) {
+             log.warn("Seuls les dossiers de type SCOLARITE peuvent être prolongés. ID : {}", id);
+             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                     .body(new Response<>(400, "Seuls les dossiers de type SCOLARITE peuvent être prolongés", null));
+         }
 
-	     // Vérification de l'état du dossier (doit être Validé)
-	     int ETAT_VALIDE = 3; // Vérifiez que "Validé" correspond bien à 3 en base
-	     if (dossier.getEtatDoss().ordinal() != ETAT_VALIDE) {
-	         log.warn("Le dossier avec ID {} ne peut être prolongé que s'il est validé.", id);
-	         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-	                 .body(new Response<>(400, "Le dossier doit être validé pour être prolongé", null));
-	     }
+         // Vérification de l'état du dossier (doit être Validé)
+         int ETAT_VALIDE = 3; // Vérifiez que "Validé" correspond bien à 3 en base
+         if (dossier.getEtatDoss().ordinal() != ETAT_VALIDE) {
+             log.warn("Le dossier avec ID {} ne peut être prolongé que s'il est validé.", id);
+             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                     .body(new Response<>(400, "Le dossier doit être validé pour être prolongé", null));
+         }
 
-	     // Vérification que la date de prolongation est fournie
-	     if (request.getDateFinProlong() == null) {
-	         log.warn("La date de prolongation est obligatoire pour ID : {}", id);
-	         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-	                 .body(new Response<>(400, "La date de prolongation est obligatoire", null));
-	     }
+         // Vérification que la date de prolongation est fournie
+         if (request.getDateFinProlong() == null) {
+             log.warn("La date de prolongation est obligatoire pour ID : {}", id);
+             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                     .body(new Response<>(400, "La date de prolongation est obligatoire", null));
+         }
 
-	     // Vérification que la date de prolongation est après la date d'expiration
-	     if (!request.getDateFinProlong().isAfter(dossier.getDateExpiration())) {
-	         log.warn("La date de prolongation doit être après la date d'expiration actuelle pour le dossier avec ID : {}", id);
-	         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-	                 .body(new Response<>(400, "La date de prolongation doit être après la date d'expiration", null));
-	     }
+         // Vérification que la date de prolongation est après la date d'expiration
+         if (!request.getDateFinProlong().isAfter(dossier.getDateExpiration())) {
+             log.warn("La date de prolongation doit être après la date d'expiration actuelle pour le dossier avec ID : {}", id);
+             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                     .body(new Response<>(400, "La date de prolongation doit être après la date d'expiration", null));
+         }
 
-	     // Vérification que le motif de prolongation n'est pas vide ou null
-	     if (request.getMotifProlong() == null || request.getMotifProlong().trim().isEmpty()) {
-	         log.warn("Le motif de prolongation est obligatoire pour ID : {}", id);
-	         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-	                 .body(new Response<>(400, "Le motif de prolongation ne doit pas être vide", null));
-	     }
+         // Vérification que le motif de prolongation n'est pas vide ou null
+         if (request.getMotifProlong() == null || request.getMotifProlong().trim().isEmpty()) {
+             log.warn("Le motif de prolongation est obligatoire pour ID : {}", id);
+             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                     .body(new Response<>(400, "Le motif de prolongation ne doit pas être vide", null));
+         }
 
-	     // Mise à jour de la date de prolongation et du motif
-	     dossier.setDateFinProlong(request.getDateFinProlong());
-	     dossier.setMotifProlong(request.getMotifProlong());
+         // Mise à jour de la date de prolongation et du motif
+         dossier.setDateFinProlong(request.getDateFinProlong());
+         dossier.setMotifProlong(request.getMotifProlong());
 
-	     // Mise à jour de la date d'expiration avec la nouvelle date de prolongation
-	     dossier.setDateExpiration(request.getDateFinProlong());
+         // Réaffectation de la date d'expiration pour qu'elle ne soit pas modifiée
+         //dossier.setDateExpiration(dossier.getDateExpiration());
 
-	     // Mise à jour de l'état du dossier en "Prolongé"
-	     int ETAT_PROLONGE = 7; // Vérifiez que "Prolongé" correspond bien à 7 en base
-	     dossier.setEtatDoss(EtatDoss.values()[ETAT_PROLONGE]);
+         // Mise à jour de l'état du dossier en "Prolongé"
+         int ETAT_PROLONGE = 7; // Vérifiez que "Prolongé" correspond bien à 7 en base
+         dossier.setEtatDoss(EtatDoss.values()[ETAT_PROLONGE]);
 
-	     // Sauvegarde du dossier mis à jour
-	     DossierDelegue updatedDossier = dossDelService.updateDossier(dossier);
+         // Sauvegarde du dossier mis à jour
+         DossierDelegue updatedDossier = dossDelService.updateDossier(dossier);
 
-	     log.info("Dossier mis à jour avec succès : {}", updatedDossier);
+         log.info("Dossier mis à jour avec succès : {}", updatedDossier);
 
-	     return ResponseEntity.ok(new Response<>(200, "Dossier prolongé avec succès", updatedDossier));
-	 }
+         return ResponseEntity.ok(new Response<>(200, "Dossier prolongé avec succès", updatedDossier));
+     }
+
+
 
 }
