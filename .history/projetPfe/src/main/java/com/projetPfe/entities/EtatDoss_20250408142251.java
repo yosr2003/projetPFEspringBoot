@@ -7,7 +7,6 @@ public enum EtatDoss {
 	Validé,
 	Clôturé,
 	Envoyé,
-	Suspendu,
-	prolongé
+	Suspendu
 
 }

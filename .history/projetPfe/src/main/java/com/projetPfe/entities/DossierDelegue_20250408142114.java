@@ -9,52 +9,20 @@ import java.util.List;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 @Entity
 public class DossierDelegue {
 	@Id
 	private String idDossier;
-	
 	private String anneedoss;
-	private EtatDoss etatDoss;
-    
-	private LocalDateTime  datclo;
-	
-	private String motifclo;
-	private String MotifProlong;
-
 	private LocalDateTime  dateCre;
+	private EtatDoss etatDoss;
+	private LocalDateTime  datclo;
+	private String motifclo;
 	private LocalDate dateDebut;
 	private LocalDate dateExpiration;
-    private LocalDate DateFinProlong;
 	private Double solde;
 	private DossierDelegueType type;
-    
-	@OneToMany(mappedBy = "dossierDelegue")
-	private List<Transfert> transferts;
-	
-    
-    
-    
-	public LocalDate getDateFinProlong() {
-		return DateFinProlong;
-	}
-
-	public void setDateFinProlong(LocalDate dateFinProlong) {
-		DateFinProlong = dateFinProlong;
-	}
-
-	public List<Transfert> getTransferts() {
-		return transferts;
-	}
-
-	public void setTransferts(List<Transfert> transferts) {
-		this.transferts = transferts;
-	}
-
-
 	
 	
 
@@ -62,7 +30,9 @@ public class DossierDelegue {
 		super();
 	}
 	
-
+	@OneToMany(mappedBy = "dossierDelegue")
+	private List<Transfert> transferts;
+	
 	
 /// getters and setters
 	
@@ -144,13 +114,8 @@ public class DossierDelegue {
 	public void setMotifclo(String motifclo) {
 		this.motifclo = motifclo;
 	}
-	public String getMotifProlong() {
-		return MotifProlong;
-	}
-
-	public void setMotifProlong(String motifProlong) {
-		MotifProlong = motifProlong;
-	}
+/// getters and setters	
+	
 	
 	
 
