@@ -42,8 +42,8 @@ public class DossierDelegueController {
 	        return dossier.map(ResponseEntity::ok)
 	                .orElseGet(() -> ResponseEntity.notFound().build());
 	    }
-     @PutMapping("/{id}")
-     public ResponseEntity<DossierDelegue> cloturerDossier(@RequestBody DossierDelegue d,@PathVariable("id") String id){
+        @PutMapping("/{id}")
+        public ResponseEntity<DossierDelegue> cloturerDossier(@RequestBody DossierDelegue d,@PathVariable("id") String id){
             return dossDelService.cloturerDossier(d,id);
         }
 	 @PutMapping(value = "/prolonger/{id}", produces = "application/json")
