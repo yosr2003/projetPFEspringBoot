@@ -99,9 +99,7 @@ public class DossierDelegueController {
 	     // Mise à jour de la date de prolongation et du motif
 	     dossier.setDateFinProlong(request.getDateFinProlong());
 	     dossier.setMotifProlong(request.getMotifProlong());
-
-	     // Mise à jour de la date d'expiration avec la nouvelle date de prolongation
-	     dossier.setDateExpiration(request.getDateFinProlong());
+	
 
 	     // Mise à jour de l'état du dossier en "Prolongé"
 	     int ETAT_PROLONGE = 7; // Vérifiez que "Prolongé" correspond bien à 7 en base
