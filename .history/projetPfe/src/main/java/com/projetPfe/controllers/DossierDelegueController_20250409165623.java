@@ -46,7 +46,6 @@ public class DossierDelegueController {
 	 public ResponseEntity<Map<String, Object>> dupliquerDossier(@PathVariable("id") String id){
 		 return dossDelService.dupliquerDossier(id);
 	 }
-
      
 
 	 
