@@ -7,11 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.projetPfe.Iservice.IDossierDelegueService;
@@ -27,11 +29,13 @@ import com.projetPfe.repositories.DossierDelegueRepository;
 public class DossierDelegueServiceImpl implements IDossierDelegueService{
 	@Autowired
 	private DossierDelegueRepository dossierDelegueRepo;
-
+	
+	@Async
 	@Override
-	public List<DossierDelegue> getAllDossierDelegues() {
+	public CompletableFuture<List<DossierDelegue>> getAllDossierDelegues() {
 		// ////TODO Auto-generated method stub
-		return dossierDelegueRepo.findAll();}
+		 return CompletableFuture.supplyAsync(() -> dossierDelegueRepo.findAll());}
+	
 	@Override
 	public Optional<DossierDelegue> getDossierById(String id) {
         return dossierDelegueRepo.findById(id);
