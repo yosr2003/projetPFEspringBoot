@@ -30,11 +30,10 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
 	@Autowired
 	private DossierDelegueRepository dossierDelegueRepo;
 	
-	@Async
+    @Async
 	@Override
 	public CompletableFuture<List<DossierDelegue>> getAllDossierDelegues() {
-		// ////TODO Auto-generated method stub
-		 return CompletableFuture.supplyAsync(() -> dossierDelegueRepo.findAll());}
+		return CompletableFuture.supplyAsync(() ->  dossierDelegueRepo.findAll());}
 	
 	@Override
 	public Optional<DossierDelegue> getDossierById(String id) {

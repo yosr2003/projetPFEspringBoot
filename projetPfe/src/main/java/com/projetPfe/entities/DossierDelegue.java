@@ -46,9 +46,9 @@ public class DossierDelegue {
 		DateFinProlong = dateFinProlong;
 	}
 
-	public List<Transfert> getTransferts() {
-		return transferts;
-	}
+//	public List<Transfert> getTransferts() {
+//		return transferts;
+//	}
 
 	public void setTransferts(List<Transfert> transferts) {
 		this.transferts = transferts;

@@ -36,10 +36,10 @@ public class DynamicApiService {
 	
 	@PostConstruct
 	public void init() {
-//	        apiRegistry.put("getAllTransferts", () ->
-//	        transfertController.getAllTransfert()// Obtient le CompletableFuture<List<DossierDelegue>>
-//	            .thenApply(transferts -> transferts) // Renvoie la liste des dossiers
-//	    );
+	        apiRegistry.put("getAllTransferts", () ->
+	        transfertController.getAllTransfert()// Obtient le CompletableFuture<List<DossierDelegue>>
+	            .thenApply(transferts -> transferts) // Renvoie la liste des dossiers
+	    );
 
 	        apiRegistry.put("getAllDossiers", () ->
 	        dossierDelegueController.getAllDossiers() // Obtient le CompletableFuture<List<DossierDelegue>>
