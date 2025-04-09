@@ -1,7 +1,6 @@
 package com.projetPfe.controllers;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.projetPfe.Iservice.IDossierDelegueService;
 import com.projetPfe.entities.DossierDelegue;
-import java.util.List;
-import java.util.Optional;
+//import com.projetPfe.entities.Response;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 @RestController
@@ -42,19 +38,11 @@ public class DossierDelegueController {
 	    }
 	 
 	 @PutMapping("/{id}")
-	 public ResponseEntity<Map<String, Object>>  cloturerDossier(@RequestBody DossierDelegue d,@PathVariable("id") String id){
+	 public ResponseEntity<DossierDelegue> cloturerDossier(@RequestBody DossierDelegue d,@PathVariable("id") String id){
 		 return dossDelService.cloturerDossier(d,id);
 	 }
-
-	 @PutMapping("/dupliquerDossier/{id}")
-	 public ResponseEntity<Map<String, Object>> dupliquerDossier(@PathVariable("id") String id){
-		 return dossDelService.dupliquerDossier(id);
-	 }
-
-     
-
 	 
-
+	 
 
 	
 

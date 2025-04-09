@@ -147,14 +147,7 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
 	    return newId;
 	}
 
-	@Override
-    public DossierDelegue updateDossier(DossierDelegue dossier) {
-        if (dossierDelegueRepo.existsById(dossier.getIdDossier())) {
-            return dossierDelegueRepo.save(dossier);
-        } else {
-            throw new RuntimeException("Dossier non trouvé pour mise à jour");
-        }
-    }
+	
 	
 	
 

@@ -28,8 +28,7 @@ import org.slf4j.LoggerFactory;
 public class DossierDelegueController {
 	@Autowired
 	private IDossierDelegueService dossDelService;
-    private static final Logger log = LoggerFactory.getLogger(DossierDelegue.class);
-
+	
 	@GetMapping
     public ResponseEntity<List<DossierDelegue>> getAllDossiers() {
         return ResponseEntity.ok(dossDelService.getAllDossierDelegues());
@@ -55,7 +54,7 @@ public class DossierDelegueController {
      @PutMapping(value = "/prolonger/{id}", produces = "application/json")
 	 public ResponseEntity<Response<DossierDelegue>> prolongerDossier(
 	         @PathVariable("id") String id,
-	         @RequestBody DossierDelegue request) {
+	         @Valid @RequestBody DossierDelegue request) {
 
 	     log.info("Requête reçue pour prolonger le dossier avec ID : {}", id);
 

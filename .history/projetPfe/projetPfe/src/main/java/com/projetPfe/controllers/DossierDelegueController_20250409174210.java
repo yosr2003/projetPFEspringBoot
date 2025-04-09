@@ -28,8 +28,7 @@ import org.slf4j.LoggerFactory;
 public class DossierDelegueController {
 	@Autowired
 	private IDossierDelegueService dossDelService;
-    private static final Logger log = LoggerFactory.getLogger(DossierDelegue.class);
-
+	
 	@GetMapping
     public ResponseEntity<List<DossierDelegue>> getAllDossiers() {
         return ResponseEntity.ok(dossDelService.getAllDossierDelegues());
