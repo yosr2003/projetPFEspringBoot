@@ -37,7 +37,7 @@ public class TransfertServiceImpl implements ITansfertService {
 	}
 	   @Override
     public List<Transfert> AlerteTransfertAttente() {
-        return transfertRepo.findByEtat(EtatDoss.TRAITEMENT);
+        return transfertRepo.findByEtat(EtatDoss.Traitement);
     }
 
 	public Optional<TransfertDTO> getTransfertStatus(String refTransfert) {

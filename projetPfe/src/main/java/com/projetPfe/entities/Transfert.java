@@ -184,6 +184,5 @@ public class Transfert {
 		throw new UnsupportedOperationException("Unimplemented method 'orElseGet'");
 	}
 	
-/// getters and setters 
 
 }
