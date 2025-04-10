@@ -36,15 +36,23 @@ public class Transfert {
 	@ManyToOne
 	@JoinColumn(name = "devise_cible_id")
 	private TauxChange deviseCible;
+	@ManyToOne
+	@JoinColumn(name = "CompteBancaire_source_id")
+	private CompteBancaire CompteBancaire_source;
+
+	@ManyToOne
+	@JoinColumn(name = "CompteBancaire_cible_id")
+	private CompteBancaire CompteBancaire_cible;
+
 
 	@Column(name = "datecre")
-	private LocalDateTime  datecre;
+	private LocalDateTime datecre;
+
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "etat")
 	private EtatDoss etat;
-	@Column(name = "date_echeance")
-	private LocalDate dateEcheance;
+
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "nature_transfert")
@@ -121,14 +129,7 @@ public class Transfert {
 	}
 
 
-	public LocalDate getDateEcheance() {
-		return dateEcheance;
-	}
 
-
-	public void setDateEcheance(LocalDate dateEcheance) {
-		this.dateEcheance = dateEcheance;
-	}
 
 
 	public TransfertNature getNatureTransfert() {
@@ -168,6 +169,46 @@ public class Transfert {
 
 	public void setEtat(EtatDoss etat) {
 		this.etat = etat;
+	}
+
+	public TransfertType getTypeTransfert() {
+		return typeTransfert;
+	}
+
+	public void setTypeTransfert(TransfertType typeTransfert) {
+		this.typeTransfert = typeTransfert;
+	}
+
+	public CompteBancaire getCompteBancaire_source() {
+		return CompteBancaire_source;
+	}
+
+	public void setCompteBancaire_source(CompteBancaire compteBancaire_source) {
+		CompteBancaire_source = compteBancaire_source;
+	}
+
+	public CompteBancaire getCompteBancaire_cible() {
+		return CompteBancaire_cible;
+	}
+
+	public void setCompteBancaire_cible(CompteBancaire compteBancaire_cible) {
+		CompteBancaire_cible = compteBancaire_cible;
+	}
+
+	public DossierDelegue getDossierDelegue() {
+		return dossierDelegue;
+	}
+
+	public void setDossierDelegue(DossierDelegue dossierDelegue) {
+		this.dossierDelegue = dossierDelegue;
+	}
+
+	public Swift getSwift() {
+		return swift;
+	}
+
+	public void setSwift(Swift swift) {
+		this.swift = swift;
 	}
 
 	public FraisType getTypeFrais(){
