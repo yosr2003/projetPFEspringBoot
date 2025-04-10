@@ -28,8 +28,7 @@ import org.slf4j.LoggerFactory;
 public class DossierDelegueController {
 	@Autowired
 	private IDossierDelegueService dossDelService;
-    private static final Logger log = LoggerFactory.getLogger(DossierDelegue.class);
-
+	
 	@GetMapping
     public ResponseEntity<List<DossierDelegue>> getAllDossiers() {
         return ResponseEntity.ok(dossDelService.getAllDossierDelegues());
@@ -110,7 +109,7 @@ public class DossierDelegueController {
 	     dossier.setMotifProlong(request.getMotifProlong());
 
 	     // Mise à jour de la date d'expiration avec la nouvelle date de prolongation
-	     //dossier.setDateExpiration(request.getDateFinProlong());
+	     dossier.setDateExpiration(request.getDateFinProlong());
 
 	     // Mise à jour de l'état du dossier en "Prolongé"
 	     int ETAT_PROLONGE = 7; // Vérifiez que "Prolongé" correspond bien à 7 en base
