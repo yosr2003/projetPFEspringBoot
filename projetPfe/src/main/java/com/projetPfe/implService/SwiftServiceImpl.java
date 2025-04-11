@@ -35,30 +35,15 @@ public class SwiftServiceImpl implements ISwift {
 
     @Autowired
     private SwiftRepository swiftRepository;
+    @Override
+    public boolean existeDejaPourTransfert(String transfertId) {
+        return swiftRepository.existsByTransfert_RefTransfert(transfertId);
+    }
 
     @Override
-    public Swift creerOuConsulterSwift(String transfertId, String format, String typeMessage) {
+    public Swift creerSwift(String transfertId, String format, String typeMessage) {
         Transfert transfert = transfertRepository.findById(transfertId)
                 .orElseThrow(() -> new RuntimeException("Transfert introuvable avec ID: " + transfertId));
-
-        Optional<Swift> swiftExistant = swiftRepository.findByTransfert(transfert);
-        if (swiftExistant.isPresent()) {
-            Swift swift = swiftExistant.get();
-            byte[] pdfBytes;
-            if ("xml".equalsIgnoreCase(format)) {
-                pdfBytes = creerPdfxml(swift.getTxtmsg());
-            } else {
-                pdfBytes = creerPdfswiftMT(swift);
-            }
-            swift.setPdfgen(pdfBytes);
-            String nomFichier = "swift_" + transfert.getRefTransfert() + ".pdf";
-            try {
-                enregistrerPdfSurDisque(pdfBytes, nomFichier);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return swiftRepository.save(swift);
-        }
 
         Swift swift = new Swift();
         swift.setTransfert(transfert);
@@ -113,6 +98,21 @@ public class SwiftServiceImpl implements ISwift {
         return swiftRepository.save(swift);
     }
 
+    @Override
+    public Swift consulterSwift(String transfertId) {
+        Transfert transfert = transfertRepository.findById(transfertId)
+                .orElseThrow(() -> new RuntimeException("Transfert introuvable avec ID: " + transfertId));
+
+        Swift swift = swiftRepository.findByTransfert(transfert)
+                .orElseThrow(() -> new RuntimeException("Swift introuvable pour le transfert ID: " + transfertId));
+
+        return swift;
+    }
+
+
+
+    
+    
     private byte[] creerPdfswiftMT(Swift swift) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Document document = new Document();
@@ -173,6 +173,8 @@ public class SwiftServiceImpl implements ISwift {
         Files.write(cheminFichier, pdfBytes);
         System.out.println("✅ PDF enregistré avec succès à : " + cheminFichier.toString());
     }
+    
+    
 	    private String creerMessageSwiftXML(Transfert transfert) {
 	        String nowDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
 	        String ref = transfert.getRefTransfert();

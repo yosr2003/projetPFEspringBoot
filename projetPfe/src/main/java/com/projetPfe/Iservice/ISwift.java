@@ -5,6 +5,18 @@ import com.projetPfe.entities.Swift;
 public interface ISwift {
 
 
-	Swift creerOuConsulterSwift(String transfertId, String format, String typeMessage);
+
+
+
+
+	Swift creerSwift(String transfertId, String format, String typeMessage);
+
+
+
+	boolean existeDejaPourTransfert(String transfertId);
+
+	Swift consulterSwift(String transfertId);
+
+	
 
 }

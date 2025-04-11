@@ -11,4 +11,7 @@ public interface SwiftRepository extends JpaRepository<Swift, Integer>{
 
 	Optional<Swift> findByTransfert(Transfert transfert);
 
+	boolean existsByTransfert_RefTransfert(String refTransfert);
+
+
 }
