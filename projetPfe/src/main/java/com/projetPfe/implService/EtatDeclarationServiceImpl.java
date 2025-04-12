@@ -174,31 +174,6 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
 
 
 	
-//	private String escapeXml(String input) {
-//		if (input == null) return "";
-//        return input
-//            .replace("&", "&amp;")
-//            .replace("<", "&lt;")
-//            .replace(">", "&gt;")
-//            .replace("\"", "&quot;")
-//            .replace("'", "&apos;");
-//	}
-//	
-//
-//	
-//	private String getTextContent(Element root, String path) {
-//        try {
-//            String[] parts = path.split("/");
-//            Element current = root;
-//            for (String part : parts) {
-//                current = (Element) current.getElementsByTagName(part).item(0);
-//            }
-//            return current.getTextContent();
-//        } catch (Exception e) {
-//            return "";
-//        }
-//    }
-
 
 
 	@Override
@@ -235,7 +210,9 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
         }
         pdfDoc.add(table);
         pdfDoc.close();
-	       
+        etat.setContenuPdf(outputStream.toByteArray());
+        etat.setTrimestre(trimestre);
+        etatDecRepo.save(etat);
         return outputStream.toByteArray();}return null;
     }
 	// Method to add header row to the table

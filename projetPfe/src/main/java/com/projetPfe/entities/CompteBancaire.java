@@ -19,6 +19,7 @@ public class CompteBancaire {
 	private String pays;
 	private int codePays;
 	
+	
 	public int getCodePays() {
 		return codePays;
 	}
