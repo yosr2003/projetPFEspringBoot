@@ -42,11 +42,11 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
 	@Autowired
 	private TransfertRepository transfertRepo;
 	
-	private EtatDeclarationBCT genererContenuXml2(String trimestre,String typeDeclaration) {
+	private StringBuilder genererContenuXml2(String trimestre,String typeDeclaration) {
 		 List<Transfert> transferts = filtreTransfertsParTrimestre(trimestre,typeDeclaration);
 		if (!transferts.isEmpty()) {
 
-		    EtatDeclarationBCT etat = new EtatDeclarationBCT();
+		   // EtatDeclarationBCT etat = new EtatDeclarationBCT();
 		    StringBuilder xml = new StringBuilder();
 		    xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		    xml.append("<etatDeclaration>\n");
@@ -87,10 +87,10 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
 
 		    xml.append("</etatDeclaration>");
 
-		    etat.setContenuTexte(xml.toString());
-		    etatDecRepo.save(etat);
+		   // etat.setContenuTexte(xml.toString());
+		    //etatDecRepo.save(etat);
 
-		    return etat;}
+		    return xml;}
 		return null;
 	}
 	@Override
@@ -178,9 +178,11 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
 
 	@Override
 	public byte[] test(String trimestre,String typeDeclaration) throws Exception {
-		EtatDeclarationBCT etat = genererContenuXml2(trimestre,typeDeclaration);
-	       if(etat!=null) {
-	           String contenuXml = etat.getContenuTexte();
+		EtatDeclarationBCT etat = new EtatDeclarationBCT();
+		StringBuilder xml = genererContenuXml2(trimestre,typeDeclaration);
+	       if(xml!=null) {
+	           //String contenuXml = etat.getContenuTexte();
+	           String contenuXml = xml.toString();
 
         org.w3c.dom.Document xmlDoc = DocumentBuilderFactory.newInstance()
                 .newDocumentBuilder()
