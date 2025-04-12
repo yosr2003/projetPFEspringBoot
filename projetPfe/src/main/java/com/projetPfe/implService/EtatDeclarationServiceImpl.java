@@ -393,34 +393,18 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
 	    }
 
 	    return transfertRepo.findAll().stream()
-	    		.filter(t -> {
-	                LocalDate dateCreation = t.getDatecre().toLocalDate();
-	                boolean withinDateRange = !dateCreation.isBefore(startDate) && !dateCreation.isAfter(endDate);
-	                boolean hasCorrectState = t.getEtat() == EtatDoss.ENOVYE; // Check if state is 'ENVOYE'
-
-	                // Compare 'typeDeclaration' as a string
-	                boolean hasCorrectType = true;
-//	                if (t.getDossierDelegue() != null) {
-//	                    // Compare using toString() on the enum field
-//	                    hasCorrectType = t.getDossierDelegue().getType().equals(typeDeclaration.toUpperCase());
-//	                } else {
-//	                    hasCorrectType = t.getTypeTransfert().toString().equals(typeDeclaration.toUpperCase()); // Same for Transfert
-//	                }
-
-	                // Apply all the conditions
-	                return withinDateRange && hasCorrectState && hasCorrectType;
-	            })
-//	        .filter(t -> {
-//	            LocalDate dateCreation = t.getDatecre().toLocalDate();
-//	            return !dateCreation.isBefore(startDate) && !dateCreation.isAfter(endDate);
-//	        }).filter(t -> t.getEtat() == EtatDoss.ENOVYE)
-//	        .filter(t -> {
-//	            if (t.getDossierDelegue() != null) {
-//	                return typeDeclaration.equals(t.getDossierDelegue().getType().toString());
-//	            } else {
-//	                return typeDeclaration.equals(t.getTypeTransfert().toString());
-//	            }
-//	        })
+	        .filter(t -> {
+	            LocalDate dateCreation = t.getDatecre().toLocalDate();
+	            return !dateCreation.isBefore(startDate) && !dateCreation.isAfter(endDate);
+	        }).filter(t -> t.getEtat() == EtatDoss.ENOVYE)
+	        .filter(t -> {
+	            if (t.getDossierDelegue() != null) {
+	                return typeDeclaration.equals(t.getDossierDelegue().getType().toString());
+	               
+	            } else {
+	                return typeDeclaration.equals(t.getTypeTransfert().toString());
+	            }
+	        })
 	        .collect(Collectors.toList());
 	}
 	@Override
