@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,23 +23,18 @@ public class EtatDeclarationController {
 	@Autowired
 	private IEtatDeclarationService etaDecService;
 	
-	@PostMapping
-	 public EtatDeclarationBCT genererContenu(){
-		 return etaDecService.genererContenuXml();
+	@PostMapping("/{id}")
+	 public EtatDeclarationBCT genererContenu(@PathVariable String id){
+		 return etaDecService.genererContenuXml(id);
 	 }
 	
-	@GetMapping("/{id}")
-	 public ResponseEntity<byte[]> genererEtatDeclaration(@PathVariable int id){
-		 byte[] pdfBytes = etaDecService.genererEtatDeclaration(id);
-		 return ResponseEntity.ok()
-	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=etat_investissement.pdf")
-	                .contentType(MediaType.APPLICATION_PDF)
-	                .body(pdfBytes);
-	 }
+
 	 
-	 @GetMapping("/test/{id}")
-	 public ResponseEntity<byte[]> test(@PathVariable int id) throws Exception{
-		 byte[] pdfBytes = etaDecService.test(id);
+	 @GetMapping("/test")
+	 public ResponseEntity<byte[]> test(@RequestBody Map<String, String> requestBody) throws Exception{
+		 String typeDeclaration = requestBody.get("typeDeclaration");
+		 String trimestre = requestBody.get("trimestre");
+		 byte[] pdfBytes = etaDecService.test(typeDeclaration,trimestre);
 		 return ResponseEntity.ok()
 	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=etat_investissement.pdf")
 	                .contentType(MediaType.APPLICATION_PDF)

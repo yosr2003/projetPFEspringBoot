@@ -3,7 +3,10 @@ package com.projetPfe.implService;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -25,16 +28,77 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.projetPfe.Iservice.IEtatDeclarationService;
 import com.projetPfe.entities.EtatDeclarationBCT;
+import com.projetPfe.entities.Participant;
+import com.projetPfe.entities.PersonneMorale;
+import com.projetPfe.entities.Transfert;
 import com.projetPfe.repositories.EtatDeclarationRepository;
+import com.projetPfe.repositories.TransfertRepository;
 
 @Service
 public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
 	@Autowired
 	private EtatDeclarationRepository etatDecRepo;
+	@Autowired
+	private TransfertRepository transfertRepo;
 	
-	
+	private EtatDeclarationBCT genererContenuXml2(String trimestre) {
+		 List<Transfert> transferts = filtreTransfertsParTrimestre(trimestre);
+		if (!transferts.isEmpty()) {
+
+		    EtatDeclarationBCT etat = new EtatDeclarationBCT();
+		    StringBuilder xml = new StringBuilder();
+		    xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+		    xml.append("<etatDeclaration>\n");
+
+		    for (Transfert transfert : transferts) {
+		        xml.append("<ligne>\n");
+
+		        Participant participant = transfert.getCompteBancaire_source().getParticipant();
+		        if (participant instanceof PersonneMorale) {
+		            xml.append("    <colonne1>").append(((PersonneMorale) participant).getCodeDouane()).append("</colonne1>\n");
+		            xml.append("    <colonne2>").append(((PersonneMorale) participant).getRaisonSociale()).append("</colonne2>\n");
+		            xml.append("    <colonne3>").append(participant.getAdresse()).append("</colonne3>\n");
+		        } else {
+		            xml.append("    <colonne1>N/A</colonne1>\n");
+		            xml.append("    <colonne2>N/A</colonne2>\n");
+		            xml.append("    <colonne3>").append(participant.getAdresse()).append("</colonne3>\n");
+		        }
+
+		        xml.append("  <colonne4>0.00</colonne4>\n");
+		        xml.append("  <colonne5>300000.00</colonne5>\n");
+
+		        xml.append("    <colonne6>").append(transfert.getMontantFinal()).append("</colonne6>\n");
+		        xml.append("    <colonne7>").append(transfert.getMontantTransfert()).append("</colonne7>\n");
+
+		        Participant beneficiaire = transfert.getCompteBancaire_cible().getParticipant();
+		        if (beneficiaire instanceof PersonneMorale) {
+		            xml.append("    <colonne8>").append(transfert.getNatureJuridique()).append("</colonne8>\n");
+		            xml.append("    <colonne9>").append(((PersonneMorale) beneficiaire).getRaisonSociale()).append("</colonne9>\n");
+		            xml.append("    <colonne10>").append(transfert.getCompteBancaire_cible().getCodePays()).append("</colonne10>\n");
+		            xml.append("    <colonne11>").append(((PersonneMorale) beneficiaire).getAdresse()).append("</colonne11>\n");
+		        } else {
+		            xml.append("    <colonne8>").append(transfert.getNatureJuridique()).append("</colonne8>\n");
+		            xml.append("    <colonne9>N/A</colonne9>\n");
+		            xml.append("    <colonne10>").append(transfert.getCompteBancaire_cible().getCodePays()).append("</colonne10>\n");
+		            xml.append("    <colonne11>").append(beneficiaire.getAdresse()).append("</colonne11>\n");
+		        }
+
+		        xml.append("</ligne>\n");
+		    }
+
+		    xml.append("</etatDeclaration>");
+
+		    etat.setContenuTexte(xml.toString());
+		    etatDecRepo.save(etat);
+
+		    return etat;}
+		return null;
+	}
 	@Override
-    public EtatDeclarationBCT genererContenuXml() {
+    public EtatDeclarationBCT genererContenuXml(String id) {
+		Optional<Transfert> t=transfertRepo.findById(id);
+		if(t.isPresent()) {
+		
 		 EtatDeclarationBCT etat= new EtatDeclarationBCT();
 		 StringBuilder xml = new StringBuilder();
 	        xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
@@ -74,13 +138,15 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
 //	        xml.append("    </lieuImplantation>\n");
 //	        xml.append("  </investissementEtranger>\n");
 	        
-	        // Identification de l'investisseur
+	        Transfert transfert=t.get();
+	        Participant participant = transfert.getCompteBancaire_source().getParticipant();
+	        if (participant instanceof PersonneMorale) {
+	           // String codeDouane = ((PersonneMorale) participant).getCodeDouane();
+	        xml.append("    <colonne1>").append(((PersonneMorale) participant).getCodeDouane()).append("</colonne1>\n");
+	        xml.append("    <colonne2>").append(((PersonneMorale) participant).getRaisonSociale()).append("</colonne2>\n");
+	        xml.append("    <colonne3>").append(participant.getAdresse()).append("</colonne3>\n");
 	        
-	        xml.append("    <colonne1>").append("1553301R").append("</colonne1>\n");
-	        xml.append("    <colonne2>").append("TEST COMPANY").append("</colonne2>\n");
-	        xml.append("    <colonne3>").append("24 bis rue d'égalité, Sidi Amor, Manouba, Tunisie").append("</colonne3>\n");
-	        
-
+	        }
 	        // Chiffre d'affaires exportateurs
 	        xml.append("  <colonne4>")
 	           .append("0.00")
@@ -93,18 +159,20 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
 
 	        // Montant transféré
 	        
-	        xml.append("    <colonne6>").append("300000.00").append("</colonne6>\n");
-	        xml.append("    <colonne7>").append("300000.00").append("</colonne7>\n");
+	        xml.append("    <colonne6>").append(transfert.getMontantFinal()).append("</colonne6>\n");
+	        xml.append("    <colonne7>").append(transfert.getMontantTransfert()).append("</colonne7>\n");
 	       
 
 	        // Renseignements investissement à l'étranger
+	        Participant beneficiaire = transfert.getCompteBancaire_cible().getParticipant();
+	        if (beneficiaire instanceof PersonneMorale) {
 	        
-	        xml.append("    <colonne8>").append("Succursales, filiales ou prises de participation").append("</colonne8>\n");
-	        xml.append("    <colonne9>").append("TEST").append("</colonne9>\n");
+	        xml.append("    <colonne8>").append(transfert.getNatureJuridique()).append("</colonne8>\n");
+	        xml.append("    <colonne9>").append(((PersonneMorale) beneficiaire).getRaisonSociale()).append("</colonne9>\n");
 	        
-	        xml.append("      <colonne10>").append("FR").append("</colonne10>\n");
-	        xml.append("      <colonne11>").append("30450 rue des joujou, Montpellier, 2054").append("</colonne11>\n");
-	        
+	        xml.append("      <colonne10>").append(transfert.getCompteBancaire_cible().getCodePays()).append("</colonne10>\n");
+	        xml.append("      <colonne11>").append(((PersonneMorale) beneficiaire).getAdresse()).append("</colonne11>\n");
+	        }
 	        
 	        xml.append("</ligne>");
 	        xml.append("<ligne>");
@@ -144,7 +212,8 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
 	        // Stocker dans contenuTexte
 	        etat.setContenuTexte(xml.toString());
 	        etatDecRepo.save(etat);
-	        return etat;
+	        return etat;}
+		return null;
 	        }
 
 
@@ -159,113 +228,7 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
             .replace("'", "&apos;");
 	}
 	
-	@Override
-    public byte[] genererEtatDeclaration(int etatId) {
-//        Optional<EtatDeclarationBCT> etat = etatDecRepo.findById(etatId);
-//        if(etat.isPresent()) {
-//            String contenuXml = etat.get().getContenuTexte();
-//            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-//            Document document = new Document();
-//            PdfPTable table = new PdfPTable(5);
-//
-//            try {
-//				PdfWriter.getInstance(document, outputStream);
-//			} catch (DocumentException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//            document.open();
-//
-//            // Convertir chaque ligne du XML en paragraphe lisible
-//            for (String ligne : contenuXml.split("\n")) {
-//                try {
-//					document.add(new Paragraph(ligne.trim()));
-//				} catch (DocumentException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//            }
-//
-//            document.close();
-//            return outputStream.toByteArray();
-//     }
-     return null;
-    }
-	@Override
-	public byte[] genererPdfDepuisXml(int etatId){
-		 Optional<EtatDeclarationBCT> etat = etatDecRepo.findById(etatId);
-       if(etat.isPresent()) {
-           String contenuXml = etat.get().getContenuTexte();
-	        // Parser le XML
-	        Document xmlDoc = null;
-			try {
-				xmlDoc = DocumentBuilderFactory.newInstance()
-				        .newDocumentBuilder()
-				        .parse(new ByteArrayInputStream(contenuXml.getBytes()));
-			} catch (SAXException | IOException | ParserConfigurationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 
-	        Element root = xmlDoc.getDocumentElement();
-
-	        // Extraction des champs
-	        String codeDouane = getTextContent(root, "codeDouane");
-	        String raisonSociale = getTextContent(root, "raisonSociale");
-	        String adresse = getTextContent(root, "identificationInvestisseur/adresse");
-
-	        String contreValeurExport = getTextContent(root, "contreValeurDinarExportateurs");
-	        String chiffreAffaireAutres = getTextContent(root, "chiffreAffaireDinarAutres");
-
-	        String montantDevise = getTextContent(root, "montantTransfere/montantDevise");
-	        String montantDinar = getTextContent(root, "montantTransfere/contreValeurDinar");
-
-	        String forme = getTextContent(root, "forme");
-	        String raisonSocialeEtranger = getTextContent(root, "investissementEtranger/raisonSociale");
-	        String codePays = getTextContent(root, "codePays");
-	        String adresseImplantation = getTextContent(root, "investissementEtranger/lieuImplantation/adresse");
-
-	        // Création PDF
-	        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
-	        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-	        try {
-				PdfWriter.getInstance(document, outputStream);
-			} catch (DocumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	        document.open();
-
-	        PdfPTable table = new PdfPTable(5); // 5 colonnes
-
-	        // Titres des colonnes
-	        table.addCell("Identification de l’investisseur");
-	        table.addCell("C.V. Dinar - Exportateurs");
-	        table.addCell("C.A. Dinar - Autres");
-	        table.addCell("Montant transféré");
-	        table.addCell("Investissement à l’étranger");
-
-	        // Contenu d'une ligne
-	        table.addCell(codeDouane + "\n" + raisonSociale + "\n" + adresse);
-	        table.addCell(contreValeurExport);
-	        table.addCell(chiffreAffaireAutres);
-	        table.addCell(montantDevise + "\n" + montantDinar);
-	        table.addCell(forme + "\n" + raisonSocialeEtranger + "\n" + codePays + "\n" + adresseImplantation);
-
-	        try {
-				document.add(new Paragraph("État des transferts pour investissements à l'étranger", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14)));
-				document.add(new Paragraph("\n"));
-		        document.add(table);
-			} catch (DocumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	        
-	        document.close();
-
-	        return outputStream.toByteArray();}
-       return null;
-	    }
 	
 	private String getTextContent(Element root, String path) {
         try {
@@ -283,10 +246,10 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
 
 
 	@Override
-	public byte[] test(int etatId) throws Exception {
-		Optional<EtatDeclarationBCT> etat = etatDecRepo.findById(etatId);
-	       if(etat.isPresent()) {
-	           String contenuXml = etat.get().getContenuTexte();
+	public byte[] test(String typeDeclaration, String trimestre) throws Exception {
+		EtatDeclarationBCT etat = genererContenuXml2(trimestre);
+	       if(etat!=null) {
+	           String contenuXml = etat.getContenuTexte();
 
         org.w3c.dom.Document xmlDoc = DocumentBuilderFactory.newInstance()
                 .newDocumentBuilder()
@@ -397,6 +360,39 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
         table.addCell(elem.getElementsByTagName("colonne9").item(0).getTextContent());
         table.addCell(elem.getElementsByTagName("colonne10").item(0).getTextContent());
         table.addCell(elem.getElementsByTagName("colonne11").item(0).getTextContent());
+	}
+
+	private List<Transfert> filtreTransfertsParTrimestre(String trimestre) {
+	    LocalDate startDate, endDate;
+	    int currentYear = LocalDate.now().getYear();
+
+	    switch (trimestre.toUpperCase()) {
+	        case "T1":
+	            startDate = LocalDate.of(currentYear, 1, 1);
+	            endDate = LocalDate.of(currentYear, 3, 31);
+	            break;
+	        case "T2":
+	            startDate = LocalDate.of(currentYear, 4, 1);
+	            endDate = LocalDate.of(currentYear, 6, 30);
+	            break;
+	        case "T3":
+	            startDate = LocalDate.of(currentYear, 7, 1);
+	            endDate = LocalDate.of(currentYear, 9, 30);
+	            break;
+	        case "T4":
+	            startDate = LocalDate.of(currentYear, 10, 1);
+	            endDate = LocalDate.of(currentYear, 12, 31);
+	            break;
+	        default:
+	            throw new IllegalArgumentException("Trimestre invalide: " + trimestre);
+	    }
+
+	    return transfertRepo.findAll().stream()
+	        .filter(t -> {
+	            LocalDate dateCreation = t.getDatecre().toLocalDate();
+	            return !dateCreation.isBefore(startDate) && !dateCreation.isAfter(endDate);
+	        })
+	        .collect(Collectors.toList());
 	}
 
 

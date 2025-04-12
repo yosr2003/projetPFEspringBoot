@@ -21,6 +21,7 @@ public class Transfert {
 	@Id
 	@Column(name = "ref_transfert")
 	private String refTransfert;
+	private String natureJuridique;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "type_transfert")
@@ -28,6 +29,14 @@ public class Transfert {
 
 	@Column(name = "montant_transfert")
 	private Double montantTransfert;
+	
+	@ManyToOne
+	@JoinColumn(name = "CompteBancaire_source_id")
+	private CompteBancaire CompteBancaire_source;
+
+	@ManyToOne
+	@JoinColumn(name = "CompteBancaire_cible_id")
+	private CompteBancaire CompteBancaire_cible;
 
 	@ManyToOne
 	@JoinColumn(name = "devise_source_id")
@@ -182,6 +191,30 @@ public class Transfert {
 	public ResponseEntity<Transfert> orElseGet(Object object) {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Unimplemented method 'orElseGet'");
+	}
+
+	public String getNatureJuridique() {
+		return natureJuridique;
+	}
+
+	public void setNatureJuridique(String natureJuridique) {
+		this.natureJuridique = natureJuridique;
+	}
+
+	public CompteBancaire getCompteBancaire_source() {
+		return CompteBancaire_source;
+	}
+
+	public void setCompteBancaire_source(CompteBancaire compteBancaire_source) {
+		CompteBancaire_source = compteBancaire_source;
+	}
+
+	public CompteBancaire getCompteBancaire_cible() {
+		return CompteBancaire_cible;
+	}
+
+	public void setCompteBancaire_cible(CompteBancaire compteBancaire_cible) {
+		CompteBancaire_cible = compteBancaire_cible;
 	}
 	
 /// getters and setters 
