@@ -46,9 +46,9 @@ public class DossierDelegue {
 		DateFinProlong = dateFinProlong;
 	}
 
-	public List<Transfert> getTransferts() {
-		return transferts;
-	}
+//	public List<Transfert> getTransferts() {
+//		return transferts;
+//	}
 
 	public void setTransferts(List<Transfert> transferts) {
 		this.transferts = transferts;
@@ -57,6 +57,25 @@ public class DossierDelegue {
 
 	
 	
+
+	public DossierDelegue(String idDossier, String anneedoss, EtatDoss etatDoss, LocalDateTime datclo, String motifclo,
+			String motifProlong, LocalDateTime dateCre, LocalDate dateDebut, LocalDate dateExpiration,
+			LocalDate dateFinProlong, Double solde, DossierDelegueType type, List<Transfert> transferts) {
+		super();
+		this.idDossier = idDossier;
+		this.anneedoss = anneedoss;
+		this.etatDoss = etatDoss;
+		this.datclo = datclo;
+		this.motifclo = motifclo;
+		MotifProlong = motifProlong;
+		this.dateCre = dateCre;
+		this.dateDebut = dateDebut;
+		this.dateExpiration = dateExpiration;
+		DateFinProlong = dateFinProlong;
+		this.solde = solde;
+		this.type = type;
+		this.transferts = transferts;
+	}
 
 	public DossierDelegue() {
 		super();
@@ -153,5 +172,4 @@ public class DossierDelegue {
 	}
 	
 	
-
 }

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,15 +28,17 @@ public class TransfertController {
 	private ITansfertService transfertService;
 	
 	@GetMapping
-	public List<Transfert> getAllTransfert() {
+	public CompletableFuture<List<Transfert>> getAllTransfert() {
 		return transfertService.getAllTransferts();	}
 	
-
 	/*@GetMapping("/alerteTransfertAttente")
 	public List<Transfert> AlerteTransfertAttente() {
 		return transfertService.AlerteTransfertAttente();	}*/
 
-	
+	@GetMapping("/alerteTransfertAttente")
+	public List<Transfert> AlerteTransfertAttente() {
+		return transfertService.AlerteTransfertAttente();	}
+
 
     @GetMapping("/{refTransfert}/status")
     public ResponseEntity<TransfertDTO> getTransfertStatus(@PathVariable String refTransfert) {

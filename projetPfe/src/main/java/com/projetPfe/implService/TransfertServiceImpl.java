@@ -2,8 +2,10 @@ package com.projetPfe.implService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.projetPfe.Iservice.ITansfertService;
@@ -19,15 +21,22 @@ public class TransfertServiceImpl implements ITansfertService {
 	private TransfertRepository transfertRepo;
 
 
-
+    @Async
 	@Override
-	public List<Transfert> getAllTransferts() {
-		return transfertRepo.findAll();
+	public CompletableFuture<List<Transfert>> getAllTransferts() {
+		//return (CompletableFuture<List<Transfert>>) transfertRepo.findAll();
+		 return CompletableFuture.supplyAsync(() -> transfertRepo.findAll());
 	}
+
    /* @Override
     public List<Transfert> AlerteTransfertAttente() {
         return transfertRepo.findByEtat(EtatDoss.Traitement);
     }*/
+
+	   @Override
+    public List<Transfert> AlerteTransfertAttente() {
+        return transfertRepo.findByEtat(EtatDoss.TRAITEMENT);
+    }
 
 
 

@@ -1,6 +1,8 @@
 package com.projetPfe.dto;
 
+
 public class ResponseBodyDTO <T> {
+
 	private T data;
 
     // Constructeur
@@ -16,6 +18,5 @@ public class ResponseBodyDTO <T> {
 		this.data = data;
 	}
 
-   
 
 }

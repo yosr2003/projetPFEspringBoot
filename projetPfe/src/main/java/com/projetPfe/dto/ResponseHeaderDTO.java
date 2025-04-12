@@ -1,6 +1,7 @@
 package com.projetPfe.dto;
 
 public class ResponseHeaderDTO {
+
 	private int code;
     private String libelle;
     private String message;
@@ -36,5 +37,6 @@ public class ResponseHeaderDTO {
     public void setMessage(String message) {
         this.message = message;
     }
+
 
 }

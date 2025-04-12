@@ -3,6 +3,7 @@ package com.projetPfe.controllers;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +27,8 @@ public class DossierDelegueController {
 	private IDossierDelegueService dossDelService;
 	
 	@GetMapping
-    public ResponseEntity<List<DossierDelegue>> getAllDossiers() {
-        return ResponseEntity.ok(dossDelService.getAllDossierDelegues());
+    public CompletableFuture<List<DossierDelegue>> getAllDossiers() {
+        return dossDelService.getAllDossierDelegues();
     }
 	
 	 @GetMapping("/{id}")
@@ -38,7 +39,11 @@ public class DossierDelegueController {
 	    }
 	 
 	 @PutMapping("/{id}")
-	 public ResponseEntity<Map<String, Object>> cloturerDossier(@RequestBody DossierDelegue d,@PathVariable("id") String id){
+
+	 
+
+	 public ResponseEntity<Map<String, Object>>  cloturerDossier(@RequestBody DossierDelegue d,@PathVariable("id") String id){
+
 		 return dossDelService.cloturerDossier(d,id);
 	 }
 	 @PutMapping("/dupliquerDossier/{id}")
