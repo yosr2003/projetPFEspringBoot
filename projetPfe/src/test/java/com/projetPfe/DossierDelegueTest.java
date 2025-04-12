@@ -85,7 +85,7 @@ public class DossierDelegueTest {
         dossier.setDateDebut(LocalDate.now());
         dossier.setDateExpiration(LocalDate.now().plusMonths(1));
         dossier.setAnneedoss("2024");
-        dossier.setType(DossierDelegueType.SCOLARITE);
+        //dossier.setType(DossierDelegueType.SCOLARITE);
         dossier.setSolde(12.00);
         dossier.setDateFinProlong(LocalDate.now().plusMonths(2));
         dossier.setMotifProlong("Motif");

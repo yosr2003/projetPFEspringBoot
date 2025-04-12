@@ -52,6 +52,14 @@ public class Transfert {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "etat")
 	private EtatDoss etat;
+	public TransfertType getTypeTransfert() {
+		return typeTransfert;
+	}
+
+	public DossierDelegue getDossierDelegue() {
+		return dossierDelegue;
+	}
+
 	@Column(name = "date_echeance")
 	private LocalDate dateEcheance;
 

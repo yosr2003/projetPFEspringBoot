@@ -1,13 +1,13 @@
 package com.projetPfe.Iservice;
 
-import org.w3c.dom.Element;
+
 
 import com.projetPfe.entities.EtatDeclarationBCT;
 
 public interface IEtatDeclarationService {
-	public EtatDeclarationBCT genererContenuXml(String id);
+	public EtatDeclarationBCT genererContenuXml();
+	public byte[] genererEtatDeclaration(String typeDeclaration, String trimestre,int id) throws Exception ;
 
-
-	public byte[] test(String typeDeclaration, String trimestre) throws Exception ;
+	public byte[] test(String trimestre,String typeDeclaration) throws Exception ;
 
 }

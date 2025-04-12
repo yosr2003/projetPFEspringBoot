@@ -23,9 +23,9 @@ public class EtatDeclarationController {
 	@Autowired
 	private IEtatDeclarationService etaDecService;
 	
-	@PostMapping("/{id}")
-	 public EtatDeclarationBCT genererContenu(@PathVariable String id){
-		 return etaDecService.genererContenuXml(id);
+	@PostMapping
+	 public EtatDeclarationBCT genererContenu(){
+		 return etaDecService.genererContenuXml();
 	 }
 	
 
@@ -34,7 +34,18 @@ public class EtatDeclarationController {
 	 public ResponseEntity<byte[]> test(@RequestBody Map<String, String> requestBody) throws Exception{
 		 String typeDeclaration = requestBody.get("typeDeclaration");
 		 String trimestre = requestBody.get("trimestre");
-		 byte[] pdfBytes = etaDecService.test(typeDeclaration,trimestre);
+		 byte[] pdfBytes = etaDecService.test(trimestre,typeDeclaration);
+		 return ResponseEntity.ok()
+	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=etat_investissement.pdf")
+	                .contentType(MediaType.APPLICATION_PDF)
+	                .body(pdfBytes);
+	 }
+	 
+	 @GetMapping("/test/{id}")
+	 public ResponseEntity<byte[]> genererEtatDeclaration(@RequestBody Map<String, String> requestBody,@PathVariable int id) throws Exception{
+		 String typeDeclaration = requestBody.get("typeDeclaration");
+		 String trimestre = requestBody.get("trimestre");
+		 byte[] pdfBytes = etaDecService.genererEtatDeclaration(typeDeclaration,trimestre,id);
 		 return ResponseEntity.ok()
 	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=etat_investissement.pdf")
 	                .contentType(MediaType.APPLICATION_PDF)
