@@ -46,21 +46,12 @@ public class EtatDeclarationController {
 	    
 	        String typeDeclaration = requestBody.get("typeDeclaration");
 	        String trimestre = requestBody.get("trimestre");
-	        byte[] pdfBytes;
-			try {
-				pdfBytes = etaDecService.test(trimestre, typeDeclaration);
-				if(pdfBytes!=null) {
-			        return ResponseEntity.ok()
-			                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=etat_investissement.pdf")
-			                .contentType(MediaType.APPLICATION_PDF)
-			                .body(pdfBytes);
-			    }return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("il n'ya pas de transferts a mettre dans le rapport");
+		    try {
+				return 	etaDecService.test(trimestre, typeDeclaration);
 			} catch (Exception e) {
-				
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(" Une erreur est survenue lors de la génération de l’état de déclaration");
+				//e.printStackTrace();
 			}
-	        
-		    	
 		    
 	}
 

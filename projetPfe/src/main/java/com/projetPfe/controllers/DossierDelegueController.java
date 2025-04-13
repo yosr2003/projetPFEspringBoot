@@ -6,6 +6,9 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,6 +53,17 @@ public class DossierDelegueController {
 	 public ResponseEntity<Map<String, Object>> dupliquerDossier(@PathVariable("id") String id){
 		 return dossDelService.dupliquerDossier(id);
 	 }
+	 
+	 @GetMapping("/rapportMouvements/{id}")
+		public ResponseEntity<?> genereRapportMouvement(@PathVariable("id") String id) {
+		 try {
+			return dossDelService.genererRapportMouvement(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(" Une erreur est survenue lors de la génération du dossier de mouvements");
+			
+		} 
+		}
 	 
 
 	

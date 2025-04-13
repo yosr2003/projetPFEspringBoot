@@ -8,6 +8,7 @@ import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -31,6 +32,8 @@ public class DossierDelegue {
     private LocalDate DateFinProlong;
 	private Double solde;
 	private DossierDelegueType type;
+	@Lob
+	private byte[] rapportMouvement; 
     
 	@OneToMany(mappedBy = "dossierDelegue")
 	private List<Transfert> transferts;
@@ -87,6 +90,14 @@ public class DossierDelegue {
 	
 	public LocalDate getDateDebut() {
 		return dateDebut;
+	}
+
+	public byte[] getRapportMouvement() {
+		return rapportMouvement;
+	}
+
+	public void setRapportMouvement(byte[] rapportMouvement) {
+		this.rapportMouvement = rapportMouvement;
 	}
 
 	public DossierDelegueType getType() {

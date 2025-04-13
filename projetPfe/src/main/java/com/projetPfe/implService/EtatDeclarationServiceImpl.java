@@ -13,6 +13,10 @@ import javax.xml.parsers.ParserConfigurationException;
 
 //import com.openpdf.pdf.PdfWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -176,8 +180,10 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
 
 
 	@Override
-	public byte[] test(String trimestre,String typeDeclaration) throws Exception {
-		EtatDeclarationBCT etat = new EtatDeclarationBCT();
+	public ResponseEntity<?> test(String trimestre,String typeDeclaration) throws Exception {
+		List<EtatDeclarationBCT> decalarations=etatDecRepo.findAll();
+		EtatDeclarationBCT etat = new EtatDeclarationBCT(trimestre,typeDeclaration,LocalDate.now().getYear());
+		if(decalarations.contains(etat)) {return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("il y'a deja un etat de declaration pour ce type de transferts ce trimestre");}
 		List<Transfert> transferts = filtreTransfertsParTrimestre(trimestre,typeDeclaration);
 		StringBuilder xml = genererContenuXml2(trimestre,transferts);
 	       if(xml!=null) {
@@ -216,9 +222,14 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
         pdfDoc.add(table);
         pdfDoc.close();
         etat.setContenuPdf(outputStream.toByteArray());
-        etat.setTrimestre(trimestre);
+        //etat.setTrimestre(trimestre);
+        //etat.setTypeDeclaration(typeDeclaration);
+        //etat.setAnnee(LocalDate.now().getYear());
         etatDecRepo.save(etat);
-        return outputStream.toByteArray();}return null;
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=etat_investissement.pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(outputStream.toByteArray());}return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("il n'ya pas de transferts a mettre dans le rapport");
     }
 	// Method to add header row to the table
 		private void addHeaderRow2(PdfPTable table,boolean isPersonnemorale) {
