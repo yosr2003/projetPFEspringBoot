@@ -30,13 +30,6 @@ public class Transfert {
 	private Double montantTransfert;
 
 	@ManyToOne
-	@JoinColumn(name = "devise_source_id")
-	private TauxChange deviseSource;
-
-	@ManyToOne
-	@JoinColumn(name = "devise_cible_id")
-	private TauxChange deviseCible;
-	@ManyToOne
 	@JoinColumn(name = "CompteBancaire_source_id")
 	private CompteBancaire CompteBancaire_source;
 
@@ -73,6 +66,8 @@ public class Transfert {
 		super();
 	}
 	
+
+
 	@ManyToOne
 	@JoinColumn(name = "idDossDelegue")
 	private DossierDelegue dossierDelegue;
@@ -109,26 +104,6 @@ public class Transfert {
 	public void setMontantTransfert(Double montantTransfert) {
 		this.montantTransfert = montantTransfert;
 	}
-
-
-	public TauxChange getDeviseSource() {
-		return this.deviseSource;
-	}
-
-	public TauxChange getDeviseCible() {
-		return this.deviseCible;
-	}
-
-
-	public void setDeviseSource(TauxChange devise) {
-		this.deviseSource = devise;
-	}
-
-	public void setDeviseCible(TauxChange devise) {
-		this.deviseCible = devise;
-	}
-
-
 
 
 

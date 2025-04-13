@@ -19,15 +19,23 @@ public class CompteBancaire {
 	private String NumeroCompte;
 	
 	private Double montant;
-	private String Devise ;
 	private String Banque;
 	private String BIC;
 	private String pays;
 	@ManyToOne
 	@JoinColumn(name = "Participant_id")
 	private Participant participant;
+	@ManyToOne
+	@JoinColumn(name = "devise_id")
+	private TauxChange devise;
 	public String getNumeroCompte() {
 		return NumeroCompte;
+	}
+	public TauxChange getDevise() {
+		return devise;
+	}
+	public void setDevise(TauxChange devise) {
+		this.devise = devise;
 	}
 	public void setNumeroCompte(String numeroCompte) {
 		NumeroCompte = numeroCompte;
@@ -38,12 +46,7 @@ public class CompteBancaire {
 	public void setMontant(Double montant) {
 		this.montant = montant;
 	}
-	public String getDevise() {
-		return Devise;
-	}
-	public void setDevise(String devise) {
-		Devise = devise;
-	}
+
 	public Participant getParticipant() {
 		return participant;
 	}
@@ -68,24 +71,16 @@ public class CompteBancaire {
 	public void setPays(String pays) {
 		this.pays = pays;
 	}
-	public CompteBancaire(String numeroCompte, Double montant, String devise, String banque, String bIC, String pays) {
-		super();
-		NumeroCompte = numeroCompte;
-		this.montant = montant;
-		Devise = devise;
-		Banque = banque;
-		BIC = bIC;
-		this.pays = pays;
-	}
+
 	public CompteBancaire() {
 		super();
 	}
-	public CompteBancaire(String numeroCompte, Double montant, String devise, String banque, String bIC, String pays,
+	public CompteBancaire(String numeroCompte, Double montant, String banque, String bIC, String pays,
 			Participant participant) {
 		super();
 		NumeroCompte = numeroCompte;
 		this.montant = montant;
-		Devise = devise;
+
 		Banque = banque;
 		BIC = bIC;
 		this.pays = pays;
