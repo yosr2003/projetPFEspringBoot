@@ -1,120 +1,72 @@
 package com.projetPfe.entities;
 
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = "transfert")
 public class Transfert {
-	@Id
-	private String refTransfert;
-	private Double montantTransfert;
-	private String deviseTransfert;
-	private LocalDateTime  datecre;
-	private EtatDoss etat;
-	private LocalDate dateEcheance;
-	private String natureTransfert;
-	private Double frais;
+    @Id
+    @Column(name = "ref_transfert")
+    private String refTransfert;
 
-	public Transfert() {
-		super();
-	}
-	
-	@ManyToOne
-	@JoinColumn(name = "idDossDelegue")
-	private DossierDelegue dossierDelegue;
-	
-	
-	@OneToOne(mappedBy = "transfert")
-	private Swift swift;
-	
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type_transfert")
+    private TransfertType typeTransfert;
 
-/// getters and setters 
-	public String getRefTransfert() {
-		return refTransfert;
-	}
+    @Column(name = "montant_transfert")
+    private Double montantTransfert;
 
+    @ManyToOne
+    @JoinColumn(name = "devise_source_id")
+    private TauxChange deviseSource;
 
-	public void setRefTransfert(String refTransfert) {
-		this.refTransfert = refTransfert;
-	}
+    @ManyToOne
+    @JoinColumn(name = "devise_cible_id")
+    private TauxChange deviseCible;
 
+    @Column(name = "datecre")
+    private LocalDateTime datecre;
 
-	public Double getMontantTransfert() {
-		return montantTransfert;
-	}
+    @Enumerated(EnumType.STRING)
+    @Column(name = "etat")
+    private EtatDoss etat;
+    @Column(name = "date_echeance")
+    private LocalDate dateEcheance;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "nature_transfert")
+    private TransfertNature natureTransfert;
 
-	public void setMontantTransfert(Double montantTransfert) {
-		this.montantTransfert = montantTransfert;
-	}
+    @Column(name = "frais")
+    private Double frais;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type_frais")
+    private FraisType typeFrais;
 
-	public String getDeviseTransfert() {
-		return deviseTransfert;
-	}
+    @Column(name="montant_final")
+    private double MontantFinal;
 
 
-	public void setDeviseTransfert(String deviseTransfert) {
-		this.deviseTransfert = deviseTransfert;
-	}
+    @ManyToOne
+    @JoinColumn(name = "idDossDelegue")
+    private DossierDelegue dossierDelegue;
 
 
-	public LocalDate getDateEcheance() {
-		return dateEcheance;
-	}
+    @OneToOne(mappedBy = "transfert")
+    private Swift swift;
 
 
-	public void setDateEcheance(LocalDate dateEcheance) {
-		this.dateEcheance = dateEcheance;
-	}
-
-
-	public String getNatureTransfert() {
-		return natureTransfert;
-	}
-
-
-	public void setNatureTransfert(String natureTransfert) {
-		this.natureTransfert = natureTransfert;
-	}
-
-
-	public Double getFrais() {
-		return frais;
-	}
-
-
-	public void setFrais(Double frais) {
-		this.frais = frais;
-	}
-
-
-	public LocalDateTime  getDatecre() {
-		return datecre;
-	}
-
-
-	public void setDatecre(LocalDateTime  datecre) {
-		this.datecre = datecre;
-	}
-
-
-	public EtatDoss getEtat() {
-		return etat;
-	}
-
-
-	public void setEtat(EtatDoss etat) {
-		this.etat = etat;
-	}
-	
-/// getters and setters 
 
 }

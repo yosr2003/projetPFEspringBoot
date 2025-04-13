@@ -1,9 +1,7 @@
 package com.projetPfe.repositories;
 
+import com.projetPfe.entities.Swift;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.projetPfe.entities.Swift;
-
-public interface SwiftRepository extends JpaRepository<Swift, Integer>{
-
+public interface SwiftRepository extends JpaRepository<Swift, Integer> {
 }

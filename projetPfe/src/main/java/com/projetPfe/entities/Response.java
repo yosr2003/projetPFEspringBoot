@@ -1,24 +1,25 @@
 package com.projetPfe.entities;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Response<T> {
-	private Header header;
+
+    private Header header;
     private T body;
 
-    public Response(int code, String libelle, T body) {
-        this.header = new Header(code, libelle);
-        this.body = body;
-    }
-
-
-    //@Data
+    // Classe interne Header
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Header {
         private int code;
         private String libelle;
-
-        public Header(int code, String libelle) {
-            this.code = code;
-            this.libelle = libelle;
-        }
     }
-
 }
