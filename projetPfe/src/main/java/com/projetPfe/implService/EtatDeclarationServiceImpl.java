@@ -31,6 +31,7 @@ import com.projetPfe.entities.EtatDeclarationBCT;
 import com.projetPfe.entities.EtatDoss;
 import com.projetPfe.entities.Participant;
 import com.projetPfe.entities.PersonneMorale;
+import com.projetPfe.entities.PersonnePhysique;
 import com.projetPfe.entities.Transfert;
 import com.projetPfe.repositories.EtatDeclarationRepository;
 import com.projetPfe.repositories.TransfertRepository;
@@ -54,34 +55,32 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
 		    for (Transfert transfert : transferts) {
 		        xml.append("<ligne>\n");
 
-		        Participant participant = transfert.getCompteBancaire_source().getParticipant();
-		        if (participant instanceof PersonneMorale) {
-		            xml.append("    <colonne1>").append(((PersonneMorale) participant).getCodeDouane()).append("</colonne1>\n");
-		            xml.append("    <colonne2>").append(((PersonneMorale) participant).getRaisonSociale()).append("</colonne2>\n");
-		            xml.append("    <colonne3>").append(participant.getAdresse()).append("</colonne3>\n");
-		        } else {
-		            xml.append("    <colonne1>N/A</colonne1>\n");
-		            xml.append("    <colonne2>N/A</colonne2>\n");
-		            xml.append("    <colonne3>").append(participant.getAdresse()).append("</colonne3>\n");
+		        Participant emmeteur = transfert.getCompteBancaire_source().getParticipant();
+		        if (emmeteur instanceof PersonneMorale) {
+		            xml.append("    <colonne1>").append(((PersonneMorale) emmeteur).getCodeDouane()).append("</colonne1>\n");
+		            xml.append("    <colonne2>").append(((PersonneMorale) emmeteur).getRaisonSociale()).append("</colonne2>\n");
+		        } else if(emmeteur instanceof PersonnePhysique){
+		            xml.append("    <colonne1>").append(((PersonnePhysique) emmeteur).getCin()).append("</colonne1>\n");
+		            xml.append("    <colonne2>").append(((PersonnePhysique) emmeteur).getNom()).append("</colonne2>\n");
 		        }
 
+	            xml.append("    <colonne3>").append(emmeteur.getAdresse()).append("</colonne3>\n");
 
 		        xml.append("    <colonne6>").append(transfert.getMontantFinal()).append("</colonne6>\n");
 		        xml.append("    <colonne7>").append(transfert.getMontantTransfert()).append("</colonne7>\n");
+		        
+
+	            xml.append("    <colonne8>").append(transfert.getNatureJuridique()).append("</colonne8>\n");
 
 		        Participant beneficiaire = transfert.getCompteBancaire_cible().getParticipant();
 		        if (beneficiaire instanceof PersonneMorale) {
-		            xml.append("    <colonne8>").append(transfert.getNatureJuridique()).append("</colonne8>\n");
 		            xml.append("    <colonne9>").append(((PersonneMorale) beneficiaire).getRaisonSociale()).append("</colonne9>\n");
-		            xml.append("    <colonne10>").append(transfert.getCompteBancaire_cible().getCodePays()).append("</colonne10>\n");
-		            xml.append("    <colonne11>").append(((PersonneMorale) beneficiaire).getAdresse()).append("</colonne11>\n");
-		        } else {
-		            xml.append("    <colonne8>").append(transfert.getNatureJuridique()).append("</colonne8>\n");
-		            xml.append("    <colonne9>N/A</colonne9>\n");
-		            xml.append("    <colonne10>").append(transfert.getCompteBancaire_cible().getCodePays()).append("</colonne10>\n");
-		            xml.append("    <colonne11>").append(beneficiaire.getAdresse()).append("</colonne11>\n");
+		        } else if(beneficiaire instanceof PersonnePhysique){
+		            xml.append("    <colonne9>").append(((PersonnePhysique) beneficiaire).getNom()).append("</colonne9>\n");
 		        }
 
+	            xml.append("    <colonne10>").append(transfert.getCompteBancaire_cible().getCodePays()).append("</colonne10>\n");
+	            xml.append("    <colonne11>").append(beneficiaire.getAdresse()).append("</colonne11>\n");
 		        xml.append("</ligne>\n");
 		    }
 
