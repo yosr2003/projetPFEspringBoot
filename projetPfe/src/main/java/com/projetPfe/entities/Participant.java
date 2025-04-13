@@ -1,13 +1,18 @@
 package com.projetPfe.entities;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Inheritance;
 import jakarta.persistence.OneToMany;
+
+import jakarta.persistence.InheritanceType;
+
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Participant {
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +22,10 @@ public class Participant {
 	private String adresse;
 	private String email;
 	private int numTel;
+	
+	@OneToMany(mappedBy = "participant")
+	private List<CompteBancaire> compteBancaires;
+	
 	public Long getMatriculePartic() {
 		return matriculePartic;
 	}
@@ -53,15 +62,7 @@ public class Participant {
 	public void setNumTel(int numTel) {
 		this.numTel = numTel;
 	}
-	public Participant(Long matriculePartic, String intitulé, String pays, String adresse, String email, int numTel) {
-		super();
-		this.matriculePartic = matriculePartic;
-		this.intitulé = intitulé;
-		this.pays = pays;
-		this.adresse = adresse;
-		this.email = email;
-		this.numTel = numTel;
-	}
+
 	public Participant() {
 		super();
 	}
