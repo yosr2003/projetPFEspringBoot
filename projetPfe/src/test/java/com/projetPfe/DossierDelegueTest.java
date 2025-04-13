@@ -7,30 +7,42 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.hibernate.mapping.Map;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.projetPfe.dto.ResponseHeaderDTO;
+import com.projetPfe.entities.CompteBancaire;
 import com.projetPfe.entities.DossierDelegue;
+import com.projetPfe.entities.DossierDelegueType;
 import com.projetPfe.entities.EtatDoss;
+import com.projetPfe.entities.PersonneMorale;
+import com.projetPfe.entities.Transfert;
 import com.projetPfe.implService.DossierDelegueServiceImpl;
 import com.projetPfe.repositories.DossierDelegueRepository;
-
+import com.projetPfe.repositories.TransfertRepository;
+@ExtendWith(MockitoExtension.class)
 public class DossierDelegueTest {
 	@InjectMocks
     private DossierDelegueServiceImpl dossierDelegueService;
 
     @Mock
     private DossierDelegueRepository dossierDelegueRepo;
+    @Mock
+    private TransfertRepository transfertRepo;
     
-    @Test
-    void testCloturerDossier_NotFound() {
+//    @Test
+//    void testCloturerDossier_NotFound() {
         //le dossier fourni est inexistant
 //        String id = "123";
 //        when(dossierDelegueRepo.findById(id)).thenReturn(Optional.empty());
@@ -42,10 +54,10 @@ public class DossierDelegueTest {
 //        
 //        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 //        verify(dossierDelegueRepo, never()).save(any());
-    }
+    //}
     
-    @Test
-    void testCloturerDossier_NotValidated() {
+//    @Test
+//    void testCloturerDossier_NotValidated() {
 //      //Un dossier existant mais non validé
 //      String id = "123";
 //      DossierDelegue dossierExistant = new DossierDelegue();
@@ -60,13 +72,13 @@ public class DossierDelegueTest {
 //        
 //      assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 //      verify(dossierDelegueRepo, never()).save(any());
-    }
+  //  }
     
     
     
 
-    @Test
-    void testDupliquerDossier_Success() {
+//    @Test
+//    void testDupliquerDossier_Success() {
 //        String id = "DOS001";
 //        DossierDelegue dossier = new DossierDelegue();
 //        dossier.setIdDossier(id);
@@ -90,6 +102,46 @@ public class DossierDelegueTest {
 //        ResponseHeaderDTO header = (ResponseHeaderDTO) body.get("header");
 //        assertEquals(200, header.getCode());
 //        assertEquals("dupliqué avec succès", header.getMessage());
+ //   }
+    @BeforeEach
+    void setUp() {
+        DossierDelegue dossier = new DossierDelegue();
+        dossier.setIdDossier("123");
+        dossier.setDateDebut(LocalDate.of(2023, 1, 1));
+        dossier.setDateExpiration(LocalDate.of(2023, 12, 31));
+        dossier.setType(DossierDelegueType.INVESTISSEMENT); // Remplace si ton enum est différent
+
+        CompteBancaire compteSource = new CompteBancaire();
+        compteSource.setNumeroCompte("12345");
+        PersonneMorale emetteur = new PersonneMorale();
+        emetteur.setRaisonSociale("Société X");
+        compteSource.setParticipant(emetteur);
+
+        CompteBancaire compteCible = new CompteBancaire();
+        compteCible.setNumeroCompte("54321");
+        PersonneMorale beneficiaire = new PersonneMorale();
+        beneficiaire.setRaisonSociale("Société Y");
+        compteCible.setParticipant(beneficiaire);
+
+        Transfert transfert = new Transfert();
+        transfert.setDatecre(LocalDateTime.of(2023, 5, 10, 12, 0));
+        transfert.setNatureJuridique("Virement");
+        transfert.setMontantTransfert(new Double("1000.00"));
+        transfert.setCompteBancaire_source(compteSource);
+        transfert.setCompteBancaire_cible(compteCible);
+        transfert.setDossierDelegue(dossier);
     }
+
+//    @Test
+//    void testGenererRapportMouvement_Success() throws Exception {
+//        when(dossierDelegueRepo.findById("123")).thenReturn(Optional.of(dossier));
+//        when(transfertRepo.findAll()).thenReturn(List.of(transfert));
+//
+//        ResponseEntity<?> response = Do.genererRapportMouvement("123");
+//
+//        assertEquals(HttpStatus.OK, response.getStatusCode());
+//        assertTrue(response.getHeaders().getContentType().includes(MediaType.APPLICATION_PDF));
+//        assertNotNull(response.getBody());
+//    }
 
 }

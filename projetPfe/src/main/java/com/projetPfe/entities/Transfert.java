@@ -96,6 +96,10 @@ public class Transfert {
 		return refTransfert;
 	}
 	
+	public void setDossierDelegue(DossierDelegue dossierDelegue) {
+		this.dossierDelegue = dossierDelegue;
+	}
+
 	public double getMontantFinal(){
 		return this.MontantFinal;
 	}
