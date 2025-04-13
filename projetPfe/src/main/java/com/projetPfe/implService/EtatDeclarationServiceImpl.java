@@ -43,8 +43,8 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
 	@Autowired
 	private TransfertRepository transfertRepo;
 	
-	private StringBuilder genererContenuXml2(String trimestre,String typeDeclaration) {
-		 List<Transfert> transferts = filtreTransfertsParTrimestre(trimestre,typeDeclaration);
+	private StringBuilder genererContenuXml2(String trimestre,List<Transfert> transferts) {
+		 
 		if (!transferts.isEmpty()) {
 
 		   // EtatDeclarationBCT etat = new EtatDeclarationBCT();
@@ -178,7 +178,8 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
 	@Override
 	public byte[] test(String trimestre,String typeDeclaration) throws Exception {
 		EtatDeclarationBCT etat = new EtatDeclarationBCT();
-		StringBuilder xml = genererContenuXml2(trimestre,typeDeclaration);
+		List<Transfert> transferts = filtreTransfertsParTrimestre(trimestre,typeDeclaration);
+		StringBuilder xml = genererContenuXml2(trimestre,transferts);
 	       if(xml!=null) {
 	           //String contenuXml = etat.getContenuTexte();
 	           String contenuXml = xml.toString();
@@ -193,13 +194,16 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
         PdfWriter.getInstance(pdfDoc, outputStream);
         pdfDoc.open();
 
-        pdfDoc.add(new Paragraph("ETAT DE DECLARATION TRIMESTRIEL DES TRANSFERTS DE FONDS"));
+        pdfDoc.add(new Paragraph("ETAT DE DECLARATION TRIMESTRIEL DES TRANSFERTS DE TYPE "+typeDeclaration));
         pdfDoc.add(Chunk.NEWLINE);
       
 
         PdfPTable table = new PdfPTable(9); // 3 + 1 + 1 + 2 + 4 = 11 colonnes
         table.setWidthPercentage(100);
-        addHeaderRow2(table);
+        boolean Personnemorale = transferts.stream()
+        	    .map(t -> t.getCompteBancaire_source().getParticipant())
+        	    .allMatch(p -> p instanceof PersonneMorale);
+        addHeaderRow2(table,Personnemorale);
 
         for (int i = 0; i < xmlDoc.getElementsByTagName("ligne").getLength(); i++) {
             Node ligne = xmlDoc.getElementsByTagName("ligne").item(i);
@@ -217,10 +221,10 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
         return outputStream.toByteArray();}return null;
     }
 	// Method to add header row to the table
-		private void addHeaderRow2(PdfPTable table) {
+		private void addHeaderRow2(PdfPTable table,boolean isPersonnemorale) {
 			Font smallFont = new Font(Font.FontFamily.HELVETICA, 10);
 	        // Ligne 1 (en-têtes générales avec fusion de colonnes)
-	        PdfPCell cell1 = new PdfPCell(new Phrase("Identification de l’investisseur"));
+	        PdfPCell cell1 = new PdfPCell(new Phrase("Identification de l’émmeteur"));
 	        cell1.setColspan(3);
 	        cell1.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
 	        table.addCell(cell1);
@@ -230,15 +234,15 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
 	        cell4.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
 	        table.addCell(cell4);
 
-	        PdfPCell cell5 = new PdfPCell(new Phrase("Renseignement concernant l’investissement à l’étranger"));
+	        PdfPCell cell5 = new PdfPCell(new Phrase("Renseignement concernant le transfert à l’étranger"));
 	        cell5.setColspan(4);
 	        cell5.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
 	        table.addCell(cell5);
 	        //ligne 2
-	        PdfPCell sc11 = new PdfPCell(new Phrase("Code en Douane",smallFont));
+	        PdfPCell sc11 = new PdfPCell(new Phrase(isPersonnemorale ? "Code douane" : "CIN",smallFont));
 	        sc11.setRowspan(2); // étend sur ligne 2 et 3
 	        table.addCell(sc11);
-	        PdfPCell sc12 = new PdfPCell(new Phrase("Raison Sociale",smallFont));
+	        PdfPCell sc12 = new PdfPCell(new Phrase(isPersonnemorale ? "Raison Sociale" : "Nom",smallFont));
 	        sc12.setRowspan(2); // étend sur ligne 2 et 3
 	        table.addCell(sc12);
 	        PdfPCell sc13 = new PdfPCell(new Phrase("Adresse",smallFont));
@@ -256,7 +260,7 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
 	        sc51.setRowspan(2); 
 	        table.addCell(sc51);
 
-	        PdfPCell sc52 = new PdfPCell(new Phrase("Raison Sociale",smallFont));
+	        PdfPCell sc52 = new PdfPCell(new Phrase(isPersonnemorale ? "Raison Sociale" : "Nom",smallFont));
 	        sc52.setRowspan(2);
 	        table.addCell(sc52);
 	        PdfPCell sc53 = new PdfPCell(new Phrase("Lieu d’implantation"));
