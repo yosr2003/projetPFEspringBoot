@@ -19,6 +19,8 @@ import com.projetPfe.Iservice.ISwift;
 import com.projetPfe.entities.CompteBancaire;
 import com.projetPfe.entities.EcodeOp;
 import com.projetPfe.entities.Participant;
+import com.projetPfe.entities.PersonneMorale;
+import com.projetPfe.entities.PersonnePhysique;
 import com.projetPfe.entities.Swift;
 import com.projetPfe.entities.Transfert;
 import com.projetPfe.entities.TransfertNature;
@@ -39,6 +41,19 @@ public class SwiftServiceImpl implements ISwift {
     public boolean existeDejaPourTransfert(String transfertId) {
         return swiftRepository.existsByTransfert_RefTransfert(transfertId);
     }
+    
+    private String getNomParticipant(Participant participant) {
+        if (participant instanceof PersonnePhysique) {
+            PersonnePhysique pp = (PersonnePhysique) participant;
+            return pp.getNom() + " " + pp.getPrenom();
+        } else if (participant instanceof PersonneMorale) {
+            PersonneMorale pm = (PersonneMorale) participant;
+            return pm.getRaisonSociale();
+        } else {
+            return "Participant inconnu";
+        }
+    }
+
 
     @Override
     public Swift creerSwift(String transfertId, String format, String typeMessage) {
@@ -76,10 +91,10 @@ public class SwiftServiceImpl implements ISwift {
                    .append(transfert.getDeviseSource().getDevise()).append(" ")
                    .append(String.format("%.2f", transfert.getMontantTransfert())).append("\n")
                    .append(":50K:/").append(emetteur.getNumeroCompte()).append("\n")
-                   .append(emetteur.getParticipant().getIntitulé()).append("\n")
+                   .append(getNomParticipant(emetteur.getParticipant())).append("\n")
                    .append(emetteur.getParticipant().getAdresse()).append("\n")
                    .append(":59:/").append(beneficiaire.getNumeroCompte()).append("\n")
-                   .append(beneficiaire.getParticipant().getIntitulé()).append("\n")
+                   .append(getNomParticipant(beneficiaire.getParticipant())).append("\n")
                    .append(beneficiaire.getParticipant().getAdresse()).append("\n")
                    .append(":71A:").append(transfert.getTypeFrais()).append("\n");
 
@@ -97,6 +112,7 @@ public class SwiftServiceImpl implements ISwift {
 
         return swiftRepository.save(swift);
     }
+    
 
     @Override
     public Swift consulterSwift(String transfertId) {
@@ -270,11 +286,11 @@ public class SwiftServiceImpl implements ISwift {
 	            transfert.getMontantTransfert(),
 	            dateOnly,
 	            transfert.getTypeFrais(),
-	            transfert.getCompteBancaire_source().getParticipant().getIntitulé(),
+	            getNomParticipant(transfert.getCompteBancaire_source().getParticipant()),
 	            transfert.getCompteBancaire_source().getParticipant().getAdresse(),
 	            transfert.getCompteBancaire_source().getPays(),
 	            transfert.getCompteBancaire_source().getBIC(),
-	            transfert.getCompteBancaire_cible().getParticipant().getIntitulé(),
+	            getNomParticipant(transfert.getCompteBancaire_cible().getParticipant()),
 	            transfert.getCompteBancaire_cible().getParticipant().getAdresse(),
 	            transfert.getCompteBancaire_cible().getPays(),
 	            transfert.getCompteBancaire_cible().getBIC(),
