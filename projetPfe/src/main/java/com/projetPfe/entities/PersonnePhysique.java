@@ -4,10 +4,16 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class PersonnePhysique extends Participant{
-
     public String nom;
     public String prenom;
     public String cin;
+    
+	public PersonnePhysique() {
+		super();
+		
+	}
+
+////getters and setters
 	public String getNom() {
 		return nom;
 	}
@@ -25,10 +31,6 @@ public class PersonnePhysique extends Participant{
 	}
 	public void setCin(String cin) {
 		this.cin = cin;
-	}
-	public PersonnePhysique() {
-		super();
-		
 	}
 	
     

@@ -1,5 +1,11 @@
 package com.projetPfe.repositories;
 
-public interface PersonneMoraleRepository {
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.projetPfe.entities.PersonneMorale;
+
+public interface PersonneMoraleRepository extends JpaRepository<PersonneMorale, Long> {
+
 
 }

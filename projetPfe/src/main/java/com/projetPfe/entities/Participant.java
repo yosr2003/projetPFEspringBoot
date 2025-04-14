@@ -16,28 +16,36 @@ import jakarta.persistence.InheritanceType;
 public class Participant {
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long matriculePartic;
-	private String intitulé;
-	private String pays;
-	private String adresse;
-	private String email;
+	 private Long matriculePartic;
+	 private String intitulé;
+
+	 private String pays;
+	 private String adresse;
+	 private String email;
 	private int numTel;
 	
 	@OneToMany(mappedBy = "participant")
 	private List<CompteBancaire> compteBancaires;
 	
+	public Participant() {
+		super();
+	}
+	
+///getters and setters 
 	public Long getMatriculePartic() {
 		return matriculePartic;
 	}
 	public void setMatriculePartic(Long matriculePartic) {
 		this.matriculePartic = matriculePartic;
 	}
+
 	public String getIntitulé() {
 		return intitulé;
 	}
 	public void setIntitulé(String intitulé) {
 		this.intitulé = intitulé;
 	}
+
 	public String getPays() {
 		return pays;
 	}
@@ -63,9 +71,7 @@ public class Participant {
 		this.numTel = numTel;
 	}
 
-	public Participant() {
-		super();
-	}
+	
 	
 
 }

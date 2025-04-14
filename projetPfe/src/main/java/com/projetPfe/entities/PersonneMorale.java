@@ -20,3 +20,4 @@ public class PersonneMorale extends Participant{
 	}
 
 }
+

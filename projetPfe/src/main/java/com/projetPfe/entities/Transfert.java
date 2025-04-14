@@ -30,38 +30,18 @@ public class Transfert {
 	@Column(name = "montant_transfert")
 	private Double montantTransfert;
 	
-	@ManyToOne
-	@JoinColumn(name = "CompteBancaire_source_id")
-	private CompteBancaire CompteBancaire_source;
-
-	@ManyToOne
-	@JoinColumn(name = "CompteBancaire_cible_id")
-	private CompteBancaire CompteBancaire_cible;
-
-	@ManyToOne
-	@JoinColumn(name = "devise_source_id")
-	private TauxChange deviseSource;
-
-	@ManyToOne
-	@JoinColumn(name = "devise_cible_id")
-	private TauxChange deviseCible;
 
 	@Column(name = "datecre")
-	private LocalDateTime  datecre;
+	private LocalDateTime datecre;
+
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "etat")
 	private EtatDoss etat;
-	public TransfertType getTypeTransfert() {
-		return typeTransfert;
-	}
-
-	public DossierDelegue getDossierDelegue() {
-		return dossierDelegue;
-	}
-
+	
 	@Column(name = "date_echeance")
 	private LocalDate dateEcheance;
+
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "nature_transfert")
@@ -76,11 +56,14 @@ public class Transfert {
 
 	@Column(name="montant_final")
 	private double MontantFinal;
+	
+	@ManyToOne
+	@JoinColumn(name = "CompteBancaire_source_id")
+	private CompteBancaire CompteBancaire_source;
 
-
-	public Transfert() {
-		super();
-	}
+	@ManyToOne
+	@JoinColumn(name = "CompteBancaire_cible_id")
+	private CompteBancaire CompteBancaire_cible;
 	
 	@ManyToOne
 	@JoinColumn(name = "idDossDelegue")
@@ -90,16 +73,25 @@ public class Transfert {
 	@OneToOne(mappedBy = "transfert")
 	private Swift swift;
 	
+	
+	
+	
+
+
+
+
+	
+
+	public Transfert() {
+		super();
+	}
+	
 
 /// getters and setters 
 	public String getRefTransfert() {
 		return refTransfert;
 	}
 	
-	public void setDossierDelegue(DossierDelegue dossierDelegue) {
-		this.dossierDelegue = dossierDelegue;
-	}
-
 	public double getMontantFinal(){
 		return this.MontantFinal;
 	}
@@ -123,33 +115,6 @@ public class Transfert {
 		this.montantTransfert = montantTransfert;
 	}
 
-
-	public TauxChange getDeviseSource() {
-		return this.deviseSource;
-	}
-
-	public TauxChange getDeviseCible() {
-		return this.deviseCible;
-	}
-
-
-	public void setDeviseSource(TauxChange devise) {
-		this.deviseSource = devise;
-	}
-
-	public void setDeviseCible(TauxChange devise) {
-		this.deviseCible = devise;
-	}
-
-
-	public LocalDate getDateEcheance() {
-		return dateEcheance;
-	}
-
-
-	public void setDateEcheance(LocalDate dateEcheance) {
-		this.dateEcheance = dateEcheance;
-	}
 
 
 	public TransfertNature getNatureTransfert() {
@@ -191,6 +156,39 @@ public class Transfert {
 		this.etat = etat;
 	}
 
+	public void setTypeTransfert(TransfertType typeTransfert) {
+		this.typeTransfert = typeTransfert;
+	}
+
+	public CompteBancaire getCompteBancaire_source() {
+		return CompteBancaire_source;
+	}
+
+	public void setCompteBancaire_source(CompteBancaire compteBancaire_source) {
+		CompteBancaire_source = compteBancaire_source;
+	}
+
+	public CompteBancaire getCompteBancaire_cible() {
+		return CompteBancaire_cible;
+	}
+
+	public void setCompteBancaire_cible(CompteBancaire compteBancaire_cible) {
+		CompteBancaire_cible = compteBancaire_cible;
+	}
+
+	
+	public void setDossierDelegue(DossierDelegue dossierDelegue) {
+		this.dossierDelegue = dossierDelegue;
+	}
+
+	public Swift getSwift() {
+		return swift;
+	}
+
+	public void setSwift(Swift swift) {
+		this.swift = swift;
+	}
+
 	public FraisType getTypeFrais(){
 		return this.typeFrais;
 	}
@@ -213,21 +211,16 @@ public class Transfert {
 		this.natureJuridique = natureJuridique;
 	}
 
-	public CompteBancaire getCompteBancaire_source() {
-		return CompteBancaire_source;
+	
+	
+	public TransfertType getTypeTransfert() {
+		return typeTransfert;
 	}
 
-	public void setCompteBancaire_source(CompteBancaire compteBancaire_source) {
-		CompteBancaire_source = compteBancaire_source;
+	public DossierDelegue getDossierDelegue() {
+		return dossierDelegue;
 	}
 
-	public CompteBancaire getCompteBancaire_cible() {
-		return CompteBancaire_cible;
-	}
-
-	public void setCompteBancaire_cible(CompteBancaire compteBancaire_cible) {
-		CompteBancaire_cible = compteBancaire_cible;
-	}
 	
 /// getters and setters 
 

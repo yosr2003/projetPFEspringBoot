@@ -1,5 +1,11 @@
 package com.projetPfe.repositories;
 
-public interface ParticipantRepository {
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.projetPfe.entities.Participant;
+
+public interface ParticipantRepository extends JpaRepository<Participant, Long> {
+
 
 }
