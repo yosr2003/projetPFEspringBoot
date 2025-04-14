@@ -151,8 +151,41 @@ public class TransfertServiceImpl implements ITansfertService {
 
 	@Override
 	public Optional<Object> calculerFrais(Double montant, String deviseCible, String deviseSource, String typefrais) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		 try {
+		        double taux_change = 0.0;
+		        Map<String, Object> result = new HashMap<>();
+		        double montantFinal;
+		        double montantConverti;
+
+		        if (deviseSource.equals("TND")) {
+		            Optional<TauxChange> deviseCIBLEinfo = Optional.of(
+		                getTauxChangeByDevise(deviseCible)
+		                    .orElseThrow(() -> new Exception("Devise cible not found"))
+		            );
+
+		            montantConverti = montant * deviseCIBLEinfo.map(TauxChange::getCoursVente).orElse(0.0);
+		            taux_change = deviseCIBLEinfo.map(TauxChange::getCoursVente).get();
+		        } else {
+		            montantConverti = montant;
+		        }
+
+		        double montantFrais = typefrais.equals("BEN") ? 50.0 : 0.0;
+		        montantFinal = montantConverti - montantFrais;
+
+		        result.put("montantInitial", montant);
+		        result.put("deviseCible", deviseCible);
+		        result.put("deviseSource", deviseSource);
+		        result.put("tauxChange", taux_change);
+		        result.put("montantConverti", montantConverti);
+		        result.put("typeFrais", typefrais);
+		        result.put("montantFrais", montantFrais);
+		        result.put("montantFinal", montantFinal);
+
+		        return Optional.of(result);
+		    } catch (Exception e) {
+		        System.err.println("Erreur lors du calcul des frais : " + e.getMessage());
+		        return Optional.empty();
+		    }
 	}
 	
 
