@@ -1,6 +1,8 @@
 package com.projetPfe;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -19,6 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import com.projetPfe.dto.ResponseHeaderDTO;
@@ -40,6 +43,8 @@ public class DossierDelegueTest {
     private DossierDelegueRepository dossierDelegueRepo;
     @Mock
     private TransfertRepository transfertRepo;
+    private DossierDelegue dossier;
+    private Transfert transfert;
     
 //    @Test
 //    void testCloturerDossier_NotFound() {
@@ -105,11 +110,11 @@ public class DossierDelegueTest {
  //   }
     @BeforeEach
     void setUp() {
-        DossierDelegue dossier = new DossierDelegue();
+        dossier = new DossierDelegue();
         dossier.setIdDossier("123");
         dossier.setDateDebut(LocalDate.of(2023, 1, 1));
         dossier.setDateExpiration(LocalDate.of(2023, 12, 31));
-        dossier.setType(DossierDelegueType.INVESTISSEMENT); // Remplace si ton enum est différent
+        dossier.setType(DossierDelegueType.INVESTISSEMENT); 
 
         CompteBancaire compteSource = new CompteBancaire();
         compteSource.setNumeroCompte("12345");
@@ -123,7 +128,7 @@ public class DossierDelegueTest {
         beneficiaire.setRaisonSociale("Société Y");
         compteCible.setParticipant(beneficiaire);
 
-        Transfert transfert = new Transfert();
+        transfert = new Transfert();
         transfert.setDatecre(LocalDateTime.of(2023, 5, 10, 12, 0));
         transfert.setNatureJuridique("Virement");
         transfert.setMontantTransfert(new Double("1000.00"));
@@ -132,16 +137,53 @@ public class DossierDelegueTest {
         transfert.setDossierDelegue(dossier);
     }
 
-//    @Test
-//    void testGenererRapportMouvement_Success() throws Exception {
-//        when(dossierDelegueRepo.findById("123")).thenReturn(Optional.of(dossier));
-//        when(transfertRepo.findAll()).thenReturn(List.of(transfert));
-//
-//        ResponseEntity<?> response = Do.genererRapportMouvement("123");
-//
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-//        assertTrue(response.getHeaders().getContentType().includes(MediaType.APPLICATION_PDF));
-//        assertNotNull(response.getBody());
-//    }
+    @Test
+    void testGenererRapportMouvement_Success() throws Exception {
+        when(dossierDelegueRepo.findById("123")).thenReturn(Optional.of(dossier));
+        when(transfertRepo.findAll()).thenReturn(List.of(transfert));
+
+        ResponseEntity<?> response = dossierDelegueService.genererRapportMouvement("123");
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(response.getHeaders().getContentType().includes(MediaType.APPLICATION_PDF));
+        assertNotNull(response.getBody());
+    }
+    @Test
+    void testGenererRapportMouvement_ClotureAtteinteMaisNonExpire() throws Exception {
+        dossier.setDatclo(LocalDateTime.now().minusDays(1)); // le dossier a ete clôturé 
+        dossier.setDateExpiration(LocalDate.now().plusDays(5)); // avant d'atteindre sa date d'expiration
+
+        when(dossierDelegueRepo.findById("123")).thenReturn(Optional.of(dossier));
+        when(transfertRepo.findAll()).thenReturn(List.of(transfert));
+
+        ResponseEntity<?> response = dossierDelegueService.genererRapportMouvement("123");
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(response.getHeaders().getContentType().includes(MediaType.APPLICATION_PDF));
+        assertNotNull(response.getBody());
+    }
+    
+    @Test
+    void testGenererRapportMouvement_DossierNonCloture() throws Exception {
+        dossier.setDatclo(null); // Non clôturé
+        dossier.setDateExpiration(LocalDate.now().plusDays(5)); // encore actif
+
+        when(dossierDelegueRepo.findById("123")).thenReturn(Optional.of(dossier));
+
+        ResponseEntity<?> response = dossierDelegueService.genererRapportMouvement("123");
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Ce dossier n'est pas encore clôturer", response.getBody());
+    }
+    @Test
+    void testGenererRapportMouvement_DejaRapport() throws Exception {
+        dossier.setRapportMouvement("test rapport".getBytes());
+        when(dossierDelegueRepo.findById("123")).thenReturn(Optional.of(dossier));
+
+        ResponseEntity<?> response = dossierDelegueService.genererRapportMouvement("123");
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Ce Dossier Délégué a déja un rapport de mouvement financiers", response.getBody());
+    }
 
 }
