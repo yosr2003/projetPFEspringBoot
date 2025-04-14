@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import com.projetPfe.entities.DossierDelegue;
 
 public interface IDossierDelegueService {
-	public CompletableFuture<List<DossierDelegue>> getAllDossierDelegues();
 	public Optional<DossierDelegue> getDossierById(String id);
 
 	public ResponseEntity<Map<String, Object>> cloturerDossier(DossierDelegue d, String id);

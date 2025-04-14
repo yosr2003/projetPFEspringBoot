@@ -58,10 +58,7 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
 	@Autowired
 	private TransfertRepository transfertRepo;
 	
-    @Async
-	@Override
-	public CompletableFuture<List<DossierDelegue>> getAllDossierDelegues() {
-		return CompletableFuture.supplyAsync(() ->  dossierDelegueRepo.findAll());}
+   
 	
 	@Override
 	public Optional<DossierDelegue> getDossierById(String id) {

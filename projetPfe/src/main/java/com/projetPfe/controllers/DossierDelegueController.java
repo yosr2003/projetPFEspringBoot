@@ -29,10 +29,7 @@ public class DossierDelegueController {
 	@Autowired
 	private IDossierDelegueService dossDelService;
 	
-	@GetMapping
-    public CompletableFuture<List<DossierDelegue>> getAllDossiers() {
-        return dossDelService.getAllDossierDelegues();
-    }
+	
 	
 	 @GetMapping("/{id}")
 	 public ResponseEntity<DossierDelegue> getDossierById(@PathVariable String id) {
@@ -42,13 +39,11 @@ public class DossierDelegueController {
 	    }
 	 
 	 @PutMapping("/{id}")
-
-	 
-
 	 public ResponseEntity<Map<String, Object>>  cloturerDossier(@RequestBody DossierDelegue d,@PathVariable("id") String id){
 
 		 return dossDelService.cloturerDossier(d,id);
 	 }
+	 
 	 @PutMapping("/dupliquerDossier/{id}")
 	 public ResponseEntity<Map<String, Object>> dupliquerDossier(@PathVariable("id") String id){
 		 return dossDelService.dupliquerDossier(id);
