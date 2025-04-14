@@ -28,9 +28,7 @@ public class TransfertController {
 	@Autowired
 	private ITansfertService transfertService;
 	
-	@GetMapping
-	public CompletableFuture<List<Transfert>> getAllTransfert() {
-		return transfertService.getAllTransferts();	}
+	
 	
 	/*@GetMapping("/alerteTransfertAttente")
 	public List<Transfert> AlerteTransfertAttente() {

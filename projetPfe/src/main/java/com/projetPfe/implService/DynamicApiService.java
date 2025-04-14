@@ -34,18 +34,18 @@ public class DynamicApiService {
 	        // Ne pas enregistrer ici : les beans @Autowired ne sont pas encore disponibles
 	    }
 	
-	@PostConstruct
-	public void init() {
-	        apiRegistry.put("getAllTransferts", () ->
-	        transfertController.getAllTransfert()// Obtient le CompletableFuture<List<DossierDelegue>>
-	            .thenApply(transferts -> transferts) // Renvoie la liste des dossiers
-	    );
-
-	        apiRegistry.put("getAllDossiers", () ->
-	        dossierDelegueController.getAllDossiers() // Obtient le CompletableFuture<List<DossierDelegue>>
-	            .thenApply(dossiers -> dossiers) // Renvoie la liste des dossiers
-	    );
-	    }
+//	@PostConstruct
+//	public void init() {
+//	        apiRegistry.put("getAllTransferts", () ->
+//	        transfertController.getAllTransfert()// Obtient le CompletableFuture<List<DossierDelegue>>
+//	            .thenApply(transferts -> transferts) // Renvoie la liste des dossiers
+//	    );
+//
+//	        apiRegistry.put("getAllDossiers", () ->
+//	        dossierDelegueController.getAllDossiers() // Obtient le CompletableFuture<List<DossierDelegue>>
+//	            .thenApply(dossiers -> dossiers) // Renvoie la liste des dossiers
+//	    );
+//	    }
 
 //    @Autowired
 //    public DynamicApiService(TransfertController transfertController,
