@@ -28,22 +28,37 @@ public class TransfertController {
 	@Autowired
 	private ITansfertService transfertService;
 	
+	@PostMapping
+	public ResponseEntity<?> creerTransfert(@RequestBody Transfert transfert) {
+	       try {
+	           transfertService.creerTransfert(
+	                   transfert.getMontantTransfert(),
+	                   transfert.getCompteBancaire_source(),
+	                   transfert.getCompteBancaire_cible(),
+	                   transfert.getTypeFrais(),
+	                   transfert.getDossierDelegue()
+	           );
+
+	           return ResponseEntity.ok("✅ Transfert créé avec succès.");
+	           
+	       } catch (Exception e) {
+	           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                   .body("❌ Erreur lors de la création du transfert : " + e.getMessage());
+	       }
+	   }
 	
-	
-	/*@GetMapping("/alerteTransfertAttente")
-	public List<Transfert> AlerteTransfertAttente() {
-		return transfertService.AlerteTransfertAttente();	}*/
 
 	@GetMapping("/alerteTransfertAttente")
 	public List<Transfert> AlerteTransfertAttente() {
 		return transfertService.AlerteTransfertAttente();	}
 
 
-    @GetMapping("/{refTransfert}/status")
-    public ResponseEntity<TransfertDTO> getTransfertStatus(@PathVariable String refTransfert) {
-        Optional<TransfertDTO> dto = transfertService.getTransfertStatus(refTransfert);
-        return dto.map(ResponseEntity::ok)
-                  .orElseGet(() -> ResponseEntity.notFound().build());
+    @GetMapping("/etat/{refTransfert}")
+    public ResponseEntity<?> getTransfertEtats(@PathVariable String refTransfert) {
+        //Optional<TransfertDTO> dto = transfertService.getTransfertEtats(refTransfert);
+//        return dto.map(ResponseEntity::ok)
+//                  .orElseGet(() -> ResponseEntity.notFound().build());
+    	return transfertService.getTransfertEtats(refTransfert);
     }
 
 
@@ -52,8 +67,8 @@ public class TransfertController {
     @RequestParam Double montant,
     @RequestParam String deviseCible,
     @RequestParam String deviseSource,
-    @RequestParam String typefrais,
-    @RequestParam double montantFrais) {
+    @RequestParam String typefrais
+    ) {
 
     Optional<Object> result = transfertService.calculerFrais(montant, deviseCible, deviseSource, typefrais);
 
@@ -63,26 +78,9 @@ public class TransfertController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Error: Unable to calculate frais, missing data or invalid parameters.");
     }
-}
+    }
 
-   @PostMapping("/creer")
-   public ResponseEntity<?> creerTransfert(@RequestBody Transfert transfert) {
-       try {
-           transfertService.creerTransfert(
-                   transfert.getMontantTransfert(),
-                   transfert.getCompteBancaire_source(),
-                   transfert.getCompteBancaire_cible(),
-                   transfert.getTypeFrais(),
-                   transfert.getDossierDelegue()
-           );
 
-           return ResponseEntity.ok("✅ Transfert créé avec succès.");
-           
-       } catch (Exception e) {
-           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                   .body("❌ Erreur lors de la création du transfert : " + e.getMessage());
-       }
-   }
 
 
 }

@@ -19,28 +19,34 @@ public class SwiftController {
     @Autowired
     private ISwift swiftService;
 
-    @PostMapping("/creer/{transfertId}/{format}/{typeMessage}")
+    @PostMapping("/{transfertId}/{format}/{typeMessage}")
     public ResponseEntity<String> creerSwift(
             @PathVariable String transfertId,
             @PathVariable String format,
             @PathVariable String typeMessage) {
 
     
-        boolean existeDeja = swiftService.existeDejaPourTransfert(transfertId);
+        try {
+        	boolean existeDeja = swiftService.existeDejaPourTransfert(transfertId);
 
-        if (existeDeja) {
-            String message = "Un message SWIFT existe déjà pour le transfert " + transfertId;
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(message); 
+            if (existeDeja) {
+                String message = "Un message SWIFT existe déjà pour le transfert " + transfertId;
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(message); 
+            }
+
+
+            swiftService.creerSwift(transfertId, format, typeMessage);
+            String message = "Message SWIFT créé avec succès pour le transfert " + transfertId+ " et PDF enregistré à : C:\\Users\\YosrAmamou\\Downloads\\pdf_swift";
+            return ResponseEntity.status(HttpStatus.CREATED).body(message);
+        }catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la generation du SWIFT.");
         }
-
-
-        swiftService.creerSwift(transfertId, format, typeMessage);
-        String message = "Message SWIFT créé avec succès pour le transfert " + transfertId+ " et PDF enregistré à : C:\\Users\\YosrAmamou\\Downloads\\pdf_swift";
-        return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
 
 
-    @GetMapping("/consulter/{transfertId}")
+    @GetMapping("/{transfertId}")
     public ResponseEntity<?> consulterSwift(@PathVariable String transfertId) {
         try {
             Swift swift = swiftService.consulterSwift(transfertId);

@@ -22,13 +22,14 @@ public class Swift {
 	private int idSwift;
 	private String typemsg;
 	private LocalDateTime datgen;
-	  @Lob // Indique que c'est un Large Object (long texte ou binaire)
-	  @Column(name = "txtmsg", columnDefinition = "TEXT")
-	   private String txtmsg;
+	@Lob // Indique que c'est un Large Object (long texte ou binaire)
+	@Column(name = "txtmsg", columnDefinition = "TEXT")
+	private String txtmsg;
 	private String format;
 	@Enumerated(EnumType.STRING)
 	private EcodeOp codeOperationBancaire;
-	
+	@Lob
+    private byte[] pdfgen;
 	
 	public Swift() {
 		super();
@@ -38,8 +39,7 @@ public class Swift {
 	@JoinColumn(name = "ref_tranfert")
 	private Transfert transfert;
 
-	   @Lob
-	    private byte[] pdfgen;
+	   
 	
 	public String getFormat() {
 		return format;

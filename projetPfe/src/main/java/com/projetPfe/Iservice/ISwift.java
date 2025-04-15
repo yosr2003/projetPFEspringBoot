@@ -9,13 +9,13 @@ public interface ISwift {
 
 
 
-	Swift creerSwift(String transfertId, String format, String typeMessage);
+	public Swift creerSwift(String transfertId, String format, String typeMessage);
 
 
 
-	boolean existeDejaPourTransfert(String transfertId);
+	public boolean existeDejaPourTransfert(String transfertId);
 
-	Swift consulterSwift(String transfertId);
+	public Swift consulterSwift(String transfertId);
 
 	
 

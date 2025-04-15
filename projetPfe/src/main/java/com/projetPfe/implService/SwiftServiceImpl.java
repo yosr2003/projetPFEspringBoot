@@ -88,7 +88,7 @@ public class SwiftServiceImpl implements ISwift {
                    .append(":23B:").append(codeOp).append("\n")
                    .append(":32A:")
                    .append(transfert.getDatecre().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))).append(" ")
-                   .append(transfert.getCompteBancaire_source().getDevise()).append(" ")
+                   .append(transfert.getCompteBancaire_source().getDevise().getDevise()).append(" ")
                    .append(String.format("%.2f", transfert.getMontantTransfert())).append("\n")
                    .append(":50K:/").append(emetteur.getNumeroCompte()).append("\n")
                    .append(getNomParticipant(emetteur.getParticipant())).append("\n")
@@ -282,7 +282,7 @@ public class SwiftServiceImpl implements ISwift {
 	            nowDate,
 	            transfert.getCompteBancaire_source().getBIC(),
 	            transfert.getCompteBancaire_cible().getBIC(),
-	            transfert.getCompteBancaire_source().getDevise(),
+	            transfert.getCompteBancaire_source().getDevise().getDevise(),
 	            transfert.getMontantTransfert(),
 	            dateOnly,
 	            transfert.getTypeFrais(),
@@ -301,6 +301,5 @@ public class SwiftServiceImpl implements ISwift {
 
 	    
 	}
-
 
 

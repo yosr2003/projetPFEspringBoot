@@ -9,6 +9,10 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -139,9 +143,14 @@ public class TransfertServiceImpl implements ITansfertService {
 
 
 	@Override
-	public Optional<TransfertDTO> getTransfertStatus(String refTransfert) {
-		return transfertRepo.findByrefTransfert(refTransfert)
-						.map(transfert -> new TransfertDTO(transfert.getRefTransfert(), transfert.getEtat()));
+	public ResponseEntity<?> getTransfertEtats(String refTransfert) {
+		Optional<Transfert> t=transfertRepo.findByrefTransfert(refTransfert);
+		if(t.isPresent()) {
+			return ResponseEntity.ok()
+	                .body(transfertRepo.findByrefTransfert(refTransfert)
+	    					.map(transfert -> new TransfertDTO(transfert.getRefTransfert(), transfert.getEtat())));
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Transfert introuvable");
 	}
 	
 	

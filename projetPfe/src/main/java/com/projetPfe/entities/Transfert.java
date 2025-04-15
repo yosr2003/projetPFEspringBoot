@@ -39,16 +39,15 @@ public class Transfert {
 	@Column(name = "etat")
 	private EtatDoss etat;
 	
-	@Column(name = "date_echeance")
-	private LocalDate dateEcheance;
+
 
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "nature_transfert")
 	private TransfertNature natureTransfert;
 	
-	@Column(name = "frais")
-	private Double frais;
+	@Column(name = "montantFrais")
+	private Double montantFrais;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "type_frais")
@@ -128,12 +127,12 @@ public class Transfert {
 
 
 	public Double getFrais() {
-		return frais;
+		return montantFrais;
 	}
 
 
-	public void setFrais(Double frais) {
-		this.frais = frais;
+	public void setFrais(Double montantFrais) {
+		this.montantFrais = montantFrais;
 	}
 
 
@@ -180,10 +179,10 @@ public class Transfert {
 	public void setDossierDelegue(DossierDelegue dossierDelegue) {
 		this.dossierDelegue = dossierDelegue;
 	}
-
-	public Swift getSwift() {
-		return swift;
-	}
+///boucle infinie 
+//	public Swift getSwift() {
+//		return swift;
+//	}
 
 	public void setSwift(Swift swift) {
 		this.swift = swift;
