@@ -61,60 +61,36 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
    
 	
 	@Override
-	public Optional<DossierDelegue> getDossierById(String id) {
-        return dossierDelegueRepo.findById(id);
+	public ResponseEntity<?> getDossierById(String id) {
+		Optional<DossierDelegue> d= dossierDelegueRepo.findById(id);
+		if(d.isPresent()) {
+			return ResponseEntity.ok().body(d.get());}
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dossier non trouvé");
     }
+
 	@Override
-	public ResponseEntity<Map<String, Object>> cloturerDossier(DossierDelegue d,String id) {
-		// Création de la réponse avec header et body
-        Map<String, Object> response = new HashMap<>();
-        ResponseHeaderDTO header = new ResponseHeaderDTO(404, "NOT_FOUND", "Dossier non trouvé");
-        response.put("header", header);
+	public ResponseEntity<?> cloturerDossier(DossierDelegue d,String id) {
 		if(dossierDelegueRepo.findById(id).isPresent()) {
 			DossierDelegue dossier=dossierDelegueRepo.findById(id).get();
+			if(d.getDatclo()==null ||d.getMotifclo()==null) { return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("pour clôturer un dossier délégué vous devez fournir la date de clôture et le motif de clôture");}
 			if(d.getDatclo().toLocalDate().isAfter(dossier.getDateExpiration())) {
-				header = new ResponseHeaderDTO(400, "BAD_REQUEST", "cette date de clôture dépasse la date d'expiration du dossier");
-	            response.put("header", header);
-				return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("cette date de clôture dépasse la date d'expiration du dossier");
 			}
 			if (dossier.getEtatDoss().equals(EtatDoss.VALIDE)) {
+				
 				dossier.setDatclo(d.getDatclo());
 				dossier.setMotifclo(d.getMotifclo());
 				dossier.setEtatDoss(EtatDoss.CLOTURE);
 				
 				dossierDelegueRepo.save(dossier);
-				header = new ResponseHeaderDTO(200, "SERVICE_OK", "clôturé avec succès");
-	            response.put("header", header);
-	            ResponseBodyDTO body = new ResponseBodyDTO(dossier);
-	            response.put("body", body);
-	            return new ResponseEntity<>(response,HttpStatus.OK);
+	            return ResponseEntity.ok().body(dossier);
 			}else {
-				header = new ResponseHeaderDTO(400, "BAD_REQUEST", "dossier non validé");
-	            response.put("header", header);
-				return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Dossier non valié");
 				}
 		}
-		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dossier non trouvé");
 	}
-	
-//	@Override
-//	public ResponseEntity<Response<DossierDelegue>> clotureDossier(DossierDelegue d, String id) {
-//		if(dossierDelegueRepo.findById(id).isPresent()) {
-//			DossierDelegue dossier=dossierDelegueRepo.findById(id).get();
-//			if (dossier.getEtatDoss().equals(EtatDoss.Validé)) {
-//				dossier.setDatclo(d.getDatclo());
-//				dossier.setMotifclo(d.getMotifclo());
-//				dossier.setEtatDoss(EtatDoss.Clôturé);
-//				HttpHeaders headers = new HttpHeaders();
-//				headers.add("code",String.valueOf(HttpStatus.OK.value()));
-//				headers.add("libelle","SERVICE_OK");
-//				return ResponseEntity.ok(new Response<>(200, "SERVICE_OK", dossier));
-//				
-//			}else { return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Response<>(401, "UNAUTHORIZED", null));}
-//		}
-//		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response<>(500, "INTERNAL_SERVER_ERROR", null));
-//	}
-	
+
 	@Override
 	public ResponseEntity<Map<String, Object>> dupliquerDossier(String id) {
 	    Optional<DossierDelegue> optionalDossier = dossierDelegueRepo.findById(id);
@@ -293,6 +269,12 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
             table.addCell(elem.getElementsByTagName("colonne5").item(0).getTextContent());
             table.addCell(elem.getElementsByTagName("colonne6").item(0).getTextContent());
     	}
+
+		@Override
+		public ResponseEntity<?> prolongerDossier(DossierDelegue d, String id) {
+			// TODO Auto-generated method stub
+			return null;
+		}
 
 	
 	

@@ -10,11 +10,10 @@ import org.springframework.http.ResponseEntity;
 import com.projetPfe.entities.DossierDelegue;
 
 public interface IDossierDelegueService {
-	public Optional<DossierDelegue> getDossierById(String id);
+	public ResponseEntity<?> getDossierById(String id);
 
-	public ResponseEntity<Map<String, Object>> cloturerDossier(DossierDelegue d, String id);
-
-//	public ResponseEntity<Response<DossierDelegue>> clotureDossier(DossierDelegue d, String id);
+	public ResponseEntity<?> cloturerDossier(DossierDelegue d, String id);
+	public ResponseEntity<?> prolongerDossier(DossierDelegue d, String id);
 	
 	public ResponseEntity<Map<String, Object>> dupliquerDossier(String id);
 	public ResponseEntity<?> genererRapportMouvement(String idDossier)throws Exception ;

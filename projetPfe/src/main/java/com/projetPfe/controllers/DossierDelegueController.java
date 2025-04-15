@@ -32,14 +32,12 @@ public class DossierDelegueController {
 	
 	
 	 @GetMapping("/{id}")
-	 public ResponseEntity<DossierDelegue> getDossierById(@PathVariable String id) {
-	        Optional<DossierDelegue> dossier = dossDelService.getDossierById(id);
-	        return dossier.map(ResponseEntity::ok)
-	                .orElseGet(() -> ResponseEntity.notFound().build());
+	 public ResponseEntity<?> getDossierById(@PathVariable String id) {
+	        return dossDelService.getDossierById(id);
 	    }
 	 
 	 @PutMapping("/{id}")
-	 public ResponseEntity<Map<String, Object>>  cloturerDossier(@RequestBody DossierDelegue d,@PathVariable("id") String id){
+	 public ResponseEntity<?>   cloturerDossier(@RequestBody DossierDelegue d,@PathVariable("id") String id){
 
 		 return dossDelService.cloturerDossier(d,id);
 	 }

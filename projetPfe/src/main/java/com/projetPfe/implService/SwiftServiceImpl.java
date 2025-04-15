@@ -18,6 +18,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.projetPfe.Iservice.ISwift;
 import com.projetPfe.entities.CompteBancaire;
 import com.projetPfe.entities.EcodeOp;
+import com.projetPfe.entities.EtatDoss;
 import com.projetPfe.entities.Participant;
 import com.projetPfe.entities.PersonneMorale;
 import com.projetPfe.entities.PersonnePhysique;
@@ -59,6 +60,9 @@ public class SwiftServiceImpl implements ISwift {
     public Swift creerSwift(String transfertId, String format, String typeMessage) {
         Transfert transfert = transfertRepository.findById(transfertId)
                 .orElseThrow(() -> new RuntimeException("Transfert introuvable avec ID: " + transfertId));
+        if (transfert.getEtat() != EtatDoss.VALIDE) {
+            throw new RuntimeException("Le transfert avec ID " + transfertId + " n'est pas validé. SWIFT non généré.");
+        }
 
         Swift swift = new Swift();
         swift.setTransfert(transfert);
