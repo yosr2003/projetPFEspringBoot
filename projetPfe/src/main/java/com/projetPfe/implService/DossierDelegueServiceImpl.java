@@ -40,6 +40,7 @@ import com.projetPfe.Iservice.IDossierDelegueService;
 import com.projetPfe.dto.ResponseBodyDTO;
 import com.projetPfe.dto.ResponseHeaderDTO;
 import com.projetPfe.entities.DossierDelegue;
+import com.projetPfe.entities.DossierDelegueType;
 //import com.projetPfe.entities.EtatDeclarationBCT;
 import com.projetPfe.entities.EtatDoss;
 import com.projetPfe.entities.Participant;
@@ -58,8 +59,6 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
 	@Autowired
 	private TransfertRepository transfertRepo;
 	
-   
-	
 	@Override
 	public ResponseEntity<?> getDossierById(String id) {
 		Optional<DossierDelegue> d= dossierDelegueRepo.findById(id);
@@ -67,6 +66,30 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
 			return ResponseEntity.ok().body(d.get());}
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dossier non trouvé");
     }
+	@Override
+	public ResponseEntity<?> prolongerDossier(DossierDelegue d, String id) {
+		if(dossierDelegueRepo.findById(id).isPresent()) {
+			DossierDelegue dossier=dossierDelegueRepo.findById(id).get();
+			if(!dossier.getType().equals(DossierDelegueType.SCOLARITE)){ return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(" que les dossier de scolorité peuvent etre prolongé");}
+			if(d.getDateExpiration()==null ||d.getMotifProlong()==null) { return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("pour prolonger un dossier délégué vous devez fournir la date de prolongation et le motif de prolongation");}
+			if(d.getDateExpiration().isBefore(dossier.getDateExpiration())) {
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("la date deprolongation doit depasser la date d'expiration actuelle qui est "+dossier.getDateExpiration().toString());
+			}
+			if (dossier.getEtatDoss().equals(EtatDoss.VALIDE)) {
+				
+				dossier.setDateExpiration(d.getDateExpiration());
+				dossier.setMotifProlong(d.getMotifProlong());
+				
+				dossierDelegueRepo.save(dossier);
+	            return ResponseEntity.ok().body(dossier);
+			}else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("pour prolonger un dossier délégué il doit etre validé");
+				}
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dossier non trouvé");
+	}
+
+	
 
 	@Override
 	public ResponseEntity<?> cloturerDossier(DossierDelegue d,String id) {
@@ -171,6 +194,7 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
 			        .filter(t -> t.getDossierDelegue() != null)
 			        .filter(t -> idDossier.equals(t.getDossierDelegue().getIdDossier()))
 			        .collect(Collectors.toList());
+			if(transferts==null){return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ce Dossier Délégué ne contient pas encore de transferts");}
 			StringBuilder xml = genererContenuXml(transferts);
 	        String contenuXml = xml.toString();
 
@@ -270,12 +294,7 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
             table.addCell(elem.getElementsByTagName("colonne6").item(0).getTextContent());
     	}
 
-		@Override
-		public ResponseEntity<?> prolongerDossier(DossierDelegue d, String id) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
+		
 	
 	
 	

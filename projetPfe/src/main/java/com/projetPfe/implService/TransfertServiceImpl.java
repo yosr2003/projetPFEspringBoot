@@ -52,7 +52,7 @@ public class TransfertServiceImpl implements ITansfertService {
 	    
 	 @Override
 	 public Transfert creerTransfert(Double montant, CompteBancaire compteSource, CompteBancaire compteCible,
-	                                    FraisType typeFrais, DossierDelegue dossierDelegue) throws Exception {
+	                                    FraisType typeFrais, DossierDelegue dossierDelegue,String natureJuridique) throws Exception {
 
 	        // ⚠️ Validation des IDs
 	        if (compteSource == null || compteSource.getNumeroCompte() == null) {
@@ -130,6 +130,7 @@ public class TransfertServiceImpl implements ITansfertService {
 	        transfert.setCompteBancaire_source(compteSource);
 	        transfert.setCompteBancaire_cible(compteCible);
 	        transfert.setDossierDelegue(dossierDelegue); // Peut être null
+	        transfert.setNatureJuridique(natureJuridique);
 
 	        // 💾 Sauvegarde
 	        return transfertRepository.save(transfert);
@@ -195,6 +196,11 @@ public class TransfertServiceImpl implements ITansfertService {
 		        System.err.println("Erreur lors du calcul des frais : " + e.getMessage());
 		        return Optional.empty();
 		    }
+	}
+
+	@Override
+	public List<Transfert> getAll() {
+		return transfertRepo.findAll();
 	}
 	
 

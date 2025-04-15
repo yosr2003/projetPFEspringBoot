@@ -36,7 +36,8 @@ public class TransfertController {
 	                   transfert.getCompteBancaire_source(),
 	                   transfert.getCompteBancaire_cible(),
 	                   transfert.getTypeFrais(),
-	                   transfert.getDossierDelegue()
+	                   transfert.getDossierDelegue(),
+	                   transfert.getNatureJuridique()
 	           );
 
 	           return ResponseEntity.ok("✅ Transfert créé avec succès.");
@@ -51,6 +52,9 @@ public class TransfertController {
 	@GetMapping("/alerteTransfertAttente")
 	public List<Transfert> AlerteTransfertAttente() {
 		return transfertService.AlerteTransfertAttente();	}
+	@GetMapping
+	public List<Transfert> getAll() {
+		return transfertService.getAll();	}
 
 
     @GetMapping("/etat/{refTransfert}")

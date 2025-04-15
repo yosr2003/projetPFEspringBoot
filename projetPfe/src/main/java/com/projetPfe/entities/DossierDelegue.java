@@ -2,6 +2,7 @@ package com.projetPfe.entities;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -24,12 +25,12 @@ public class DossierDelegue {
 	private LocalDateTime  datclo;
 	
 	private String motifclo;
-	private String MotifProlong;
+	private String motifProlong;
 
 	private LocalDateTime  dateCre;
 	private LocalDate dateDebut;
 	private LocalDate dateExpiration;
-    private LocalDate DateFinProlong;
+    private LocalDate dateFinProlong;
 	private Double solde;
 	private DossierDelegueType type;
 	@Lob
@@ -41,17 +42,35 @@ public class DossierDelegue {
     
     
     
-	public LocalDate getDateFinProlong() {
-		return DateFinProlong;
+	@Override
+	public String toString() {
+		return "DossierDelegue [idDossier=" + idDossier + ", anneedoss=" + anneedoss + ", etatDoss=" + etatDoss
+				+ ", datclo=" + datclo + ", motifclo=" + motifclo + ", motifProlong=" + motifProlong + ", dateCre="
+				+ dateCre + ", dateDebut=" + dateDebut + ", dateExpiration=" + dateExpiration + ", dateFinProlong="
+				+ dateFinProlong + ", solde=" + solde + ", type=" + type + ", rapportMouvement="
+				+ Arrays.toString(rapportMouvement) + ", transferts=" + transferts + "]";
 	}
 
-	public void setDateFinProlong(LocalDate dateFinProlong) {
-		DateFinProlong = dateFinProlong;
-	}
+	
 
+	
 //	public List<Transfert> getTransferts() {
 //		return transferts;
 //	}
+
+	public LocalDate getDateFinProlong() {
+		return dateFinProlong;
+	}
+
+
+
+
+	public void setDateFinProlong(LocalDate dateFinProlong) {
+		this.dateFinProlong = dateFinProlong;
+	}
+
+
+
 
 	public void setTransferts(List<Transfert> transferts) {
 		this.transferts = transferts;
@@ -70,11 +89,11 @@ public class DossierDelegue {
 		this.etatDoss = etatDoss;
 		this.datclo = datclo;
 		this.motifclo = motifclo;
-		MotifProlong = motifProlong;
+		motifProlong = motifProlong;
 		this.dateCre = dateCre;
 		this.dateDebut = dateDebut;
 		this.dateExpiration = dateExpiration;
-		DateFinProlong = dateFinProlong;
+		dateFinProlong = dateFinProlong;
 		this.solde = solde;
 		this.type = type;
 		this.transferts = transferts;
@@ -174,12 +193,19 @@ public class DossierDelegue {
 	public void setMotifclo(String motifclo) {
 		this.motifclo = motifclo;
 	}
+
+
+
+
 	public String getMotifProlong() {
-		return MotifProlong;
+		return motifProlong;
 	}
 
+
+
+
 	public void setMotifProlong(String motifProlong) {
-		MotifProlong = motifProlong;
+		this.motifProlong = motifProlong;
 	}
 	
 	

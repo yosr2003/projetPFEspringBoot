@@ -15,7 +15,7 @@ import com.projetPfe.entities.Transfert;
 import com.projetPfe.entities.TransfertType;
 
 public interface ITansfertService {
-
+	public	List<Transfert> getAll();
 
 
 	public ResponseEntity<?> getTransfertEtats(String refTransfert);
@@ -24,7 +24,7 @@ public interface ITansfertService {
   	public	List<Transfert> AlerteTransfertAttente();
 
 	public Transfert creerTransfert(Double montant, CompteBancaire compteSource, CompteBancaire compteCible,
-			FraisType typeFrais, DossierDelegue dossierDelegue) throws Exception;
+			FraisType typeFrais, DossierDelegue dossierDelegue,String natureJuridique) throws Exception;
 
 
 
