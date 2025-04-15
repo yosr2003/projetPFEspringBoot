@@ -19,31 +19,36 @@ public class SwiftController {
     @Autowired
     private ISwift swiftService;
 
-    @PostMapping("/creer/{transfertId}/{format}/{typeMessage}")
+    @PostMapping("/creer/{transfertId}/{format}")
     public ResponseEntity<String> creerSwift(
             @PathVariable String transfertId,
-            @PathVariable String format,
-            @PathVariable String typeMessage) {
-
-        boolean existeDeja = swiftService.existeDejaPourTransfert(transfertId);
-
-        if (existeDeja) {
-            String message = "Un message SWIFT existe déjà pour le transfert " + transfertId;
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
-        }
+            @PathVariable String format) {
 
         try {
-            swiftService.creerSwift(transfertId, format, typeMessage);
-            String message = "Message SWIFT créé avec succès pour le transfert " + transfertId +
-                             " et PDF enregistré à : C:\\Users\\YosrAmamou\\Downloads\\pdf_swift";
-            return ResponseEntity.status(HttpStatus.CREATED).body(message);
-        } catch (RuntimeException e) {
-            // Cas spécifique : transfert non validé
-            if (e.getMessage().contains("n'est pas validé")) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            boolean existeDeja = swiftService.existeDejaPourTransfert(transfertId);
+
+            if (!existeDeja) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Aucun message SWIFT trouvé pour le transfert " + transfertId +
+                              ". Veuillez d'abord créer ou associer un message SWIFT.");
             }
-            // Autres erreurs
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la création du SWIFT : " + e.getMessage());
+
+            swiftService.genererSwift(transfertId, format, null); // typeMessage est null ici, à adapter si nécessaire
+
+            String message = "PDF du message SWIFT généré avec succès pour le transfert " + transfertId +
+                             " et enregistré à : C:\\Users\\YosrAmamou\\Downloads\\pdf_swift";
+            return ResponseEntity.status(HttpStatus.CREATED).body(message);
+
+        } catch (RuntimeException e) {
+            String errorMsg = e.getMessage();
+            if (errorMsg.contains("n'est pas validé")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMsg);
+            } else if (errorMsg.contains("vide") || errorMsg.contains("SWIFT trouvé")) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMsg);
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Erreur lors de la génération du PDF SWIFT : " + errorMsg);
+            }
         }
     }
 
