@@ -19,7 +19,7 @@ public class DossierDelegue {
 	@Id
 	private String idDossier;
 	
-	private String anneedoss;
+	//private String anneedoss;
 	private EtatDoss etatDoss;
     
 	private LocalDateTime  datclo;
@@ -30,7 +30,7 @@ public class DossierDelegue {
 	private LocalDateTime  dateCre;
 	private LocalDate dateDebut;
 	private LocalDate dateExpiration;
-    private LocalDate dateFinProlong;
+   // private LocalDate dateFinProlong;
 	private Double solde;
 	private DossierDelegueType type;
 	@Lob
@@ -42,14 +42,7 @@ public class DossierDelegue {
     
     
     
-	@Override
-	public String toString() {
-		return "DossierDelegue [idDossier=" + idDossier + ", anneedoss=" + anneedoss + ", etatDoss=" + etatDoss
-				+ ", datclo=" + datclo + ", motifclo=" + motifclo + ", motifProlong=" + motifProlong + ", dateCre="
-				+ dateCre + ", dateDebut=" + dateDebut + ", dateExpiration=" + dateExpiration + ", dateFinProlong="
-				+ dateFinProlong + ", solde=" + solde + ", type=" + type + ", rapportMouvement="
-				+ Arrays.toString(rapportMouvement) + ", transferts=" + transferts + "]";
-	}
+
 
 	
 
@@ -58,16 +51,32 @@ public class DossierDelegue {
 //		return transferts;
 //	}
 
-	public LocalDate getDateFinProlong() {
-		return dateFinProlong;
+
+
+
+
+
+
+
+
+
+
+	@Override
+	public String toString() {
+		return "DossierDelegue [idDossier=" + idDossier + ", etatDoss=" + etatDoss + ", datclo=" + datclo
+				+ ", motifclo=" + motifclo + ", motifProlong=" + motifProlong + ", dateCre=" + dateCre + ", dateDebut="
+				+ dateDebut + ", dateExpiration=" + dateExpiration + ", solde=" + solde + ", type=" + type
+				+ ", rapportMouvement=" + Arrays.toString(rapportMouvement) + ", transferts=" + transferts + "]";
 	}
 
 
-
-
-	public void setDateFinProlong(LocalDate dateFinProlong) {
-		this.dateFinProlong = dateFinProlong;
-	}
+//	public LocalDate getDateFinProlong() {
+//		return dateFinProlong;
+//	}
+//
+//	public void setDateFinProlong(LocalDate dateFinProlong) {
+//		this.dateFinProlong = dateFinProlong;
+//	}
 
 
 
@@ -85,7 +94,7 @@ public class DossierDelegue {
 			LocalDate dateFinProlong, Double solde, DossierDelegueType type, List<Transfert> transferts) {
 		super();
 		this.idDossier = idDossier;
-		this.anneedoss = anneedoss;
+		//this.anneedoss = anneedoss;
 		this.etatDoss = etatDoss;
 		this.datclo = datclo;
 		this.motifclo = motifclo;
@@ -154,13 +163,13 @@ public class DossierDelegue {
 		this.idDossier = idDossier;
 	}
 
-	public String getAnneedoss() {
-		return anneedoss;
-	}
-
-	public void setAnneedoss(String anneedoss) {
-		this.anneedoss = anneedoss;
-	}
+//	public String getAnneedoss() {
+//		return anneedoss;
+//	}
+//
+//	public void setAnneedoss(String anneedoss) {
+//		this.anneedoss = anneedoss;
+//	}
 
 	public LocalDateTime  getDateCre() {
 		return dateCre;

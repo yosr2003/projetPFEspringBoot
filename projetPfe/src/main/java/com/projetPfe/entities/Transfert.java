@@ -33,7 +33,16 @@ public class Transfert {
 
 	@Column(name = "datecre")
 	private LocalDateTime datecre;
+	private LocalDateTime dateEnvoie;
 
+	public LocalDateTime getDateEnvoie() {
+		return dateEnvoie;
+	}
+
+
+	public void setDateEnvoie(LocalDateTime dateEnvoie) {
+		this.dateEnvoie = dateEnvoie;
+	}
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "etat")
@@ -67,6 +76,10 @@ public class Transfert {
 	@ManyToOne
 	@JoinColumn(name = "idDossDelegue")
 	private DossierDelegue dossierDelegue;
+	
+	@ManyToOne
+	@JoinColumn(name = "idEtatDeclaration")
+	private EtatDeclarationBCT etatDeclaration;
 	
 	
 	@OneToOne(mappedBy = "transfert")

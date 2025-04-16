@@ -1,5 +1,6 @@
 package com.projetPfe.entities;
 
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
@@ -7,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class EtatDeclarationBCT {
@@ -18,6 +20,9 @@ public class EtatDeclarationBCT {
 	private String trimestre;
 	private String TypeDeclaration;
 	private int annee;
+	
+	@OneToMany(mappedBy = "etatDeclaration")
+	private List<Transfert> transferts;
 
 	public String getTypeDeclaration() {
 		return TypeDeclaration;
@@ -81,6 +86,9 @@ public class EtatDeclarationBCT {
 
 	public String getContenuTexte() {
 		return contenuTexte;
+	}
+	public void setTransferts(List<Transfert> transferts) {
+		this.transferts = transferts;
 	}
 
 

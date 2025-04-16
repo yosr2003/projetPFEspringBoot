@@ -64,9 +64,14 @@ public class CompteBancaire {
 	///constructors
 
 ///getters and setters
+	
 	public String getNumeroCompte() {
 		return NumeroCompte;
 	}
+	public void setCodePays(int codePays) {
+		this.codePays = codePays;
+	}
+
 	public TauxChange getDevise() {
 		return devise;
 	}

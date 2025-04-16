@@ -41,7 +41,7 @@ public class EtatDeclarationController {
 //	                .contentType(MediaType.APPLICATION_PDF)
 //	                .body(pdfBytes);
 //	 }
-	@GetMapping("/test")
+	@PostMapping("/test")
 	public ResponseEntity<?> test(@RequestBody Map<String, String> requestBody) {
 	    
 	        String typeDeclaration = requestBody.get("typeDeclaration");
@@ -49,8 +49,9 @@ public class EtatDeclarationController {
 		    try {
 				return 	etaDecService.test(trimestre, typeDeclaration);
 			} catch (Exception e) {
+				e.printStackTrace();
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(" Une erreur est survenue lors de la génération de l’état de déclaration");
-				//e.printStackTrace();
+				
 			}
 		    
 	}

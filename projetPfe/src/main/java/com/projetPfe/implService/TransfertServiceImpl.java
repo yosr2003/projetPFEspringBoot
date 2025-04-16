@@ -17,7 +17,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.projetPfe.Iservice.ITansfertService;
-import com.projetPfe.dto.TransfertDTO;
+
 
 import com.projetPfe.entities.EtatDoss;
 import com.projetPfe.entities.Transfert;
@@ -52,7 +52,7 @@ public class TransfertServiceImpl implements ITansfertService {
 	    
 	 @Override
 	 public Transfert creerTransfert(Double montant, CompteBancaire compteSource, CompteBancaire compteCible,
-	                                    FraisType typeFrais, DossierDelegue dossierDelegue,String natureJuridique) throws Exception {
+	                                    FraisType typeFrais, DossierDelegue dossierDelegue,String natureJuridique,TransfertType type) throws Exception {
 
 	        // ⚠️ Validation des IDs
 	        if (compteSource == null || compteSource.getNumeroCompte() == null) {
@@ -105,7 +105,8 @@ public class TransfertServiceImpl implements ITansfertService {
 	        transfert.setEtat(EtatDoss.TRAITEMENT);
 	        transfert.setMontantTransfert(montant);
 	        transfert.setTypeFrais(typeFrais);
-	        transfert.setTypeTransfert(TransfertType.FINANCIER);
+	        if(dossierDelegue == null) {transfert.setTypeTransfert(type);}
+	        
 
 	        // Dévises
 	        TauxChange deviseSource = compteSource.getDevise();
@@ -147,9 +148,11 @@ public class TransfertServiceImpl implements ITansfertService {
 	public ResponseEntity<?> getTransfertEtats(String refTransfert) {
 		Optional<Transfert> t=transfertRepo.findByrefTransfert(refTransfert);
 		if(t.isPresent()) {
+//			return ResponseEntity.ok()
+//	                .body(transfertRepo.findByrefTransfert(refTransfert)
+//	    					.map(transfert -> new TransfertDTO(transfert.getRefTransfert(), transfert.getEtat())));
 			return ResponseEntity.ok()
-	                .body(transfertRepo.findByrefTransfert(refTransfert)
-	    					.map(transfert -> new TransfertDTO(transfert.getRefTransfert(), transfert.getEtat())));
+	                .body(t);
 		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Transfert introuvable");
 	}

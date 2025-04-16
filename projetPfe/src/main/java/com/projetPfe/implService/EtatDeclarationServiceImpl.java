@@ -222,9 +222,7 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
         pdfDoc.add(table);
         pdfDoc.close();
         etat.setContenuPdf(outputStream.toByteArray());
-        //etat.setTrimestre(trimestre);
-        //etat.setTypeDeclaration(typeDeclaration);
-        //etat.setAnnee(LocalDate.now().getYear());
+        etat.setTransferts(transferts);
         etatDecRepo.save(etat);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=etat_investissement.pdf")
@@ -410,9 +408,11 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
 
 	    return transfertRepo.findAll().stream()
 	        .filter(t -> {
-	            LocalDate dateCreation = t.getDatecre().toLocalDate();
-	            return !dateCreation.isBefore(startDate) && !dateCreation.isAfter(endDate);
-	        }).filter(t -> t.getEtat() == EtatDoss.ENOVYE)
+	        	if(t.getDateEnvoie()!=null) {
+	            LocalDate dateEnvoie = t.getDateEnvoie().toLocalDate();
+	            return !dateEnvoie.isBefore(startDate) && !dateEnvoie.isAfter(endDate);} return false;
+	        })
+	        //.filter(t -> t.getEtat() == EtatDoss.ENOVYE)
 	        .filter(t -> {
 	            if (t.getDossierDelegue() != null) {
 	                return typeDeclaration.equals(t.getDossierDelegue().getType().toString());

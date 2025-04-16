@@ -7,7 +7,7 @@ import java.util.concurrent.CompletableFuture;
 
 import org.springframework.http.ResponseEntity;
 
-import com.projetPfe.dto.TransfertDTO;
+
 import com.projetPfe.entities.CompteBancaire;
 import com.projetPfe.entities.DossierDelegue;
 import com.projetPfe.entities.FraisType;
@@ -24,7 +24,7 @@ public interface ITansfertService {
   	public	List<Transfert> AlerteTransfertAttente();
 
 	public Transfert creerTransfert(Double montant, CompteBancaire compteSource, CompteBancaire compteCible,
-			FraisType typeFrais, DossierDelegue dossierDelegue,String natureJuridique) throws Exception;
+			FraisType typeFrais, DossierDelegue dossierDelegue,String natureJuridique,TransfertType type) throws Exception;
 
 
 

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projetPfe.Iservice.ITansfertService;
-import com.projetPfe.dto.TransfertDTO;
+
 import com.projetPfe.entities.Transfert;
 
 
@@ -37,7 +37,8 @@ public class TransfertController {
 	                   transfert.getCompteBancaire_cible(),
 	                   transfert.getTypeFrais(),
 	                   transfert.getDossierDelegue(),
-	                   transfert.getNatureJuridique()
+	                   transfert.getNatureJuridique(),
+	                   transfert.getTypeTransfert()
 	           );
 
 	           return ResponseEntity.ok("✅ Transfert créé avec succès.");

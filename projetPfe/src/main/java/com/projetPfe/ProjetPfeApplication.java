@@ -329,6 +329,7 @@ public class ProjetPfeApplication {
 	        compte1.setBanque("BNP Paribas");
 	        compte1.setBIC("BNPAFRPPXXX");
 	        compte1.setPays("France");
+	        compte1.setCodePays(2024);
 	        compte1.setParticipant(pm2);
 	        compte1.setDevise(devise1);  // Devise AED
 	        compteBancaireRepository.save(compte1);
@@ -340,6 +341,7 @@ public class ProjetPfeApplication {
 	        compte2.setBanque("BIAT");
 	        compte2.setBIC("BIATTNTTXXX");
 	        compte2.setPays("Tunisie");
+	        compte1.setCodePays(2024);
 	        compte2.setParticipant(pp1);
 	        compte2.setDevise(deviseTND);  // Devise TND
 	        compteBancaireRepository.save(compte2);
@@ -351,6 +353,7 @@ public class ProjetPfeApplication {
 	        compte3.setBanque("Deutsche Bank");
 	        compte3.setBIC("DEUTDEFFXXX");
 	        compte3.setPays("Allemagne");
+	        compte1.setCodePays(2024);
 	        compte3.setParticipant(pm3);
 	        compte3.setDevise(devise3);  // Devise CAD
 	        compteBancaireRepository.save(compte3);
@@ -362,6 +365,7 @@ public class ProjetPfeApplication {
 	        compte4.setBanque("Chase Bank");
 	        compte4.setBIC("CHASUS33XXX");
 	        compte4.setPays("États-Unis");
+	        compte1.setCodePays(2024);
 	        compte4.setParticipant(pp3);
 	        compte4.setDevise(devise10);  // Devise USD
 	        compteBancaireRepository.save(compte4);
@@ -373,6 +377,7 @@ public class ProjetPfeApplication {
 	        compte5.setBanque("Mizuho Bank");
 	        compte5.setBIC("MHCBJPJTXXX");
 	        compte5.setPays("Japon");
+	        compte1.setCodePays(2024);
 	        compte5.setParticipant(pm5);
 	        compte5.setDevise(devise9);  // Devise JPY
 	        compteBancaireRepository.save(compte5);
@@ -384,6 +389,7 @@ public class ProjetPfeApplication {
 	        compte6.setBanque("Banco Santander");
 	        compte6.setBIC("BSCHESMMXXX");
 	        compte6.setPays("Espagne");
+	        compte1.setCodePays(2024);
 	        compte6.setParticipant(pp6);
 	        compte6.setDevise(devise7);  // Devise EUR
 	        compteBancaireRepository.save(compte6);
@@ -395,6 +401,7 @@ public class ProjetPfeApplication {
 	        compte7.setBanque("Royal Bank of Canada");
 	        compte7.setBIC("ROYCCAT2XXX");
 	        compte7.setPays("Canada");
+	        compte1.setCodePays(2024);
 	        compte7.setParticipant(pm8);
 	        compte7.setDevise(devise3);  // Devise CAD
 	        compteBancaireRepository.save(compte7);
@@ -406,6 +413,7 @@ public class ProjetPfeApplication {
 	        compte8.setBanque("Banque Atlantique");
 	        compte8.setBIC("ATCIxxxxXXX");
 	        compte8.setPays("Côte d'Ivoire");
+	        compte1.setCodePays(2024);
 	        compte8.setParticipant(pp9);
 	        compte8.setDevise(devise7);  // Devise EUR
 	        compteBancaireRepository.save(compte8);
@@ -417,6 +425,7 @@ public class ProjetPfeApplication {
 	        compte9.setBanque("Banco do Brasil");
 	        compte9.setBIC("BRASBRRXXXX");
 	        compte9.setPays("Brésil");
+	        compte1.setCodePays(2024);
 	        compte9.setParticipant(pm10);
 	        compte9.setDevise(devise11);  // Devise BRL
 	        compteBancaireRepository.save(compte9);
@@ -428,6 +437,7 @@ public class ProjetPfeApplication {
 	        compte10.setBanque("STB");
 	        compte10.setBIC("STBKTNTTXXX");
 	        compte10.setPays("Tunisie");
+	        compte1.setCodePays(2024);
 	        compte10.setParticipant(pp10);
 	        compte10.setDevise(deviseTND);  // Devise TND
 	        compteBancaireRepository.save(compte10);
@@ -439,6 +449,7 @@ public class ProjetPfeApplication {
 	        compte11.setBanque("Emirates NBD");
 	        compte11.setBIC("EBILAEADXXX");
 	        compte11.setPays("Émirats Arabes Unis");
+	        compte1.setCodePays(2024);
 	        compte11.setParticipant(pm11);
 	        compte11.setDevise(devise1);  // Devise AED
 	        compteBancaireRepository.save(compte11);
