@@ -91,60 +91,60 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
 
 	
 
-	@Override
-	public ResponseEntity<?> cloturerDossier(DossierDelegue d,String id) {
-		if(dossierDelegueRepo.findById(id).isPresent()) {
-			DossierDelegue dossier=dossierDelegueRepo.findById(id).get();
-			if(d.getDatclo()==null ||d.getMotifclo()==null) { return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("pour clôturer un dossier délégué vous devez fournir la date de clôture et le motif de clôture");}
-			if(d.getDatclo().toLocalDate().isAfter(dossier.getDateExpiration())) {
-	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("cette date de clôture dépasse la date d'expiration du dossier");
-			}
-			if (dossier.getEtatDoss().equals(EtatDoss.VALIDE)) {
-				
-				dossier.setDatclo(d.getDatclo());
-				dossier.setMotifclo(d.getMotifclo());
-				dossier.setEtatDoss(EtatDoss.CLOTURE);
-				
-				dossierDelegueRepo.save(dossier);
-	            return ResponseEntity.ok().body(dossier);
-			}else {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Dossier non valié");
-				}
-		}
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dossier non trouvé");
-	}
 //	@Override
-//	public ResponseEntity<Map<String, Object>> cloturerDossier(DossierDelegue d,String id) {
-//		// Création de la réponse avec header et body
-//        Map<String, Object> response = new HashMap<>();
-//        ResponseHeaderDTO header = new ResponseHeaderDTO(404, "NOT_FOUND", "Dossier non trouvé");
-//        response.put("header", header);
+//	public ResponseEntity<?> cloturerDossier(DossierDelegue d,String id) {
 //		if(dossierDelegueRepo.findById(id).isPresent()) {
 //			DossierDelegue dossier=dossierDelegueRepo.findById(id).get();
+//			if(d.getDatclo()==null ||d.getMotifclo()==null) { return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("pour clôturer un dossier délégué vous devez fournir la date de clôture et le motif de clôture");}
 //			if(d.getDatclo().toLocalDate().isAfter(dossier.getDateExpiration())) {
-//				header = new ResponseHeaderDTO(400, "BAD_REQUEST", "cette date de clôture dépasse la date d'expiration du dossier");
-//	            response.put("header", header);
-//				return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("cette date de clôture dépasse la date d'expiration du dossier");
 //			}
 //			if (dossier.getEtatDoss().equals(EtatDoss.VALIDE)) {
+//				
 //				dossier.setDatclo(d.getDatclo());
 //				dossier.setMotifclo(d.getMotifclo());
 //				dossier.setEtatDoss(EtatDoss.CLOTURE);
 //				
 //				dossierDelegueRepo.save(dossier);
-//				header = new ResponseHeaderDTO(200, "SERVICE_OK", "clôturé avec succès");
-//	            response.put("header", header);
-//	            ResponseBodyDTO body = new ResponseBodyDTO(dossier);
-//	            response.put("body", body);
-//	            return new ResponseEntity<>(response,HttpStatus.OK);
+//	            return ResponseEntity.ok().body(dossier);
 //			}else {
-//				header = new ResponseHeaderDTO(400, "BAD_REQUEST", "dossier non validé");
-//	            response.put("header", header);
-//				return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Dossier non valié");
 //				}
 //		}
-//		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+//		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dossier non trouvé");
 //	}
+	@Override
+	public ResponseEntity<Map<String, Object>> cloturerDossier(DossierDelegue d,String id) {
+		// Création de la réponse avec header et body
+        Map<String, Object> response = new HashMap<>();
+        ResponseHeaderDTO header = new ResponseHeaderDTO(404, "NOT_FOUND", "Dossier non trouvé");
+        response.put("header", header);
+		if(dossierDelegueRepo.findById(id).isPresent()) {
+			DossierDelegue dossier=dossierDelegueRepo.findById(id).get();
+			if(d.getDatclo().toLocalDate().isAfter(dossier.getDateExpiration())) {
+				header = new ResponseHeaderDTO(400, "BAD_REQUEST", "cette date de clôture dépasse la date d'expiration du dossier");
+	            response.put("header", header);
+				return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+			}
+			if (dossier.getEtatDoss().equals(EtatDoss.VALIDE)) {
+				dossier.setDatclo(d.getDatclo());
+				dossier.setMotifclo(d.getMotifclo());
+				dossier.setEtatDoss(EtatDoss.CLOTURE);
+				
+				dossierDelegueRepo.save(dossier);
+				header = new ResponseHeaderDTO(200, "SERVICE_OK", "clôturé avec succès");
+	            response.put("header", header);
+	            ResponseBodyDTO body = new ResponseBodyDTO(dossier);
+	            response.put("body", body);
+	            return new ResponseEntity<>(response,HttpStatus.OK);
+			}else {
+				header = new ResponseHeaderDTO(400, "BAD_REQUEST", "dossier non validé");
+	            response.put("header", header);
+				return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+				}
+		}
+		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	}
 
 	@Override
 	public ResponseEntity<Map<String, Object>> dupliquerDossier(String id) {
