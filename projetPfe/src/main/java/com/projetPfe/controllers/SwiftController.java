@@ -33,7 +33,7 @@ public class SwiftController {
                               ". Veuillez d'abord créer ou associer un message SWIFT.");
             }
 
-            swiftService.genererSwift(transfertId, format, null); // typeMessage est null ici, à adapter si nécessaire
+            swiftService.genererSwift(transfertId, format, null); 
 
             String message = "PDF du message SWIFT généré avec succès pour le transfert " + transfertId +
                              " et enregistré à : C:\\Users\\YosrAmamou\\Downloads\\pdf_swift";
