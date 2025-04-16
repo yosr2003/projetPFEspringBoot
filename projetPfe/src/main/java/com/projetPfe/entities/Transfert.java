@@ -21,7 +21,7 @@ public class Transfert {
 	@Id
 	@Column(name = "ref_transfert")
 	private String refTransfert;
-	private String natureJuridique;
+	private String natureOperation;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "type_transfert")
@@ -215,12 +215,12 @@ public class Transfert {
 		throw new UnsupportedOperationException("Unimplemented method 'orElseGet'");
 	}
 
-	public String getNatureJuridique() {
-		return natureJuridique;
+	public String getNatureOperation() {
+		return natureOperation;
 	}
 
-	public void setNatureJuridique(String natureJuridique) {
-		this.natureJuridique = natureJuridique;
+	public void setNatureOperation(String natureOperation) {
+		this.natureOperation = natureOperation;
 	}
 
 	

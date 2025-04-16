@@ -24,7 +24,7 @@ public interface ITansfertService {
   	public	List<Transfert> AlerteTransfertAttente();
 
 	public Transfert creerTransfert(Double montant, CompteBancaire compteSource, CompteBancaire compteCible,
-			FraisType typeFrais, DossierDelegue dossierDelegue,String natureJuridique,TransfertType type) throws Exception;
+			FraisType typeFrais, DossierDelegue dossierDelegue,String natureOperation,TransfertType type) throws Exception;
 
 
 

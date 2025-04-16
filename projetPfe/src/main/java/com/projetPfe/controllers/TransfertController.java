@@ -37,7 +37,7 @@ public class TransfertController {
 	                   transfert.getCompteBancaire_cible(),
 	                   transfert.getTypeFrais(),
 	                   transfert.getDossierDelegue(),
-	                   transfert.getNatureJuridique(),
+	                   transfert.getNatureOperation(),
 	                   transfert.getTypeTransfert()
 	           );
 

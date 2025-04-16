@@ -74,7 +74,7 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
 		        xml.append("    <colonne7>").append(transfert.getMontantTransfert()).append("</colonne7>\n");
 		        
 
-	            xml.append("    <colonne8>").append(transfert.getNatureJuridique()).append("</colonne8>\n");
+	            xml.append("    <colonne8>").append(transfert.getNatureOperation()).append("</colonne8>\n");
 
 		        Participant beneficiaire = transfert.getCompteBancaire_cible().getParticipant();
 		        if (beneficiaire instanceof PersonneMorale) {

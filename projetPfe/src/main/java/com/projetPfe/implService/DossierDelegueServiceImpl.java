@@ -284,7 +284,7 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
 	    for (Transfert transfert : transferts) {
 	        xml.append("<ligne>\n");
 	        xml.append("    <colonne1>").append(transfert.getDatecre().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))).append("</colonne1>\n");
-	        xml.append("    <colonne2>").append(transfert.getNatureJuridique()).append("</colonne2>\n");
+	        xml.append("    <colonne2>").append(transfert.getNatureOperation()).append("</colonne2>\n");
 	        xml.append("    <colonne3>").append(transfert.getMontantTransfert()).append("</colonne3>\n");
 	        xml.append("    <colonne4>").append(transfert.getCompteBancaire_source().getNumeroCompte()).append("</colonne4>\n");
 	        Participant emmeteur = transfert.getCompteBancaire_source().getParticipant();

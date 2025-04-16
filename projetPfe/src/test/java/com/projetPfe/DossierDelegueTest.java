@@ -130,7 +130,7 @@ public class DossierDelegueTest {
 
         transfert = new Transfert();
         transfert.setDatecre(LocalDateTime.of(2023, 5, 10, 12, 0));
-        transfert.setNatureJuridique("Virement");
+        transfert.setNatureOperation("Virement");
         transfert.setMontantTransfert(new Double("1000.00"));
         transfert.setCompteBancaire_source(compteSource);
         transfert.setCompteBancaire_cible(compteCible);
