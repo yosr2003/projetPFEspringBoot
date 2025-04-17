@@ -265,7 +265,7 @@ public class EtatDeclarationServiceImpl implements IEtatDeclarationService{
 	        sc42.setRowspan(2); // étend sur ligne 2 et 3
 	        table.addCell(sc42);
 	        
-	        PdfPCell sc51 = new PdfPCell(new Phrase("Forme",smallFont));
+	        PdfPCell sc51 = new PdfPCell(new Phrase("Nature d'Operation",smallFont));
 	        sc51.setRowspan(2); 
 	        table.addCell(sc51);
 
