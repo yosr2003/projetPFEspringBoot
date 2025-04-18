@@ -90,7 +90,7 @@ public class TransfertServiceImpl implements ITansfertService {
 	        transfert.setRefTransfert(refTransfert);
 
 	        // Nature du transfert
-	        transfert.setNatureTransfert(dossierDelegue != null ? TransfertNature.PERMANENT : TransfertNature.COURANT);
+	        transfert.setNatureTransfert(dossierDelegue != null ? TransfertNature.PERMANENT : TransfertNature.PONCTUEL);
 
 	        // Infos de base
 	        transfert.setDatecre(LocalDateTime.now());
