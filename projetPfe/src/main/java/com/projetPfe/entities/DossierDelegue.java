@@ -31,7 +31,7 @@ public class DossierDelegue {
 	private LocalDate dateDebut;
 	private LocalDate dateExpiration;
    // private LocalDate dateFinProlong;
-	private Double solde;
+	//private Double solde;
 	private DossierDelegueType type;
 	@Lob
 	private byte[] rapportMouvement; 
@@ -61,13 +61,6 @@ public class DossierDelegue {
 
 
 
-	@Override
-	public String toString() {
-		return "DossierDelegue [idDossier=" + idDossier + ", etatDoss=" + etatDoss + ", datclo=" + datclo
-				+ ", motifclo=" + motifclo + ", motifProlong=" + motifProlong + ", dateCre=" + dateCre + ", dateDebut="
-				+ dateDebut + ", dateExpiration=" + dateExpiration + ", solde=" + solde + ", type=" + type
-				+ ", rapportMouvement=" + Arrays.toString(rapportMouvement) + ", transferts=" + transferts + "]";
-	}
 
 
 //	public LocalDate getDateFinProlong() {
@@ -89,6 +82,18 @@ public class DossierDelegue {
 	
 	
 
+	@Override
+	public String toString() {
+		return "DossierDelegue [idDossier=" + idDossier + ", etatDoss=" + etatDoss + ", datclo=" + datclo
+				+ ", motifclo=" + motifclo + ", motifProlong=" + motifProlong + ", dateCre=" + dateCre + ", dateDebut="
+				+ dateDebut + ", dateExpiration=" + dateExpiration + ", type=" + type + ", rapportMouvement="
+				+ Arrays.toString(rapportMouvement) + ", transferts=" + transferts + "]";
+	}
+
+
+
+
+
 	public DossierDelegue(String idDossier, String anneedoss, EtatDoss etatDoss, LocalDateTime datclo, String motifclo,
 			String motifProlong, LocalDateTime dateCre, LocalDate dateDebut, LocalDate dateExpiration,
 			LocalDate dateFinProlong, Double solde, DossierDelegueType type, List<Transfert> transferts) {
@@ -103,7 +108,6 @@ public class DossierDelegue {
 		this.dateDebut = dateDebut;
 		this.dateExpiration = dateExpiration;
 		dateFinProlong = dateFinProlong;
-		this.solde = solde;
 		this.type = type;
 		this.transferts = transferts;
 	}
@@ -148,13 +152,7 @@ public class DossierDelegue {
 		this.dateExpiration = dateExpiration;
 	}
 
-	public Double getSolde() {
-		return solde;
-	}
-
-	public void setSolde(Double solde) {
-		this.solde = solde;
-	}
+	
 	public String getIdDossier() {
 		return idDossier;
 	}

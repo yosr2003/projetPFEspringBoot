@@ -162,7 +162,7 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
 	            copie.setDateExpiration(dossier.getDateExpiration());
 	            //copie.setAnneedoss(dossier.getAnneedoss());
 	            copie.setType(dossier.getType());
-	            copie.setSolde(dossier.getSolde());
+	            //copie.setSolde(dossier.getSolde());
 	            copie.setDateCre(LocalDateTime.now()); 
 	            //copie.setDateFinProlong(dossier.getDateFinProlong());
 	            copie.setMotifProlong(dossier.getMotifProlong());

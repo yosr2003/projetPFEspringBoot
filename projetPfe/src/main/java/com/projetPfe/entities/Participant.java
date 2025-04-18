@@ -17,7 +17,7 @@ public class Participant {
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.IDENTITY)
 	 private Long matriculePartic;
-	 private String intitulé;
+	 //private String intitulé;
 
 	 private String pays;
 	 private String adresse;
@@ -39,12 +39,12 @@ public class Participant {
 		this.matriculePartic = matriculePartic;
 	}
 
-	public String getIntitulé() {
-		return intitulé;
-	}
-	public void setIntitulé(String intitulé) {
-		this.intitulé = intitulé;
-	}
+//	public String getIntitulé() {
+//		return intitulé;
+//	}
+//	public void setIntitulé(String intitulé) {
+//		this.intitulé = intitulé;
+//	}
 
 	public String getPays() {
 		return pays;
