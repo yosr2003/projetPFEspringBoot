@@ -18,7 +18,7 @@ public interface ITansfertService {
 	public	List<Transfert> getAll();
 
 
-	public ResponseEntity<?> getTransfertEtats(String refTransfert);
+	public ResponseEntity<?> consulterTransfert(String refTransfert);
 
 
   	public	List<Transfert> AlerteTransfertAttente();

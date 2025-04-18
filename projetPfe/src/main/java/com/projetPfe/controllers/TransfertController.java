@@ -58,12 +58,12 @@ public class TransfertController {
 		return transfertService.getAll();	}
 
 
-    @GetMapping("/etat/{refTransfert}")
-    public ResponseEntity<?> getTransfertEtats(@PathVariable String refTransfert) {
+    @GetMapping("/{refTransfert}")
+    public ResponseEntity<?> consulterTransfert(@PathVariable String refTransfert) {
         //Optional<TransfertDTO> dto = transfertService.getTransfertEtats(refTransfert);
 //        return dto.map(ResponseEntity::ok)
 //                  .orElseGet(() -> ResponseEntity.notFound().build());
-    	return transfertService.getTransfertEtats(refTransfert);
+    	return transfertService.consulterTransfert(refTransfert);
     }
 
 

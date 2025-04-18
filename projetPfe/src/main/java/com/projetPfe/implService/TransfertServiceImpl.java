@@ -145,7 +145,7 @@ public class TransfertServiceImpl implements ITansfertService {
 
 
 	@Override
-	public ResponseEntity<?> getTransfertEtats(String refTransfert) {
+	public ResponseEntity<?> consulterTransfert(String refTransfert) {
 		Optional<Transfert> t=transfertRepo.findByrefTransfert(refTransfert);
 		if(t.isPresent()) {
 //			return ResponseEntity.ok()
