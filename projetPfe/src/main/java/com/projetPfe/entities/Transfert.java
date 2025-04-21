@@ -46,7 +46,7 @@ public class Transfert {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "etat")
-	private EtatDoss etat;
+	private EtatTransfert etat;
 	
 
 
@@ -159,12 +159,12 @@ public class Transfert {
 	}
 
 
-	public EtatDoss getEtat() {
+	public EtatTransfert getEtat() {
 		return etat;
 	}
 
 
-	public void setEtat(EtatDoss etat) {
+	public void setEtat(EtatTransfert etat) {
 		this.etat = etat;
 	}
 

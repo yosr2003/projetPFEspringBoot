@@ -20,6 +20,7 @@ import com.projetPfe.Iservice.ITansfertService;
 
 
 import com.projetPfe.entities.EtatDoss;
+import com.projetPfe.entities.EtatTransfert;
 import com.projetPfe.entities.Transfert;
 import com.projetPfe.entities.CompteBancaire;
 import com.projetPfe.entities.DossierDelegue;
@@ -102,7 +103,7 @@ public class TransfertServiceImpl implements ITansfertService {
 
 	        // Infos de base
 	        transfert.setDatecre(LocalDateTime.now());
-	        transfert.setEtat(EtatDoss.TRAITEMENT);
+	        transfert.setEtat(EtatTransfert.TRAITEMENT);
 	        transfert.setMontantTransfert(montant);
 	        transfert.setTypeFrais(typeFrais);
 	        if(dossierDelegue == null) {transfert.setTypeTransfert(type);}
