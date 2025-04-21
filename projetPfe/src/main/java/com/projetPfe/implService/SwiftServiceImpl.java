@@ -83,7 +83,7 @@ public class SwiftServiceImpl implements ISwift {
         } else {
             CompteBancaire emetteur = transfert.getCompteBancaire_source();
             CompteBancaire beneficiaire = transfert.getCompteBancaire_cible();
-            EcodeOp codeOp = (transfert.getNatureTransfert() == TransfertNature.COURANT) ? EcodeOp.CRED : EcodeOp.SSTD;
+            EcodeOp codeOp = (transfert.getNatureTransfert() == TransfertNature.PONCTUEL) ? EcodeOp.CRED : EcodeOp.SSTD;
 
             StringBuilder message = new StringBuilder();
             message.append("BIC Banque Émettrice: ").append(emetteur.getBIC()).append("\n")

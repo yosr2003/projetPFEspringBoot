@@ -1,6 +1,6 @@
 package com.projetPfe.entities;
 
 public enum TransfertNature {
-  COURANT,
+  PONCTUEL,
   PERMANENT
 }
