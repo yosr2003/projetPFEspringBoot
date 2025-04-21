@@ -2,7 +2,6 @@ package com.projetPfe.entities;
 
 public enum EtatDoss {
 	TRAITEMENT,
-	BROUILLON,
 	ANNULE,
 	VALIDE,
 	CLOTURE,
