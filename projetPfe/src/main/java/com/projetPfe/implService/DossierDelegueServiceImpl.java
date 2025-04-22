@@ -126,7 +126,7 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
         response.put("header", header);
 		if(dossierDelegueRepo.findById(id).isPresent()) {
 			DossierDelegue dossier=dossierDelegueRepo.findById(id).get();
-			if(d.getDatclo().toLocalDate().isAfter(dossier.getDateExpiration())) {
+			if(d.getDatclo().isAfter(dossier.getDateExpiration())) {
 				header = new ResponseHeaderDTO(400, "BAD_REQUEST", "cette date de clôture dépasse la date d'expiration du dossier");
 	            response.put("header", header);
 				return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -221,7 +221,7 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
 		Optional<DossierDelegue> d=dossierDelegueRepo.findById(idDossier);
 		if(d.isPresent()) {
 			if(d.get().getRapportMouvement()!=null) {return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ce Dossier Délégué a déja un rapport de mouvement financiers");}
-			if ((d.get().getDatclo()!=null && LocalDate.now().isBefore(d.get().getDatclo().toLocalDate())) || (d.get().getDatclo()==null && LocalDate.now().isBefore(d.get().getDateExpiration()))) {
+			if ((d.get().getDatclo()!=null && LocalDate.now().isBefore(d.get().getDatclo())) || (d.get().getDatclo()==null && LocalDate.now().isBefore(d.get().getDateExpiration()))) {
 			    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 			        .body("Ce dossier n'est pas encore clôturer");
 			}

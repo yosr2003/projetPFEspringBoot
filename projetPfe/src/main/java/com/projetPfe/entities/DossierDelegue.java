@@ -22,7 +22,7 @@ public class DossierDelegue {
 	//private String anneedoss;
 	private EtatDoss etatDoss;
     
-	private LocalDateTime  datclo;
+	private LocalDate  datclo;
 	
 	private String motifclo;
 	private String motifProlong;
@@ -94,7 +94,7 @@ public class DossierDelegue {
 
 
 
-	public DossierDelegue(String idDossier, String anneedoss, EtatDoss etatDoss, LocalDateTime datclo, String motifclo,
+	public DossierDelegue(String idDossier, String anneedoss, EtatDoss etatDoss, LocalDate datclo, String motifclo,
 			String motifProlong, LocalDateTime dateCre, LocalDate dateDebut, LocalDate dateExpiration,
 			LocalDate dateFinProlong, Double solde, DossierDelegueType type, List<Transfert> transferts) {
 		super();
@@ -185,11 +185,11 @@ public class DossierDelegue {
 		this.etatDoss = etatDoss;
 	}
 
-	public LocalDateTime  getDatclo() {
+	public LocalDate  getDatclo() {
 		return datclo;
 	}
 
-	public void setDatclo(LocalDateTime  datclo) {
+	public void setDatclo(LocalDate  datclo) {
 		this.datclo = datclo;
 	}
 

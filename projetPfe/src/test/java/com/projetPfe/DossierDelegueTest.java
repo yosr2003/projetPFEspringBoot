@@ -150,7 +150,7 @@ public class DossierDelegueTest {
     }
     @Test
     void testGenererRapportMouvement_ClotureAtteinteMaisNonExpire() throws Exception {
-        dossier.setDatclo(LocalDateTime.now().minusDays(1)); // le dossier a ete clôturé 
+        dossier.setDatclo(LocalDate.now().minusDays(1)); // le dossier a ete clôturé 
         dossier.setDateExpiration(LocalDate.now().plusDays(5)); // avant d'atteindre sa date d'expiration
 
         when(dossierDelegueRepo.findById("123")).thenReturn(Optional.of(dossier));
