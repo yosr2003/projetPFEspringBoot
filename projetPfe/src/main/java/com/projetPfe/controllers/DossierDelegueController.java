@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,7 @@ import com.projetPfe.Iservice.IDossierDelegueService;
 import com.projetPfe.entities.DossierDelegue;
 
 
+@CrossOrigin(origins = "*")
 
 @RestController
 @RequestMapping("/dossiersDelegues")
@@ -30,7 +32,11 @@ public class DossierDelegueController {
 	@Autowired
 	private IDossierDelegueService dossDelService;
 	
-	
+
+	 @GetMapping
+	 public ResponseEntity<?> getAllDossiers() {
+	        return dossDelService.getAllDossiers();
+	    }
 	
 	 @GetMapping("/{id}")
 	 public ResponseEntity<?> getDossierById(@PathVariable String id) {

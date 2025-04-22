@@ -17,6 +17,8 @@ public interface IDossierDelegueService {
 	
 	public ResponseEntity<Map<String, Object>> dupliquerDossier(String id);
 	public ResponseEntity<?> genererRapportMouvement(String idDossier)throws Exception ;
+
+	ResponseEntity<?> getAllDossiers();
 	
 
 }

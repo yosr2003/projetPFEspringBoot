@@ -58,14 +58,19 @@ public class DossierDelegueServiceImpl implements IDossierDelegueService{
 	private DossierDelegueRepository dossierDelegueRepo;
 	@Autowired
 	private TransfertRepository transfertRepo;
-	
+	@Override
+	public ResponseEntity<?> getAllDossiers() {
+	    List<DossierDelegue> dossiers = dossierDelegueRepo.findAll();
+	    return ResponseEntity.ok(dossiers);
+	}
+
 	@Override
 	public ResponseEntity<?> getDossierById(String id) {
 		Optional<DossierDelegue> d= dossierDelegueRepo.findById(id);
 		if(d.isPresent()) {
 			return ResponseEntity.ok().body(d.get());}
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dossier non trouvé");
-    }
+	}
 	@Override
 	public ResponseEntity<?> prolongerDossier(DossierDelegue d, String id) {
 		if(dossierDelegueRepo.findById(id).isPresent()) {
