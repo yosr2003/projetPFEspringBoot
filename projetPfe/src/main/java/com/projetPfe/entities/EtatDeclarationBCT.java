@@ -16,7 +16,7 @@ import jakarta.persistence.OneToMany;
 public class EtatDeclarationBCT {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int idEtatDeclaration;
+	private Long idEtatDeclaration;
 	@Lob
 	private byte[] contenuPdf; 
 	private String trimestre;
