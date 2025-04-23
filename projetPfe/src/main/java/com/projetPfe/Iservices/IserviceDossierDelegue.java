@@ -8,4 +8,6 @@ public interface IserviceDossierDelegue {
 	   ResponseEntity<Map<String, Object>> dupliquerDossier(String id);
 
 	ResponseEntity<?> getAllDossiers();
+
+	ResponseEntity<?> getDossierById(String id);
 }

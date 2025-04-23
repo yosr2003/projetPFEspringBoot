@@ -92,4 +92,32 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 	    return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
+
+
+
+	public ResponseEntity<?> cloturerDossier(DossierDelegue d, String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	
+	@Override
+	public ResponseEntity<?> getDossierById(String id) {
+		Optional<DossierDelegue> d= dossierDelegueRepo.findById(id);
+		if(d.isPresent()) {
+			return ResponseEntity.ok().body(d.get());}
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dossier non trouvé");
+	}
+
+
+
+	public ResponseEntity<?> prolongerDossier(DossierDelegue d, String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
 }
