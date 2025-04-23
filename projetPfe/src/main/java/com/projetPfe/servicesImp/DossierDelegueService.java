@@ -1,6 +1,7 @@
 package com.projetPfe.servicesImp;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
@@ -69,4 +70,26 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 
 	    return newId;
 	}
+
+
+
+	@Override
+	public ResponseEntity<?> getAllDossiers() {
+	    List<DossierDelegue> dossiers = dossierDelegueRepo.findAll();
+
+	    if (dossiers.isEmpty()) {
+	        Map<String, Object> response = new HashMap<>();
+	        ResponseHeaderDTO header = new ResponseHeaderDTO(204, "NO_CONTENT", "Aucun dossier trouvé");
+	        response.put("header", header);
+	        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+	    }
+
+	    Map<String, Object> response = new HashMap<>();
+	    ResponseHeaderDTO header = new ResponseHeaderDTO(200, "SERVICE_OK", "Liste des dossiers récupérée avec succès");
+	    response.put("header", header);
+	    response.put("body", dossiers);  // ou tu peux envelopper dans un DTO si tu préfères
+
+	    return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
 }
