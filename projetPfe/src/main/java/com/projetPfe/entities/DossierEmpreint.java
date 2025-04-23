@@ -1,5 +1,7 @@
 package com.projetPfe.entities;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 
 @Entity
@@ -14,5 +16,17 @@ public Double getMontantEmpreint() {
 public void setMontantEmpreint(Double montantEmpreint) {
 	this.montantEmpreint = montantEmpreint;
 }
-
+@Override
+public DossierEmpreint dupliquerAvecNouveauId(String newId) {
+	DossierEmpreint copie = new DossierEmpreint();
+    copie.setIdDossier(newId);
+    copie.setDateDebut(this.getDateDebut());
+    copie.setDateExpiration(this.getDateExpiration());
+    copie.setEtatDossier(this.getEtatDossier());
+    copie.setDateCre(LocalDateTime.now());
+    copie.setMotifProlong(this.getMotifProlong());
+    copie.setRapportMouvement(this.getRapportMouvement());
+    copie.setMontantEmpreint(this.montantEmpreint);
+    return copie;
+}
 }
