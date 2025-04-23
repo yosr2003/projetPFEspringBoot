@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projetPfe.entities.DossierDelegue;
+import com.projetPfe.entities.DossierScolarité;
 import com.projetPfe.servicesImp.DossierDelegueService;
+import com.projetPfe.servicesImp.DossierScolariteServiceImp;
 
 @CrossOrigin(origins = "*")
 
@@ -26,6 +28,8 @@ import com.projetPfe.servicesImp.DossierDelegueService;
 public class DossierDelegueControllers {
 	@Autowired
 	private DossierDelegueService dossDelService;
+	@Autowired
+	private DossierScolariteServiceImp dossierScolariteServiceImp;
 	
 
 	 @GetMapping
@@ -54,10 +58,13 @@ public class DossierDelegueControllers {
 	     return dossDelService.cloturerDossier(id, dateCloture, motif);
 	 }
 
-	 @PutMapping("/ProlongerDossier/{id}")
-	 public ResponseEntity<?> prolonger(@RequestBody DossierDelegue d,@PathVariable("id") String id){
-		 return dossDelService.prolongerDossier(d, id);
+	 @PutMapping("/scolarite/prolonger/{id}")
+	 public ResponseEntity<?> prolongerDossierScolarite(
+	         @PathVariable String id,
+	         @RequestBody DossierScolarité input) {
+	     return dossierScolariteServiceImp.prolongerDossierScolarite(id, input);
 	 }
+
 	 
 	 
 }

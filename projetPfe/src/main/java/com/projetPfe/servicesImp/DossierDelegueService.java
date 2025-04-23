@@ -142,11 +142,6 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 
 
 
-	public ResponseEntity<?> prolongerDossier(DossierDelegue d, String id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 
 }
