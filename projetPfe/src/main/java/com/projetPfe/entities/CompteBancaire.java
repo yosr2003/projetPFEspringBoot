@@ -2,6 +2,7 @@ package com.projetPfe.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 
@@ -28,10 +29,10 @@ public class CompteBancaire {
 	@ManyToOne
 	@JoinColumn(name = "Banque_id")
 	private Banque banque;
-	
+	@JsonIgnore
 	@OneToMany(mappedBy = "CompteBancaire_cible")
 	private List<Transfert> transfertsRecues;
-	
+	@JsonIgnore
 	@OneToMany(mappedBy = "CompteBancaire_source")
 	private List<Transfert> transfertsEnvoyes;
 	

@@ -2,6 +2,8 @@ package com.projetPfe.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +17,7 @@ public class Pays {
 	private Long codePays;
 	 @Column(nullable = false)
 	private String pays;
+	 @JsonIgnore
 	@OneToMany(mappedBy = "pays")
 	private List<Banque> banques;
 	public Pays(Long codePays, String pays, List<Banque> banques) {

@@ -3,6 +3,8 @@ package com.projetPfe.entities;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +20,7 @@ public class EtatDeclarationBCT {
 	@Lob
 	private byte[] contenuPdf; 
 	private String trimestre;
-	
+	@JsonIgnore
 	@OneToMany(mappedBy = "etatDeclaration")
 	private List<Transfert> transferts;
 

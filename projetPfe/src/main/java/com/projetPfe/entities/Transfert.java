@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import org.springframework.http.ResponseEntity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -45,12 +47,12 @@ public class Transfert {
 	private Double montantFrais;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "type_frais",insertable=false, updatable=false)
+	@Column(name = "type_frais")
 	private FraisType typeFrais;
 	
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "type_frais")
+	@Column(name = "EtatTransfert")
 	private EtatTransfert EtatTransfert;
 
 	@Column(name="montant_final")
@@ -69,7 +71,7 @@ public class Transfert {
 	@JoinColumn(name = "idEtatDeclaration")
 	private EtatDeclarationBCT etatDeclaration;
 	
-	
+	@JsonIgnore
 	@OneToOne(mappedBy = "transfert")
 	private Swift swift;
 	

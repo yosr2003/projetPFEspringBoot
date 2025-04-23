@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
@@ -32,7 +34,7 @@ public abstract class DossierDelegue {
 	@Lob
 	private byte[] rapportMouvement; 
 
-	
+	@JsonIgnore
 	@OneToMany(mappedBy = "dossierDelegue")
 	private List<TransfertPermanent> transfertPermanent;
 

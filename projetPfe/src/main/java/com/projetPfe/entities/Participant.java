@@ -2,6 +2,8 @@ package com.projetPfe.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,7 +25,7 @@ public class Participant {
 	 private String adresse;
 	 private String email;
 	private int numTel;
-	
+	@JsonIgnore
 	@OneToMany(mappedBy = "participant")
 	private List<CompteBancaire> compteBancaires;
 	
