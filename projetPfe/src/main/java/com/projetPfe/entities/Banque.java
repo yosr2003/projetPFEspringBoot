@@ -2,11 +2,12 @@ package com.projetPfe.entities;
 
 import java.util.List;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-
+@Entity
 public class Banque {
 	@Id	
 	private String BIC;
@@ -14,7 +15,7 @@ public class Banque {
 	@OneToMany(mappedBy = "banque")
 	private List<CompteBancaire> CompteBancaires;
 	@ManyToOne
-	@JoinColumn(name = "Pays_id")
+	@JoinColumn(name = "pays_id")
 	private Pays pays;
 	public Banque(String bIC, String banque, List<CompteBancaire> compteBancaires, Pays pays) {
 		super();
@@ -25,6 +26,13 @@ public class Banque {
 	}
 	public Banque() {
 		super();
+	}
+
+	public Banque(String bIC, String banque, Pays pays) {
+		super();
+		BIC = bIC;
+		Banque = banque;
+		this.pays = pays;
 	}
 	public String getBIC() {
 		return BIC;

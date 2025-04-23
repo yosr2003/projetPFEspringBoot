@@ -76,6 +76,42 @@ public class CompteBancaire {
 	}
 
 
+
+	public Banque getBanque() {
+		return banque;
+	}
+
+
+
+	public void setBanque(Banque banque) {
+		this.banque = banque;
+	}
+
+
+
+	public List<Transfert> getTransfertsRecues() {
+		return transfertsRecues;
+	}
+
+
+
+	public void setTransfertsRecues(List<Transfert> transfertsRecues) {
+		this.transfertsRecues = transfertsRecues;
+	}
+
+
+
+	public List<Transfert> getTransfertsEnvoyes() {
+		return transfertsEnvoyes;
+	}
+
+
+
+	public void setTransfertsEnvoyes(List<Transfert> transfertsEnvoyes) {
+		this.transfertsEnvoyes = transfertsEnvoyes;
+	}
+
+
 	
 	
 }

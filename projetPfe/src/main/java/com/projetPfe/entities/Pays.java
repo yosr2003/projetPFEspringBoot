@@ -2,28 +2,43 @@ package com.projetPfe.entities;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-
+@Entity
 public class Pays {
 	@Id
-	private int codePays;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long codePays;
+	 @Column(nullable = false)
 	private String pays;
 	@OneToMany(mappedBy = "pays")
 	private List<Banque> banques;
-	public Pays(int codePays, String pays, List<Banque> banques) {
+	public Pays(Long codePays, String pays, List<Banque> banques) {
 		super();
 		this.codePays = codePays;
 		this.pays = pays;
 		this.banques = banques;
 	}
+	
+	public Pays(String pays) {
+		super();
+		this.pays = pays;
+	}
+	
+
+
 	public Pays() {
 		super();
 	}
-	public int getCodePays() {
+
+	public Long getCodePays() {
 		return codePays;
 	}
-	public void setCodePays(int codePays) {
+	public void setCodePays(Long codePays) {
 		this.codePays = codePays;
 	}
 	public String getPays() {
