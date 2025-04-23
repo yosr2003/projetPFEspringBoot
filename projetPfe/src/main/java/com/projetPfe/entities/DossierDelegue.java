@@ -13,7 +13,7 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class DossierDelegue {
+public abstract class DossierDelegue {
 	@Id
 	private String idDossier;
 	
@@ -143,7 +143,7 @@ public class DossierDelegue {
 	
     
     
-    
+	public abstract DossierDelegue dupliquerAvecNouveauId(String newId);
 
 
 	
