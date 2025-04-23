@@ -356,17 +356,17 @@ public class ProjetPfeApplication {
 		        ));
 		        
 		        
-		        Banque bnpParibas = new Banque("BNP Paribas", "BNPAFRPPXXX", france);
-		        Banque biat = new Banque("BIAT", "BIATTNTTXXX", tunisie);
-		        Banque deutscheBank = new Banque("Deutsche Bank", "DEUTDEFFXXX", allemagne);
-		        Banque bankOfAmerica = new Banque("Bank of America", "BOFAUS3NXXX", usa);
-		        Banque mufg = new Banque("MUFG", "BOTKJPJTXXX", japon);
-		        Banque santander = new Banque("Santander", "BSCHESMMXXX", espagne);
-		        Banque rbc = new Banque("RBC", "ROYCCAT2XXX", canada);
-		        Banque sgci = new Banque("Société Générale CI", "SGCICIABXXX", coteIvoire);
-		        Banque bancoDoBrasil = new Banque("Banco do Brasil", "BRASBRRJBHE", bresil);
-		        Banque atb = new Banque("ATB", "ATBKTNTTXXX", tunisie);
-		        Banque emiratesNBD = new Banque("Emirates NBD", "EBILAEADXXX", emirats);
+		        Banque bnpParibas = new Banque( "BNPAFRPPXXX","BNP Paribas", france);
+		        Banque biat = new Banque( "BIATTNTTXXX", "BIAT",tunisie);
+		        Banque deutscheBank = new Banque("DEUTDEFFXXX","Deutsche Bank",  allemagne);
+		        Banque bankOfAmerica = new Banque("BOFAUS3NXXX","Bank of America",  usa);
+		        Banque mufg = new Banque("BOTKJPJTXXX","MUFG",  japon);
+		        Banque santander = new Banque( "BSCHESMMXXX","Santander", espagne);
+		        Banque rbc = new Banque("ROYCCAT2XXX","RBC",  canada);
+		        Banque sgci = new Banque("SGCICIABXXX", "Société Générale CI", coteIvoire);
+		        Banque bancoDoBrasil = new Banque( "BRASBRRJBHE","Banco do Brasil", bresil);
+		        Banque atb = new Banque("ATBKTNTTXXX", "ATB", tunisie);
+		        Banque emiratesNBD = new Banque("EBILAEADXXX","Emirates NBD",  emirats);
 
 		        banqueRepository.saveAll(Arrays.asList(
 		            bnpParibas, biat, deutscheBank, bankOfAmerica, mufg,

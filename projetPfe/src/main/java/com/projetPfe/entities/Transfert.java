@@ -22,9 +22,7 @@ public class Transfert {
 	@Id
 	@Column(name = "ref_transfert")
 	private String refTransfert;
-	private String natureOperation;
 	
-
 	@Column(name = "montant_transfert")
 	private Double montantTransfert;
 	
@@ -47,7 +45,7 @@ public class Transfert {
 	private Double montantFrais;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "type_frais")
+	@Column(name = "type_frais",insertable=false, updatable=false)
 	private FraisType typeFrais;
 	
 	
@@ -172,13 +170,7 @@ public class Transfert {
 		throw new UnsupportedOperationException("Unimplemented method 'orElseGet'");
 	}
 
-	public String getNatureOperation() {
-		return natureOperation;
-	}
-
-	public void setNatureOperation(String natureOperation) {
-		this.natureOperation = natureOperation;
-	}
+	
 
 
 	public Double getMontantFrais() {
@@ -219,9 +211,5 @@ public class Transfert {
 	
 
 
-
-
-	
-/// getters and setters 
 
 }
