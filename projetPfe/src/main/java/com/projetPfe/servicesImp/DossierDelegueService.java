@@ -1,5 +1,6 @@
 package com.projetPfe.servicesImp;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,9 +96,37 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 
 
 
-	public ResponseEntity<?> cloturerDossier(DossierDelegue d, String id) {
-		// TODO Auto-generated method stub
-		return null;
+	@Override
+	public ResponseEntity<Map<String, Object>> cloturerDossier(String id, LocalDate dateCloture, String motifcloture) {
+	    Map<String, Object> response = new HashMap<>();
+
+	    Optional<DossierDelegue> optionalDossier = dossierDelegueRepo.findById(id);
+	    if (optionalDossier.isEmpty()) {
+	        response.put("header", new ResponseHeaderDTO(404, "NOT_FOUND", "Dossier non trouvé"));
+	        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	    }
+
+	    DossierDelegue dossier = optionalDossier.get();
+
+	    if (!dossier.getEtatDossier().equals(EtatDoss.VALIDE)) {
+	        response.put("header", new ResponseHeaderDTO(400, "BAD_REQUEST", "Le dossier n'est pas validé"));
+	        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	    }
+
+	    if (dateCloture != null && dateCloture.isAfter(dossier.getDateExpiration())) {
+	        response.put("header", new ResponseHeaderDTO(400, "BAD_REQUEST", "La date de clôture dépasse la date d'expiration"));
+	        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	    }
+
+	    dossier.setDateCloture(dateCloture);
+	    dossier.setMotifcloture(motifcloture);
+	    dossier.setEtatDossier(EtatDoss.CLOTURE);
+
+	    dossierDelegueRepo.save(dossier);
+
+	    response.put("header", new ResponseHeaderDTO(200, "SERVICE_OK", "Clôturé avec succès"));
+	    response.put("body", new ResponseBodyDTO(dossier));
+	    return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 
