@@ -18,34 +18,21 @@ public class EtatDeclarationBCT {
 	@Lob
 	private byte[] contenuPdf; 
 	private String trimestre;
-	private String TypeDeclaration;
-	private int annee;
 	
 	@OneToMany(mappedBy = "etatDeclaration")
 	private List<Transfert> transferts;
 
-	public String getTypeDeclaration() {
-		return TypeDeclaration;
-	}
-	public void setTypeDeclaration(String typeDeclaration) {
-		TypeDeclaration = typeDeclaration;
-	}
-	public int getAnnee() {
-		return annee;
-	}
-	public void setAnnee(int annee) {
-		this.annee = annee;
-	}
 
-	public EtatDeclarationBCT(String trimestre, String typeDeclaration, int annee) {
+
+
+	public EtatDeclarationBCT(String trimestre) {
 		super();
 		this.trimestre = trimestre;
-		TypeDeclaration = typeDeclaration;
-		this.annee = annee;
+
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(TypeDeclaration, annee, trimestre);
+		return Objects.hash(trimestre);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -56,8 +43,7 @@ public class EtatDeclarationBCT {
 		if (getClass() != obj.getClass())
 			return false;
 		EtatDeclarationBCT other = (EtatDeclarationBCT) obj;
-		return Objects.equals(TypeDeclaration, other.TypeDeclaration) && annee == other.annee
-				&& Objects.equals(trimestre, other.trimestre);
+		return Objects.equals(trimestre, other.trimestre);
 	}
 
 	@Lob

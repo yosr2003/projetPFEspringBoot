@@ -26,8 +26,6 @@ public class Swift {
 	@Column(name = "txtmsg", columnDefinition = "TEXT")
 	private String txtmsg;
 	private String format;
-	@Enumerated(EnumType.STRING)
-	private EcodeOp codeOperationBancaire;
 	@Lob
     private byte[] pdfgen;
 	
@@ -84,24 +82,7 @@ public class Swift {
 		this.pdfgen = pdfgen;
 	}
 
-	public EcodeOp getCodeOperationBancaire() {
-		return codeOperationBancaire;
-	}
-	public void setCodeOperationBancaire(EcodeOp codeOperationBancaire) {
-		this.codeOperationBancaire = codeOperationBancaire;
-	}
-	public Swift(int idSwift, String typemsg, LocalDateTime datgen, String txtmsg, String format,
-			EcodeOp codeOperationBancaire, Transfert transfert, byte[] pdfgen) {
-		super();
-		this.idSwift = idSwift;
-		this.typemsg = typemsg;
-		this.datgen = datgen;
-		this.txtmsg = txtmsg;
-		this.format = format;
-		this.codeOperationBancaire = codeOperationBancaire;
-		this.transfert = transfert;
-		this.pdfgen = pdfgen;
-	}
+
 
 
 }

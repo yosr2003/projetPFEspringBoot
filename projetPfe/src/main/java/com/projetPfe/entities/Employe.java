@@ -15,7 +15,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.Email;
 
 @Entity
-public class Utilisateur {
+public class Employe {
 	
 	
 		@Id
@@ -98,7 +98,7 @@ public class Utilisateur {
 
 
 
-		public Utilisateur() {
+		public Employe() {
 			super();
 		}
 

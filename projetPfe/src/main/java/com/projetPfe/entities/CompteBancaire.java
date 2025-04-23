@@ -21,18 +21,13 @@ public class CompteBancaire {
 	private String NumeroCompte;
 	
 	private Double montant;
-	//private String Devise ;
-	private String Banque;
-	private String BIC;
-	private String pays;
-	private int codePays;
-	
-	
-	
-///relations
+
 	@ManyToOne
 	@JoinColumn(name = "Participant_id")
 	private Participant participant;
+	@ManyToOne
+	@JoinColumn(name = "Banque_id")
+	private Banque banque;
 	
 	@OneToMany(mappedBy = "CompteBancaire_cible")
 	private List<Transfert> transfertsRecues;
@@ -50,26 +45,12 @@ public class CompteBancaire {
 		super();
 	}
 
-	public CompteBancaire(String numeroCompte, Double montant, String banque, String bIC, String pays,
-			Participant participant) {
-		super();
-		NumeroCompte = numeroCompte;
-		this.montant = montant;
 
-		Banque = banque;
-		BIC = bIC;
-		this.pays = pays;
-		this.participant = participant;
-	}
-	///constructors
 
 ///getters and setters
 	
 	public String getNumeroCompte() {
 		return NumeroCompte;
-	}
-	public void setCodePays(int codePays) {
-		this.codePays = codePays;
 	}
 
 	public TauxChange getDevise() {
@@ -93,27 +74,7 @@ public class CompteBancaire {
 	public void setParticipant(Participant participant) {
 		this.participant = participant;
 	}
-	public String getBanque() {
-		return Banque;
-	}
-	public void setBanque(String banque) {
-		Banque = banque;
-	}
-	public String getBIC() {
-		return BIC;
-	}
-	public void setBIC(String bIC) {
-		BIC = bIC;
-	}
-	public String getPays() {
-		return pays;
-	}
-	public void setPays(String pays) {
-		this.pays = pays;
-	}
-	public int getCodePays() {
-		return codePays;
-	}
+
 
 	
 	

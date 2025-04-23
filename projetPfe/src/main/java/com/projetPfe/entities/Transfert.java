@@ -1,6 +1,5 @@
 package com.projetPfe.entities;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.http.ResponseEntity;
@@ -10,22 +9,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+
 
 @Entity
-@Table (name = "transfert")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Transfert {
 	@Id
 	@Column(name = "ref_transfert")
 	private String refTransfert;
 	private String natureOperation;
 	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "type_transfert")
-	private TransfertType typeTransfert;
 
 	@Column(name = "montant_transfert")
 	private Double montantTransfert;
@@ -44,16 +42,6 @@ public class Transfert {
 		this.dateEnvoie = dateEnvoie;
 	}
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "etat")
-	private EtatTransfert etat;
-	
-
-
-
-	@Enumerated(EnumType.STRING)
-	@Column(name = "nature_transfert")
-	private TransfertNature natureTransfert;
 	
 	@Column(name = "montantFrais")
 	private Double montantFrais;
@@ -73,10 +61,7 @@ public class Transfert {
 	@JoinColumn(name = "CompteBancaire_cible_id")
 	private CompteBancaire CompteBancaire_cible;
 	
-	@ManyToOne
-	@JoinColumn(name = "idDossDelegue")
-	private DossierDelegue dossierDelegue;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "idEtatDeclaration")
 	private EtatDeclarationBCT etatDeclaration;
@@ -86,13 +71,7 @@ public class Transfert {
 	private Swift swift;
 	
 	
-	
-	
 
-
-
-
-	
 
 	public Transfert() {
 		super();
@@ -129,14 +108,6 @@ public class Transfert {
 
 
 
-	public TransfertNature getNatureTransfert() {
-		return natureTransfert;
-	}
-
-
-	public void setNatureTransfert(TransfertNature natureTransfert) {
-		this.natureTransfert = natureTransfert;
-	}
 
 
 	public Double getFrais() {
@@ -159,18 +130,7 @@ public class Transfert {
 	}
 
 
-	public EtatTransfert getEtat() {
-		return etat;
-	}
 
-
-	public void setEtat(EtatTransfert etat) {
-		this.etat = etat;
-	}
-
-	public void setTypeTransfert(TransfertType typeTransfert) {
-		this.typeTransfert = typeTransfert;
-	}
 
 	public CompteBancaire getCompteBancaire_source() {
 		return CompteBancaire_source;
@@ -188,14 +148,6 @@ public class Transfert {
 		CompteBancaire_cible = compteBancaire_cible;
 	}
 
-	
-	public void setDossierDelegue(DossierDelegue dossierDelegue) {
-		this.dossierDelegue = dossierDelegue;
-	}
-///boucle infinie 
-//	public Swift getSwift() {
-//		return swift;
-//	}
 
 	public void setSwift(Swift swift) {
 		this.swift = swift;
@@ -225,13 +177,9 @@ public class Transfert {
 
 	
 	
-	public TransfertType getTypeTransfert() {
-		return typeTransfert;
-	}
 
-	public DossierDelegue getDossierDelegue() {
-		return dossierDelegue;
-	}
+
+
 
 	
 /// getters and setters 
