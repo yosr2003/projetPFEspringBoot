@@ -5,8 +5,12 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.projetPfe.entities.CompteBancaire;
+import com.projetPfe.entities.DossierDelegue;
+import com.projetPfe.entities.FraisType;
 import com.projetPfe.entities.TauxChange;
 import com.projetPfe.entities.Transfert;
+import com.projetPfe.entities.TransfertType;
 @Service
 public interface TransfertServiceI {
 
@@ -15,5 +19,9 @@ public interface TransfertServiceI {
 	Optional<Object> calculerFrais(Double montant, String deviseCible, String deviseSource, String typefrais);
 
 	Optional<TauxChange> getTauxChangeByDevise(String devise);
+
+	Transfert creerTransfert(Double montant, CompteBancaire compteSource, CompteBancaire compteCible,
+			FraisType typeFrais, DossierDelegue dossierDelegue, String natureOperation, TransfertType type)
+			throws Exception;
 
 }

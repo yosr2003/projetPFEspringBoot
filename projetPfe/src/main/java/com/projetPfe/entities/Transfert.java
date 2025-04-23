@@ -49,6 +49,11 @@ public class Transfert {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "type_frais")
 	private FraisType typeFrais;
+	
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "type_frais")
+	private EtatTransfert EtatTransfert;
 
 	@Column(name="montant_final")
 	private double MontantFinal;
@@ -173,6 +178,41 @@ public class Transfert {
 
 	public void setNatureOperation(String natureOperation) {
 		this.natureOperation = natureOperation;
+	}
+
+
+	public Double getMontantFrais() {
+		return montantFrais;
+	}
+
+
+	public void setMontantFrais(Double montantFrais) {
+		this.montantFrais = montantFrais;
+	}
+
+
+	public EtatTransfert getEtatTransfert() {
+		return EtatTransfert;
+	}
+
+
+	public void setEtatTransfert(EtatTransfert etatTransfert) {
+		EtatTransfert = etatTransfert;
+	}
+
+
+	public EtatDeclarationBCT getEtatDeclaration() {
+		return etatDeclaration;
+	}
+
+
+	public void setEtatDeclaration(EtatDeclarationBCT etatDeclaration) {
+		this.etatDeclaration = etatDeclaration;
+	}
+
+
+	public Swift getSwift() {
+		return swift;
 	}
 
 	
