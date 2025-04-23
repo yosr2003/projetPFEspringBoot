@@ -10,6 +10,10 @@ public class TransfertPonctuel extends Transfert {
 		return typeTransfert;
 	}
 
+	public TransfertPonctuel() {
+		super();
+	}
+
 	public void setTypeTransfert(TransfertType typeTransfert) {
 		this.typeTransfert = typeTransfert;
 	}
