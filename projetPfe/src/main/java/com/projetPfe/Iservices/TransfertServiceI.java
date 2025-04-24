@@ -3,6 +3,7 @@ package com.projetPfe.Iservices;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.projetPfe.entities.CompteBancaire;
@@ -23,5 +24,9 @@ public interface TransfertServiceI {
 	Transfert creerTransfert(Double montant, CompteBancaire compteSource, CompteBancaire compteCible,
 			FraisType typeFrais, DossierDelegue dossierDelegue, String natureOperation, TransfertType type)
 			throws Exception;
+
+	List<Transfert> AlerteTransfertAttente();
+
+	ResponseEntity<?> consulterTransfert(String refTransfert);
 
 }

@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.projetPfe.Iservices.TransfertServiceI;
@@ -19,6 +21,7 @@ import com.projetPfe.entities.DossierFormationProfessionnelle;
 import com.projetPfe.entities.DossierInvestissement;
 import com.projetPfe.entities.DossierScolarité;
 import com.projetPfe.entities.DossierSoinMedical;
+import com.projetPfe.entities.EtatDoss;
 import com.projetPfe.entities.EtatTransfert;
 import com.projetPfe.entities.FraisType;
 import com.projetPfe.entities.TauxChange;
@@ -185,6 +188,22 @@ public class TransfertServiceImp implements TransfertServiceI {
 	    return TransfertRepository.save(transfert);
 	}
 
-	
+
+	   @Override
+ public List<Transfert> AlerteTransfertAttente() {
+     return TransfertRepository.findByEtat(EtatTransfert.TRAITEMENT);
+ }
+
+
+
+	@Override
+	public ResponseEntity<?> consulterTransfert(String refTransfert) {
+		Optional<Transfert> t=TransfertRepository.findByrefTransfert(refTransfert);
+		if(t.isPresent()) {
+			return ResponseEntity.ok()
+	                .body(t);
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Transfert introuvable");
+	}
 	
 }
