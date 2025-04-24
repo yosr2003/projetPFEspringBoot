@@ -54,7 +54,7 @@ public class TransfertController {
     }
 	
 	
-	@PostMapping("/creer")
+	@PostMapping
 	public ResponseEntity<?> creerTransfert(@RequestBody Map<String, Object> body) {
 	    try {
 	        Double montant = Double.valueOf(body.get("montant").toString());

@@ -26,6 +26,14 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.projetPfe.Iservices.EtatDeclarationIservice;
+import com.projetPfe.entities.DossierContratCommercial;
+import com.projetPfe.entities.DossierDelegue;
+import com.projetPfe.entities.DossierEconomieSurSalaire;
+import com.projetPfe.entities.DossierEmpreint;
+import com.projetPfe.entities.DossierFormationProfessionnelle;
+import com.projetPfe.entities.DossierInvestissement;
+import com.projetPfe.entities.DossierScolarité;
+import com.projetPfe.entities.DossierSoinMedical;
 import com.projetPfe.entities.EtatDeclarationBCT;
 import com.projetPfe.entities.Participant;
 import com.projetPfe.entities.PersonneMorale;
@@ -46,7 +54,7 @@ public class EtatDeclarationBCTServiceImp implements EtatDeclarationIservice {
 	public ResponseEntity<?> test(String trimestre, String typeDeclaration) throws Exception {
 		List<EtatDeclarationBCT> decalarations=etatDecRepo.findAll();
 		EtatDeclarationBCT etat = new EtatDeclarationBCT(trimestre);
-		if(decalarations.contains(etat)) {return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("il y'a deja un etat de declaration pour ce type de transferts ce trimestre");}
+		//if(decalarations.contains(etat)) {return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("il y'a deja un etat de declaration pour ce type de transferts ce trimestre");}
 		List<Transfert> transferts = filtreTransfertsParTrimestre(trimestre,typeDeclaration);
 		StringBuilder xml = genererContenuXml(trimestre,transferts);
 	       if(xml!=null) {
@@ -136,9 +144,6 @@ public class EtatDeclarationBCTServiceImp implements EtatDeclarationIservice {
 
 			    xml.append("</etatDeclaration>");
 
-			   // etat.setContenuTexte(xml.toString());
-			    //etatDecRepo.save(etat);
-
 			    return xml;}
 			return null;
 	}
@@ -175,14 +180,33 @@ public class EtatDeclarationBCTServiceImp implements EtatDeclarationIservice {
 	        })
 	        //.filter(t -> t.getEtat() == EtatDoss.ENOVYE)
 	        .filter(t -> {
-	            if (((TransfertPermanent)t).getDossierDelegue() != null) {
-	                return typeDeclaration.equals(((TransfertPonctuel)t).getTypeTransfert().toString());
+	            if (t instanceof TransfertPonctuel tp) {
+	                return typeDeclaration.equals(tp.getTypeTransfert().toString());
 	                
 	               
 	            } 
-//	            else {
-//	                return typeDeclaration.equals(t.getTypeTransfert().toString());
-//	            }
+	            else if (t instanceof TransfertPermanent tp){
+	            	DossierDelegue dossier = tp.getDossierDelegue();
+	            	 switch (typeDeclaration) {
+	                 case "COMMERCIAL":
+	                     return dossier instanceof DossierContratCommercial;
+	                 case "ECONOMIE_SUR_SALAIRE":
+	                     return dossier instanceof DossierEconomieSurSalaire;
+	                 case "EMPREINT":
+	                     return dossier instanceof DossierEmpreint;
+	                 case "FORMATION_PROFESSIONNELLE":
+	                     return dossier instanceof DossierFormationProfessionnelle;
+	                 case "IVESTISSMENT":
+	                     return dossier instanceof DossierInvestissement;
+	                 case "SCOLARITE":
+	                     return dossier instanceof DossierScolarité;
+	                 case "SOINS_MEDICAL":
+	                     return dossier instanceof DossierSoinMedical;
+	                 
+	                 default:
+	                     return false;
+	             }
+	            }
 				return false;
 	        })
 	        .collect(Collectors.toList());

@@ -23,10 +23,10 @@ public class EtatDeclarationBCT {
 	@JsonIgnore
 	@OneToMany(mappedBy = "etatDeclaration")
 	private List<Transfert> transferts;
-	@Lob
-	private String contenuTexte;
 	
-	private String typeDeclaration;
+	private int annee;
+
+	
 
 	
 
@@ -34,10 +34,14 @@ public class EtatDeclarationBCT {
 		super();
 	}
 	
+	
+
 	public EtatDeclarationBCT(String trimestre) {
 		super();
 		this.trimestre = trimestre;
 	}
+
+
 
 	@Override
 	public int hashCode() {
@@ -74,24 +78,12 @@ public class EtatDeclarationBCT {
 	public void setTrimestre(String trimestre) {
 		this.trimestre = trimestre;
 	}
-	public void setContenuTexte(String contenuTexte) {
-		this.contenuTexte = contenuTexte;
-	}
-
-	public String getContenuTexte() {
-		return contenuTexte;
-	}
+	
 	public void setTransferts(List<Transfert> transferts) {
 		this.transferts = transferts;
 	}
 
-	public String getTypeDeclaration() {
-		return typeDeclaration;
-	}
 
-	public void setTypeDeclaration(String typeDeclaration) {
-		this.typeDeclaration = typeDeclaration;
-	}
 	
 	
 
