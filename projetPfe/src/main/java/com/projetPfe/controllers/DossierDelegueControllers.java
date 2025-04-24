@@ -63,9 +63,12 @@ public class DossierDelegueControllers {
 	 @PutMapping("/scolarite/prolonger/{id}")
 	 public ResponseEntity<?> prolongerDossierScolarite(
 	         @PathVariable String id,
-	         @RequestBody DossierScolarité input) {
-	     return dossierScolariteServiceImp.prolongerDossierScolarite(id, input);
+	         @RequestParam("dateProlongation") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateProlongation,
+	         @RequestParam("motif") String motif) {
+
+	     return dossierScolariteServiceImp.prolongerDossierScolarite(id, dateProlongation, motif);
 	 }
+
 	 @PostMapping("/rapportMouvements/{id}")
 		public ResponseEntity<?> genereRapportMouvement(@PathVariable("id") String id) {
 		 try {

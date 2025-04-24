@@ -19,7 +19,7 @@ import jakarta.persistence.OneToOne;
 public class Swift {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int idSwift;
+	private Long idSwift;
 	private String typemsg;
 	private LocalDateTime datgen;
 	@Lob // Indique que c'est un Large Object (long texte ou binaire)
@@ -45,10 +45,10 @@ public class Swift {
 	public void setFormat(String format) {
 		this.format = format;
 	}
-	public int getIdSwift() {
+	public Long getIdSwift() {
 		return idSwift;
 	}
-	public void setIdSwift(int idSwift) {
+	public void setIdSwift(Long idSwift) {
 		this.idSwift = idSwift;
 	}
 	public String getTypemsg() {

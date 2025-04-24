@@ -57,51 +57,27 @@ public class TransfertController {
 	@PostMapping("/creer")
 	public ResponseEntity<?> creerTransfert(@RequestBody Map<String, Object> body) {
 	    try {
-	        ObjectMapper mapper = new ObjectMapper();
-
 	        Double montant = Double.valueOf(body.get("montant").toString());
 
-	        // Compte source et cible
-	        CompteBancaire compteSource = mapper.convertValue(body.get("compteSource"), CompteBancaire.class);
-	        CompteBancaire compteCible = mapper.convertValue(body.get("compteCible"), CompteBancaire.class);
+	        String numeroCompteSource = body.get("numeroCompteSource").toString();
+	        String numeroCompteCible = body.get("numeroCompteCible").toString();
 
-	        // Type de frais
 	        FraisType typeFrais = FraisType.valueOf(body.get("typeFrais").toString());
 
-	        // Nature opération pour TransfertPermanent
 	        String natureOperation = body.get("natureOperation") != null ? body.get("natureOperation").toString() : null;
-
-	        // Type pour TransfertPonctuel
 	        TransfertType type = body.get("type") != null ? TransfertType.valueOf(body.get("type").toString()) : null;
 
-	    
-	        DossierDelegue dossierDelegue = null;
-	        if (body.get("dossierDelegue") != null) {
-	            Map<String, Object> dossierMap = (Map<String, Object>) body.get("dossierDelegue");
-	            String idDossier = dossierMap.get("idDossier").toString(); // on garde comme String
-	            // Appel du service ou repository pour récupérer le vrai objet
-	            Optional<DossierDelegue> optionalDossier = java.util.Optional.empty();
-				try {
-					optionalDossier = dossierDelegueRepository.findById(idDossier);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	            if (optionalDossier.isPresent()) {
-	                dossierDelegue = optionalDossier.get();
-	            } else {
-	                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dossier délégué non trouvé avec ID : " + idDossier);
-	            } // méthode qui retourne un objet concret
-
+	        String idDossierDelegue = null;
+	        if (body.get("idDossierDelegue") != null) {
+	            idDossierDelegue = body.get("idDossierDelegue").toString();
 	        }
 
-	        // Appel au service
 	        Transfert transfert = transfertService.creerTransfert(
 	                montant,
-	                compteSource,
-	                compteCible,
+	                numeroCompteSource,
+	                numeroCompteCible,
 	                typeFrais,
-	                dossierDelegue,
+	                idDossierDelegue,
 	                natureOperation,
 	                type
 	        );
@@ -112,6 +88,7 @@ public class TransfertController {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erreur : " + e.getMessage());
 	    }
 	}
+
 
 
 

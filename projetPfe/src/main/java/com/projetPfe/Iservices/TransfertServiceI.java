@@ -21,12 +21,17 @@ public interface TransfertServiceI {
 
 	Optional<TauxChange> getTauxChangeByDevise(String devise);
 
-	Transfert creerTransfert(Double montant, CompteBancaire compteSource, CompteBancaire compteCible,
-			FraisType typeFrais, DossierDelegue dossierDelegue, String natureOperation, TransfertType type)
-			throws Exception;
-
 	List<Transfert> AlerteTransfertAttente();
 
 	ResponseEntity<?> consulterTransfert(String refTransfert);
+
+
+
+	Transfert creerTransfert(Double montant, String numeroCompteSource, String numeroCompteCible, FraisType typeFrais,
+			String idDossierDelegue, String natureOperation, TransfertType type) throws Exception;
+
+
+
+	
 
 }

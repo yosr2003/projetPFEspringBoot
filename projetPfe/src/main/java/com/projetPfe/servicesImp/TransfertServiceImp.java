@@ -94,37 +94,35 @@ public class TransfertServiceImp implements TransfertServiceI {
 	}
 	
 	@Override
-	public Transfert creerTransfert(Double montant,CompteBancaire compteSource,CompteBancaire compteCible,
+	public Transfert creerTransfert(Double montant,
+	                                String numeroCompteSource,
+	                                String numeroCompteCible,
 	                                FraisType typeFrais,
-	                                DossierDelegue dossierDelegue,
+	                                String idDossierDelegue,
 	                                String natureOperation,
-	                                TransfertType type) throws Exception 
-	                                {
-	                                
+	                                TransfertType type) throws Exception {
 
-	
-	    if (compteSource == null || compteSource.getNumeroCompte() == null) {
+	    if (numeroCompteSource == null || numeroCompteSource.isEmpty()) {
 	        throw new Exception("Numéro de compte source manquant");
 	    }
 
-	    if (compteCible == null || compteCible.getNumeroCompte() == null) {
+	    if (numeroCompteCible == null || numeroCompteCible.isEmpty()) {
 	        throw new Exception("Numéro de compte cible manquant");
 	    }
 
-	
-	    compteSource = CompteBancaireRepository.findById(compteSource.getNumeroCompte())
+	    CompteBancaire compteSource = CompteBancaireRepository.findById(numeroCompteSource)
 	            .orElseThrow(() -> new Exception("Compte source introuvable"));
-	    compteCible = CompteBancaireRepository.findById(compteCible.getNumeroCompte())
+	    CompteBancaire compteCible = CompteBancaireRepository.findById(numeroCompteCible)
 	            .orElseThrow(() -> new Exception("Compte cible introuvable"));
 
-	    if (dossierDelegue != null && dossierDelegue.getIdDossier() != null) {
-	        dossierDelegue = DossierDelegueRepository.findById(dossierDelegue.getIdDossier())
+	    DossierDelegue dossierDelegue = null;
+
+	    if (idDossierDelegue != null && !idDossierDelegue.isEmpty()) {
+	        dossierDelegue = DossierDelegueRepository.findById(idDossierDelegue)
 	                .orElseThrow(() -> new Exception("Dossier Délégué introuvable"));
 	    }
 
-
 	    String prefix = "TR";
-
 	    if (dossierDelegue != null) {
 	        if (dossierDelegue instanceof DossierScolarité) {
 	            prefix = "TSC";
@@ -143,9 +141,7 @@ public class TransfertServiceImp implements TransfertServiceI {
 	        }
 	    }
 
-
 	    String refTransfert = prefix + String.valueOf((int) (Math.random() * 1000000));
-
 
 	    Transfert transfert = (dossierDelegue != null)
 	            ? new TransfertPermanent()
@@ -166,7 +162,6 @@ public class TransfertServiceImp implements TransfertServiceI {
 	    transfert.setCompteBancaire_source(compteSource);
 	    transfert.setCompteBancaire_cible(compteCible);
 	    transfert.setEtatTransfert(EtatTransfert.TRAITEMENT);
-
 
 	    TauxChange deviseSource = compteSource.getDevise();
 	    TauxChange deviseCible = compteCible.getDevise();
