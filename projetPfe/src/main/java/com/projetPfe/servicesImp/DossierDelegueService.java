@@ -219,7 +219,7 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 	            " au " + dossier.getDateExpiration().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
 	    pdfDoc.add(new Paragraph("N° Dossier : " + dossier.getIdDossier()));
 	    pdfDoc.add(new Paragraph("Pays du bénéficiaire : " +
-	            transferts.get(0).getCompteBancaire_cible().getBanque().getPays()));
+	            transferts.get(0).getCompteBancaire_cible().getBanque().getPays().getPays()));
 	    pdfDoc.add(Chunk.NEWLINE);
 
 	    PdfPTable table = new PdfPTable(6);
@@ -291,9 +291,9 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 	}
 
         private void addHeaderRow(PdfPTable table,boolean isPersonnemorale) {
-          table.addCell("Date");
+          table.addCell("Date création");
           table.addCell("Nature d'operation");
-          table.addCell("Monatant DT");
+          table.addCell("Montant DT");
           table.addCell("N° compte donneur d'ordre");
           table.addCell(isPersonnemorale ? "Raison Sociale" : "Nom et prénom du donneur d'ordre");
           table.addCell("Bénéficiaire");

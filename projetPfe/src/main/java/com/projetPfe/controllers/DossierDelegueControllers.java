@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.projetPfe.Iservices.dossierScolariteIService;
 import com.projetPfe.entities.DossierDelegue;
 import com.projetPfe.entities.DossierScolarité;
 import com.projetPfe.servicesImp.DossierDelegueService;
@@ -29,7 +31,7 @@ public class DossierDelegueControllers {
 	@Autowired
 	private DossierDelegueService dossDelService;
 	@Autowired
-	private DossierScolariteServiceImp dossierScolariteServiceImp;
+	private dossierScolariteIService dossierScolariteServiceImp;
 	
 
 	 @GetMapping
@@ -64,6 +66,16 @@ public class DossierDelegueControllers {
 	         @RequestBody DossierScolarité input) {
 	     return dossierScolariteServiceImp.prolongerDossierScolarite(id, input);
 	 }
+	 @PostMapping("/rapportMouvements/{id}")
+		public ResponseEntity<?> genereRapportMouvement(@PathVariable("id") String id) {
+		 try {
+			return dossDelService.genererRapportMouvement(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(" Une erreur est survenue lors de la génération du dossier de mouvements");
+			
+		} 
+		}
 
 	 
 	 
