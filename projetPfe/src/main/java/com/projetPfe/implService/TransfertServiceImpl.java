@@ -55,7 +55,7 @@ public class TransfertServiceImpl implements ITansfertService {
 	 public Transfert creerTransfert(Double montant, CompteBancaire compteSource, CompteBancaire compteCible,
 	                                    FraisType typeFrais, DossierDelegue dossierDelegue,String natureOperation,TransfertType type) throws Exception {
 
-	        // ⚠️ Validation des IDs
+
 	        if (compteSource == null || compteSource.getNumeroCompte() == null) {
 	            throw new Exception("Numéro de compte source manquant");
 	        }
@@ -64,23 +64,23 @@ public class TransfertServiceImpl implements ITansfertService {
 	            throw new Exception("Numéro de compte cible manquant");
 	        }
 
-	        // 🔄 Rechargement des comptes complets
+
 	        compteSource = compteBancaireRepository.findById(compteSource.getNumeroCompte())
 	                .orElseThrow(() -> new Exception("Compte source introuvable"));
 
 	        compteCible = compteBancaireRepository.findById(compteCible.getNumeroCompte())
 	                .orElseThrow(() -> new Exception("Compte cible introuvable"));
 
-	        // 🔄 Recharger le dossier délégué s'il est présent
+	 
 	        if (dossierDelegue != null && dossierDelegue.getIdDossier() != null) {
 	            dossierDelegue = DossierDelegueRepository.findById(dossierDelegue.getIdDossier())
 	                    .orElseThrow(() -> new Exception("Dossier Délégué introuvable"));
 	        }
 
-	        // 📄 Création du transfert
+
 	        Transfert transfert = new Transfert();
 
-	        // Génération référence avec préfixe selon le type de dossier
+	  
 	        String prefix = "TR";
 	        if (dossierDelegue != null && dossierDelegue.getType() != null) {
 	            switch (dossierDelegue.getType()) {
