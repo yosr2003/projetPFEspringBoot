@@ -2,6 +2,10 @@ package com.projetPfe.entities;
 
 import java.time.LocalDateTime;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+
 import jakarta.persistence.Entity;
 
 @Entity
@@ -28,5 +32,12 @@ public DossierSoinMedical dupliquerAvecNouveauId(String newId) {
     copie.setRapportMouvement(this.getRapportMouvement());
     copie.setTypeTraitement(this.typeTraitement);
     return copie;
+}
+
+@Override
+public void ajouterInfosSpecifiquesAuRapport(Document doc) throws DocumentException {
+	 doc.add(new Paragraph("Type de dossier : SOIN_MEDICAL"));
+	    doc.add(new Paragraph("Type de traitement : " + this.getTypeTraitement()));
+	
 }
 }

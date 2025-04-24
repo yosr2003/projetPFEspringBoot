@@ -2,6 +2,10 @@ package com.projetPfe.entities;
 
 import java.time.LocalDateTime;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+
 import jakarta.persistence.Entity;
 
 @Entity
@@ -29,4 +33,10 @@ public DossierEmpreint dupliquerAvecNouveauId(String newId) {
     copie.setMontantEmpreint(this.montantEmpreint);
     return copie;
 }
+@Override
+public void ajouterInfosSpecifiquesAuRapport(Document doc) throws DocumentException {
+    doc.add(new Paragraph("Type de dossier : EMPRUNT"));
+    doc.add(new Paragraph("Montant emprunté : " + this.getMontantEmpreint()));
+}
+
 }

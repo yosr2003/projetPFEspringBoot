@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -146,6 +148,7 @@ public abstract class DossierDelegue {
     
     
 	public abstract DossierDelegue dupliquerAvecNouveauId(String newId);
+	public abstract void ajouterInfosSpecifiquesAuRapport(Document doc) throws DocumentException;
 
 
 	
