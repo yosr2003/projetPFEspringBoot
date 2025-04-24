@@ -11,7 +11,8 @@ import com.projetPfe.entities.Transfert;
 
 public interface TransfertRepository extends JpaRepository<Transfert, String>{
 
-	List<Transfert> findByEtat(EtatTransfert traitement);
+	List<Transfert> findByEtatTransfert(EtatTransfert traitement);
+
 
 	Optional<Transfert> findByrefTransfert(String refTransfert);
 

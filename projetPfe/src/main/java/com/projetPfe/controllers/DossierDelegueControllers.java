@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.projetPfe.Iservices.IserviceDossierDelegue;
 import com.projetPfe.Iservices.dossierScolariteIService;
-import com.projetPfe.entities.DossierDelegue;
+
 import com.projetPfe.entities.DossierScolarité;
-import com.projetPfe.servicesImp.DossierDelegueService;
-import com.projetPfe.servicesImp.DossierScolariteServiceImp;
+
 
 @CrossOrigin(origins = "*")
 
@@ -29,7 +29,7 @@ import com.projetPfe.servicesImp.DossierScolariteServiceImp;
 @RequestMapping("/dossiersDelegues")
 public class DossierDelegueControllers {
 	@Autowired
-	private DossierDelegueService dossDelService;
+	private IserviceDossierDelegue dossDelService;
 	@Autowired
 	private dossierScolariteIService dossierScolariteServiceImp;
 	

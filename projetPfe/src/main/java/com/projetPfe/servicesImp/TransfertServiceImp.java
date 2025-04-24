@@ -191,7 +191,7 @@ public class TransfertServiceImp implements TransfertServiceI {
 
 	   @Override
  public List<Transfert> AlerteTransfertAttente() {
-     return TransfertRepository.findByEtat(EtatTransfert.TRAITEMENT);
+     return TransfertRepository.findByEtatTransfert(EtatTransfert.TRAITEMENT);
  }
 
 

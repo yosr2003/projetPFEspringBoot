@@ -53,7 +53,7 @@ public class Transfert {
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "EtatTransfert")
-	private EtatTransfert EtatTransfert;
+	private EtatTransfert etatTransfert;
 
 	@Column(name="montant_final")
 	private double MontantFinal;
@@ -186,12 +186,12 @@ public class Transfert {
 
 
 	public EtatTransfert getEtatTransfert() {
-		return EtatTransfert;
+		return etatTransfert;
 	}
 
 
 	public void setEtatTransfert(EtatTransfert etatTransfert) {
-		EtatTransfert = etatTransfert;
+		etatTransfert = etatTransfert;
 	}
 
 
