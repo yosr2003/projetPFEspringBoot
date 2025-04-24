@@ -23,19 +23,21 @@ public class EtatDeclarationBCT {
 	@JsonIgnore
 	@OneToMany(mappedBy = "etatDeclaration")
 	private List<Transfert> transferts;
+	@Lob
+	private String contenuTexte;
 
+	
 
-
-
-	public EtatDeclarationBCT(String trimestre) {
+	public EtatDeclarationBCT() {
 		super();
-		this.trimestre = trimestre;
-
 	}
+	
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(trimestre);
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -48,12 +50,10 @@ public class EtatDeclarationBCT {
 		return Objects.equals(trimestre, other.trimestre);
 	}
 
-	@Lob
-	private String contenuTexte;
+	
 
-	public EtatDeclarationBCT() {
-		super();
-	}
+	
+	
 	public byte[] getContenuPdf() {
 		return contenuPdf;
 	}
