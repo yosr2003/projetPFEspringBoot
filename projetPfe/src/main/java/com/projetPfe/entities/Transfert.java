@@ -33,14 +33,7 @@ public class Transfert {
 	private LocalDateTime datecre;
 	private LocalDateTime dateEnvoie;
 
-	public LocalDateTime getDateEnvoie() {
-		return dateEnvoie;
-	}
-
-
-	public void setDateEnvoie(LocalDateTime dateEnvoie) {
-		this.dateEnvoie = dateEnvoie;
-	}
+	private String natureOperartion;
 
 	
 	@Column(name = "montantFrais")
@@ -84,6 +77,20 @@ public class Transfert {
 	
 
 /// getters and setters 
+	
+	public LocalDateTime getDateEnvoie() {
+		return dateEnvoie;
+	}
+
+
+	public String getNatureOperartion() {
+		return natureOperartion;
+	}
+
+
+	public void setDateEnvoie(LocalDateTime dateEnvoie) {
+		this.dateEnvoie = dateEnvoie;
+	}
 	public String getRefTransfert() {
 		return refTransfert;
 	}

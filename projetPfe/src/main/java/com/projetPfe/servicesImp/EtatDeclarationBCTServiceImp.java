@@ -31,6 +31,8 @@ import com.projetPfe.entities.Participant;
 import com.projetPfe.entities.PersonneMorale;
 import com.projetPfe.entities.PersonnePhysique;
 import com.projetPfe.entities.Transfert;
+import com.projetPfe.entities.TransfertPermanent;
+import com.projetPfe.entities.TransfertPonctuel;
 import com.projetPfe.repositories.EtatDeclaraionBCTRepository;
 import com.projetPfe.repositories.TransfertRepository;
 
@@ -43,7 +45,7 @@ public class EtatDeclarationBCTServiceImp implements EtatDeclarationIservice {
 	@Override
 	public ResponseEntity<?> test(String trimestre, String typeDeclaration) throws Exception {
 		List<EtatDeclarationBCT> decalarations=etatDecRepo.findAll();
-		EtatDeclarationBCT etat = new EtatDeclarationBCT(trimestre,typeDeclaration);
+		EtatDeclarationBCT etat = new EtatDeclarationBCT(trimestre);
 		if(decalarations.contains(etat)) {return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("il y'a deja un etat de declaration pour ce type de transferts ce trimestre");}
 		List<Transfert> transferts = filtreTransfertsParTrimestre(trimestre,typeDeclaration);
 		StringBuilder xml = genererContenuXml(trimestre,transferts);
@@ -118,7 +120,7 @@ public class EtatDeclarationBCTServiceImp implements EtatDeclarationIservice {
 			        xml.append("    <colonne7>").append(transfert.getMontantTransfert()).append("</colonne7>\n");
 			        
 
-		            xml.append("    <colonne8>").append(transfert.getNatureOperation()).append("</colonne8>\n");
+		            xml.append("    <colonne8>").append(transfert.getNatureOperartion()).append("</colonne8>\n");
 
 			        Participant beneficiaire = transfert.getCompteBancaire_cible().getParticipant();
 			        if (beneficiaire instanceof PersonneMorale) {
@@ -127,7 +129,7 @@ public class EtatDeclarationBCTServiceImp implements EtatDeclarationIservice {
 			            xml.append("    <colonne9>").append(((PersonnePhysique) beneficiaire).getNom()).append("</colonne9>\n");
 			        }
 
-		            xml.append("    <colonne10>").append(transfert.getCompteBancaire_cible().getCodePays()).append("</colonne10>\n");
+		            xml.append("    <colonne10>").append(transfert.getCompteBancaire_cible().getBanque().getPays().getCodePays()).append("</colonne10>\n");
 		            xml.append("    <colonne11>").append(beneficiaire.getAdresse()).append("</colonne11>\n");
 			        xml.append("</ligne>\n");
 			    }
@@ -173,12 +175,15 @@ public class EtatDeclarationBCTServiceImp implements EtatDeclarationIservice {
 	        })
 	        //.filter(t -> t.getEtat() == EtatDoss.ENOVYE)
 	        .filter(t -> {
-	            if (t.getDossierDelegue() != null) {
-	                return typeDeclaration.equals(t.getDossierDelegue().getType().toString());
+	            if (((TransfertPermanent)t).getDossierDelegue() != null) {
+	                return typeDeclaration.equals(((TransfertPonctuel)t).getTypeTransfert().toString());
+	                
 	               
-	            } else {
-	                return typeDeclaration.equals(t.getTypeTransfert().toString());
-	            }
+	            } 
+//	            else {
+//	                return typeDeclaration.equals(t.getTypeTransfert().toString());
+//	            }
+				return false;
 	        })
 	        .collect(Collectors.toList());
 	    }

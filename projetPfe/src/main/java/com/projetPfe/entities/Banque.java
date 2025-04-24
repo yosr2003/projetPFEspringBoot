@@ -20,6 +20,8 @@ public class Banque {
 	@ManyToOne
 	@JoinColumn(name = "pays_id")
 	private Pays pays;
+	
+	
 	public Banque(String bIC, String banque, List<CompteBancaire> compteBancaires, Pays pays) {
 		super();
 		BIC = bIC;

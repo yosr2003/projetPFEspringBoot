@@ -25,6 +25,8 @@ public class EtatDeclarationBCT {
 	private List<Transfert> transferts;
 	@Lob
 	private String contenuTexte;
+	
+	private String typeDeclaration;
 
 	
 
@@ -32,6 +34,10 @@ public class EtatDeclarationBCT {
 		super();
 	}
 	
+	public EtatDeclarationBCT(String trimestre) {
+		super();
+		this.trimestre = trimestre;
+	}
 
 	@Override
 	public int hashCode() {
@@ -78,6 +84,16 @@ public class EtatDeclarationBCT {
 	public void setTransferts(List<Transfert> transferts) {
 		this.transferts = transferts;
 	}
+
+	public String getTypeDeclaration() {
+		return typeDeclaration;
+	}
+
+	public void setTypeDeclaration(String typeDeclaration) {
+		this.typeDeclaration = typeDeclaration;
+	}
+	
+	
 
 
 }
