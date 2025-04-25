@@ -42,7 +42,7 @@ public class DossierDelegueController {
 	        return dossier.map(ResponseEntity::ok)
 	                .orElseGet(() -> ResponseEntity.notFound().build());
 	    }
-     @PutMapping("/{id}")
+     @PutMapping("/cloturerDossier/{id}")
      public ResponseEntity<DossierDelegue> cloturerDossier(@RequestBody DossierDelegue d,@PathVariable("id") String id){
             return dossDelService.cloturerDossier(d,id);
         }
@@ -64,7 +64,7 @@ public class DossierDelegueController {
          DossierDelegue dossier = dossierOptional.get();
 
          // Vérification du type de dossier (doit être SCOLARITE)
-         int TYPE_SCOLARITE = 0; // Assurez-vous que SCOLARITE correspond bien à 0 en base
+         int TYPE_SCOLARITE = 0; 
          if (dossier.getType().ordinal() != TYPE_SCOLARITE) {
              log.warn("Seuls les dossiers de type SCOLARITE peuvent être prolongés. ID : {}", id);
              return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -72,7 +72,7 @@ public class DossierDelegueController {
          }
 
          // Vérification de l'état du dossier (doit être Validé)
-         int ETAT_VALIDE = 3; // Vérifiez que "Validé" correspond bien à 3 en base
+         int ETAT_VALIDE = 3; 
          if (dossier.getEtatDoss().ordinal() != ETAT_VALIDE) {
              log.warn("Le dossier avec ID {} ne peut être prolongé que s'il est validé.", id);
              return ResponseEntity.status(HttpStatus.BAD_REQUEST)
