@@ -24,7 +24,7 @@ public class EtatDeclarationBCT {
 	@OneToMany(mappedBy = "etatDeclaration")
 	private List<Transfert> transferts;
 	
-	private int annee;
+	
 
 	
 
@@ -45,7 +45,10 @@ public class EtatDeclarationBCT {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(trimestre);
+	    return Objects.hash(
+	        trimestre,
+	        getTypeFromFirstTransfert(transferts)
+	    );
 	}
 	
 	@Override
@@ -57,8 +60,34 @@ public class EtatDeclarationBCT {
 		if (getClass() != obj.getClass())
 			return false;
 		EtatDeclarationBCT other = (EtatDeclarationBCT) obj;
-		return Objects.equals(trimestre, other.trimestre);
+
+	    if (!Objects.equals(trimestre, other.trimestre))
+	        return false;
+
+	    if ((transferts == null || transferts.isEmpty()) || (other.transferts == null || other.transferts.isEmpty()))
+	        return false;
+
+	    String typeThis = getTypeFromFirstTransfert(this.transferts);
+	    String typeOther = getTypeFromFirstTransfert(other.transferts);
+
+	    return Objects.equals(typeThis, typeOther);
 	}
+	private String getTypeFromFirstTransfert(List<Transfert> transferts) {
+	    if (transferts == null || transferts.isEmpty())
+	        return null;
+
+	    Transfert premier = transferts.get(0);
+	    if (premier instanceof TransfertPonctuel) {
+	        return ((TransfertPonctuel) premier).getTypeTransfert().toString();
+	    } else if (premier instanceof TransfertPermanent) {
+	        DossierDelegue dossier = ((TransfertPermanent) premier).getDossierDelegue();
+	        if (dossier != null) {
+	            return dossier.getClass().getSimpleName(); // ici tu utilises le nom du dossier
+	        }
+	    }
+	    return null;
+	}
+
 
 	
 
@@ -81,6 +110,24 @@ public class EtatDeclarationBCT {
 	
 	public void setTransferts(List<Transfert> transferts) {
 		this.transferts = transferts;
+	}
+
+
+
+	public Long getIdEtatDeclaration() {
+		return idEtatDeclaration;
+	}
+
+
+
+	public void setIdEtatDeclaration(Long idEtatDeclaration) {
+		this.idEtatDeclaration = idEtatDeclaration;
+	}
+
+
+
+	public List<Transfert> getTransferts() {
+		return transferts;
 	}
 
 

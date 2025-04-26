@@ -11,7 +11,7 @@ import com.projetPfe.entities.Transfert;
 @Service
 public interface EtatDeclarationIservice {
 
-	ResponseEntity<?> test(String trimestre, String typeDeclaration) throws Exception;
+	ResponseEntity<?> genererEtatDeclaration(String trimestre, String typeDeclaration) throws Exception;
 
 	StringBuilder  genererContenuXml(String trimestre,List<Transfert> transferts);
 

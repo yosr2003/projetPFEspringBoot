@@ -17,13 +17,13 @@ public class EtatDeclarationController {
 	@Autowired
 	private EtatDeclarationIservice etaDecService;
 	
-		@PostMapping("/test")
-	    public ResponseEntity<?> test(@RequestBody Map<String, String> requestBody) {
+		@PostMapping
+	    public ResponseEntity<?> genererEtatDeclaration(@RequestBody Map<String, String> requestBody) {
 	    
 	        String typeDeclaration = requestBody.get("typeDeclaration");
 	        String trimestre = requestBody.get("trimestre");
 		    try {
-				return 	etaDecService.test(trimestre, typeDeclaration);
+				return 	etaDecService.genererEtatDeclaration(trimestre, typeDeclaration);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(" Une erreur est survenue lors de la génération de l’état de déclaration");	
