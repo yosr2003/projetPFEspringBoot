@@ -25,7 +25,7 @@ public class AlertScheduler {
      * Tâche planifiée qui s'exécute tous les jours à minuit pour vérifier les échéances à venir
      * et envoyer des alertes si nécessaire
      */
-    @Scheduled(cron = "0 0 0 * * ?") // Tous les jours à minuit
+    @Scheduled(cron = "0 0 9 * * ?") // Tous les jours à 09.00
     public void checkUpcomingDeadlines() {
         logger.info("Vérification des échéances à venir...");
         
