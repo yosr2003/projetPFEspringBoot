@@ -15,19 +15,19 @@ import com.projetPfe.entities.TransfertType;
 @Service
 public interface TransfertServiceI {
 
-	List<Transfert> getAll();
+	public List<Transfert> getAll();
 
-	Optional<Object> calculerFrais(Double montant, String deviseCible, String deviseSource, String typefrais);
+	public Optional<Object> calculerFrais(Double montant, String deviseCible, String deviseSource, String typefrais);
 
-	Optional<TauxChange> getTauxChangeByDevise(String devise);
+	public Optional<TauxChange> getTauxChangeByDevise(String devise);
 
-	List<Transfert> AlerteTransfertAttente();
+	public List<Transfert> AlerteTransfertAttente();
 
-	ResponseEntity<?> consulterTransfert(String refTransfert);
+	public ResponseEntity<?> consulterTransfert(String refTransfert);
 
 
 
-	Transfert creerTransfert(Double montant, String numeroCompteSource, String numeroCompteCible, FraisType typeFrais,
+	public Transfert creerTransfert(Double montant, String numeroCompteSource, String numeroCompteCible, FraisType typeFrais,
 			String idDossierDelegue, String natureOperation, TransfertType type) throws Exception;
 
 

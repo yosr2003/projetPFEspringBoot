@@ -1,5 +1,6 @@
 package com.projetPfe.controllers;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.projetPfe.Iservices.TransfertServiceI;
 import com.projetPfe.entities.CompteBancaire;
 import com.projetPfe.entities.DossierDelegue;
 import com.projetPfe.entities.FraisType;
@@ -29,12 +31,16 @@ import com.projetPfe.servicesImp.TransfertServiceImp;
 @RequestMapping("/transferts")
 public class TransfertController {
 	@Autowired
-	private TransfertServiceImp transfertService;
+	private TransfertServiceI transfertService;
 
 	@Autowired
 	private dossierDelegueRepository dossierDelegueRepository;
 
-	
+	 @GetMapping
+	 public  List<Transfert> getAllTransferts() {
+	        return transfertService.getAll();
+	    }
+	 
 	@GetMapping("/calculerFrais")
     public ResponseEntity<Object> calculerFrais(
     @RequestParam Double montant,

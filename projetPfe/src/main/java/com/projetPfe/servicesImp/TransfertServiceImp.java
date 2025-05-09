@@ -44,6 +44,12 @@ public class TransfertServiceImp implements TransfertServiceI {
 	CompteBancaireRepository CompteBancaireRepository;
 	@Autowired 
 	dossierDelegueRepository DossierDelegueRepository;
+	
+	@Override
+	public List<Transfert> getAll() {
+		return TransfertRepository.findAll();
+	}
+	
 	@Override
 	public Optional<TauxChange> getTauxChangeByDevise(String devise) {
 		return tauxchangeRepo.findByDevise(devise);
@@ -88,10 +94,7 @@ public class TransfertServiceImp implements TransfertServiceI {
 		    }
 	}
 
-	@Override
-	public List<Transfert> getAll() {
-		return TransfertRepository.findAll();
-	}
+	
 	
 	@Override
 	public Transfert creerTransfert(Double montant,String numeroCompteSource,String numeroCompteCible,FraisType typeFrais,String idDossierDelegue,String natureOperation,
@@ -185,9 +188,9 @@ public class TransfertServiceImp implements TransfertServiceI {
 
 
 	   @Override
- public List<Transfert> AlerteTransfertAttente() {
-     return TransfertRepository.findByEtatTransfert(EtatTransfert.TRAITEMENT);
- }
+      public List<Transfert> AlerteTransfertAttente() {
+		   return TransfertRepository.findByEtatTransfert(EtatTransfert.TRAITEMENT);
+     }
 
 
 
