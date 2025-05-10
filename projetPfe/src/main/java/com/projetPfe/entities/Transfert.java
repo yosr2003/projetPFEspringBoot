@@ -68,6 +68,10 @@ public class Transfert {
 	@OneToOne(mappedBy = "transfert")
 	private Swift swift;
 	
+	@ManyToOne
+	@JoinColumn(name = "idDossDelegue")
+	private DossierDelegue dossierDelegue;
+	
 	
 
 
@@ -78,8 +82,14 @@ public class Transfert {
 
 /// getters and setters 
 	
+	
 	public LocalDateTime getDateEnvoie() {
 		return dateEnvoie;
+	}
+
+
+	public void setDossierDelegue(DossierDelegue dossierDelegue) {
+		this.dossierDelegue = dossierDelegue;
 	}
 
 

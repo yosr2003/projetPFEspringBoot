@@ -11,6 +11,6 @@ import com.projetPfe.entities.TransfertPermanent;
 
 @Repository
 public interface TransfertPermanentRepository extends JpaRepository<TransfertPermanent, String> {
-	List<TransfertPermanent> findByDossierDelegue_IdDossier(String idDossier);
+	public List<TransfertPermanent> findByDossierDelegue_IdDossier(String idDossier);
 
 }

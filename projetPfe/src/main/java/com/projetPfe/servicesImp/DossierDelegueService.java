@@ -167,6 +167,11 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 	
 	@Override
 	public ResponseEntity<?> genererRapportMouvement(String idDossier) throws Exception {
+		
+		Optional<DossierDelegue> d = dossierDelegueRepo.findById(idDossier);
+	    if (!d.isPresent()) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ce Dossier Délégué n'existe pas");
+	    }
 		List<TransfertPermanent> transferts = transfertPermanent.findByDossierDelegue_IdDossier(idDossier);
 
 		if (transferts.isEmpty()) {
@@ -174,10 +179,7 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 		        .body("Ce Dossier Délégué ne contient pas encore de transferts permanents");
 		}
 
-	    Optional<DossierDelegue> d = dossierDelegueRepo.findById(idDossier);
-	    if (!d.isPresent()) {
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ce Dossier Délégué n'existe pas");
-	    }
+	    
 
 	    DossierDelegue dossier = d.get();
 

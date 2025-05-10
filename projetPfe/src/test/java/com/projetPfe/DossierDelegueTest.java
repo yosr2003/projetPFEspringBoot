@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -20,6 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import com.projetPfe.dto.ResponseHeaderDTO;
@@ -30,6 +32,7 @@ import com.projetPfe.entities.DossierScolarité;
 import com.projetPfe.entities.EtatDoss;
 import com.projetPfe.entities.PersonneMorale;
 import com.projetPfe.entities.Transfert;
+import com.projetPfe.entities.TransfertPermanent;
 import com.projetPfe.repositories.TransfertRepository;
 import com.projetPfe.repositories.dossierDelegueRepository;
 import com.projetPfe.servicesImp.DossierDelegueService;
@@ -45,7 +48,7 @@ public class DossierDelegueTest {
     @Mock
     private TransfertRepository transfertRepo;
     private DossierDelegue dossier;
-    private Transfert transfert;
+    private TransfertPermanent transfert;
     
     @Test
     void testCloturerDossier_NotFound() {
@@ -122,40 +125,40 @@ public class DossierDelegueTest {
       beneficiaire.setRaisonSociale("Société Y");
       compteCible.setParticipant(beneficiaire);
 
-      transfert = new Transfert();
+      transfert = new TransfertPermanent();
       transfert.setDatecre(LocalDateTime.of(2023, 5, 10, 12, 0));
       transfert.setNatureOperartion("Virement");
       transfert.setMontantTransfert(new Double("1000.00"));
       transfert.setCompteBancaire_source(compteSource);
       transfert.setCompteBancaire_cible(compteCible);
-      //transfert.setDossierDelegue(dossier);
+      transfert.setDossierDelegue(dossier);
   }
 
-//  @Test
-//  void testGenererRapportMouvement_Success() throws Exception {
-//      when(dossierDelegueRepo.findById("123")).thenReturn(Optional.of(dossier));
-//      when(transfertRepo.findAll()).thenReturn(List.of(transfert));
-//
-//      ResponseEntity<?> response = dossierDelegueService.genererRapportMouvement("123");
-//
-//      assertEquals(HttpStatus.OK, response.getStatusCode());
-//      assertTrue(response.getHeaders().getContentType().includes(MediaType.APPLICATION_PDF));
-//      assertNotNull(response.getBody());
-//  }
-//  @Test
-//  void testGenererRapportMouvement_ClotureAtteinteMaisNonExpire() throws Exception {
-//      dossier.setDatclo(LocalDate.now().minusDays(1)); // le dossier a ete clôturé 
-//      dossier.setDateExpiration(LocalDate.now().plusDays(5)); // avant d'atteindre sa date d'expiration
-//
-//      when(dossierDelegueRepo.findById("123")).thenReturn(Optional.of(dossier));
-//      when(transfertRepo.findAll()).thenReturn(List.of(transfert));
-//
-//      ResponseEntity<?> response = dossierDelegueService.genererRapportMouvement("123");
-//
-//      assertEquals(HttpStatus.OK, response.getStatusCode());
-//      assertTrue(response.getHeaders().getContentType().includes(MediaType.APPLICATION_PDF));
-//      assertNotNull(response.getBody());
-//  }
+  @Test
+  void testGenererRapportMouvement_Success() throws Exception {
+      when(dossierDelegueRepo.findById("123")).thenReturn(Optional.of(dossier));
+      when(transfertRepo.findAll()).thenReturn(List.of(transfert));
+
+      ResponseEntity<?> response = dossierDelegueService.genererRapportMouvement("123");
+
+      assertEquals(HttpStatus.OK, response.getStatusCode());
+      assertTrue(response.getHeaders().getContentType().includes(MediaType.APPLICATION_PDF));
+      assertNotNull(response.getBody());
+  }
+  @Test
+  void testGenererRapportMouvement_ClotureAtteinteMaisNonExpire() throws Exception {
+      dossier.setDateCloture(LocalDate.now().minusDays(1)); // le dossier a ete clôturé 
+      dossier.setDateExpiration(LocalDate.now().plusDays(5)); // avant d'atteindre sa date d'expiration
+
+      when(dossierDelegueRepo.findById("123")).thenReturn(Optional.of(dossier));
+      when(transfertRepo.findAll()).thenReturn(List.of(transfert));
+
+      ResponseEntity<?> response = dossierDelegueService.genererRapportMouvement("123");
+
+      assertEquals(HttpStatus.OK, response.getStatusCode());
+      assertTrue(response.getHeaders().getContentType().includes(MediaType.APPLICATION_PDF));
+      assertNotNull(response.getBody());
+  }
 //  
 //  @Test
 //  void testGenererRapportMouvement_DossierNonCloture() throws Exception {
