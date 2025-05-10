@@ -216,6 +216,11 @@ public class Transfert {
 		return swift;
 	}
 
+
+	public void setNatureOperartion(String natureOperartion) {
+		this.natureOperartion = natureOperartion;
+	}
+
 	
 	
 
