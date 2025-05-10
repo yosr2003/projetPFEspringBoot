@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -25,12 +26,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import com.projetPfe.dto.ResponseHeaderDTO;
+import com.projetPfe.entities.Banque;
 import com.projetPfe.entities.CompteBancaire;
 import com.projetPfe.entities.DossierDelegue;
 import com.projetPfe.entities.DossierInvestissement;
 import com.projetPfe.entities.DossierScolarité;
 import com.projetPfe.entities.EtatDoss;
+import com.projetPfe.entities.Pays;
 import com.projetPfe.entities.PersonneMorale;
+import com.projetPfe.entities.TauxChange;
 import com.projetPfe.entities.Transfert;
 import com.projetPfe.entities.TransfertPermanent;
 import com.projetPfe.repositories.TransfertRepository;
@@ -115,15 +119,34 @@ public class DossierDelegueTest {
 
       CompteBancaire compteSource = new CompteBancaire();
       compteSource.setNumeroCompte("12345");
+      
       PersonneMorale emetteur = new PersonneMorale();
       emetteur.setRaisonSociale("Société X");
+      
+      TauxChange deviseCAD = new TauxChange();
+      deviseCAD.setDevise("CAD");
+     
+      Pays allemagne = new Pays("Allemagne");
+      Banque deutscheBank = new Banque("DEUTDEFFXXX","Deutsche Bank",  allemagne);
+      
       compteSource.setParticipant(emetteur);
+      compteSource.setDevise(deviseCAD);  
+      compteSource.setBanque(deutscheBank);
 
       CompteBancaire compteCible = new CompteBancaire();
       compteCible.setNumeroCompte("54321");
+      
       PersonneMorale beneficiaire = new PersonneMorale();
       beneficiaire.setRaisonSociale("Société Y");
+      
+      TauxChange deviseTND = new TauxChange();
+      deviseTND.setDevise("TND");
+      Pays tunisie = new Pays("Tunisie");
+      Banque biat = new Banque( "BIATTNTTXXX", "BIAT",tunisie);
+      
       compteCible.setParticipant(beneficiaire);
+      compteCible.setDevise(deviseTND);  
+      compteCible.setBanque(biat);
 
       transfert = new TransfertPermanent();
       transfert.setDatecre(LocalDateTime.of(2023, 5, 10, 12, 0));
@@ -132,6 +155,9 @@ public class DossierDelegueTest {
       transfert.setCompteBancaire_source(compteSource);
       transfert.setCompteBancaire_cible(compteCible);
       transfert.setDossierDelegue(dossier);
+      List<TransfertPermanent> transferts=new ArrayList<>();
+      transferts.add(transfert);
+      dossier.setTransfertPermanent(transferts);
   }
 
   @Test

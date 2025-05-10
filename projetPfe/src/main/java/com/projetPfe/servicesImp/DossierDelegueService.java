@@ -172,7 +172,12 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 	    if (!d.isPresent()) {
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ce Dossier Délégué n'existe pas");
 	    }
-		List<TransfertPermanent> transferts = transfertPermanent.findByDossierDelegue_IdDossier(idDossier);
+		//List<TransfertPermanent> transferts = transfertPermanent.findByDossierDelegue_IdDossier(idDossier);
+		List<TransfertPermanent> transferts = transfertPermanent.findAll();
+		transferts = transferts.stream()
+		        .filter(t -> t.getDossierDelegue() != null)
+		        .filter(t -> idDossier.equals(t.getDossierDelegue().getIdDossier()))
+		        .collect(Collectors.toList());
 
 		if (transferts.isEmpty()) {
 		    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
