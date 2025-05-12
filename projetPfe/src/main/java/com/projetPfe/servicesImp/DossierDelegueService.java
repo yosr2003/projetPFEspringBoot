@@ -68,7 +68,7 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 
 	            return new ResponseEntity<>(response, HttpStatus.CREATED);
 	        } else {
-	            ResponseHeaderDTO header = new ResponseHeaderDTO(400, "BAD_REQUEST", "Échec : le dossier n'est pas validé");
+	            ResponseHeaderDTO header = new ResponseHeaderDTO(400, "BAD_REQUEST", "Échec : un dossier ne peut etre dupliqué que si il est valide et ce dossier n'est pas validé");
 	            Map<String, Object> response = new HashMap<>();
 	            response.put("header", header);
 	            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -125,7 +125,7 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 
 	    Optional<DossierDelegue> optionalDossier = dossierDelegueRepo.findById(id);
 	    if (optionalDossier.isEmpty()) {
-	        response.put("header", new ResponseHeaderDTO(404, "NOT_FOUND", "Dossier non trouvé"));
+	        response.put("header", new ResponseHeaderDTO(404, "NOT_FOUND", "Dossier inexistant"));
 	        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	    }
 
@@ -136,8 +136,8 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 	        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	    }
 
-	    if (dateCloture != null && dateCloture.isAfter(dossier.getDateExpiration())) {
-	        response.put("header", new ResponseHeaderDTO(400, "BAD_REQUEST", "La date de clôture dépasse la date d'expiration"));
+	    if (dateCloture != null && dateCloture.isAfter(dossier.getDateExpiration()) && dateCloture.isAfter(dossier.getDateDebut())) {
+	        response.put("header", new ResponseHeaderDTO(400, "BAD_REQUEST", "La date de clôture dépasse la date d'expiration et la date debut du dossier "));
 	        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	    }
 
@@ -160,7 +160,7 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 		Optional<DossierDelegue> d= dossierDelegueRepo.findById(id);
 		if(d.isPresent()) {
 			return ResponseEntity.ok().body(d.get());}
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dossier non trouvé");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dossier inexistant");
 	}
 
 /*----------------------------------------------------------------------------------------------*/

@@ -42,8 +42,7 @@ public class DossierScolariteServiceImp implements dossierScolariteIService {
 
 	    if (dateProlongation.isBefore(dossier.getDateExpiration())) {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-	                .body("La nouvelle date doit être postérieure à la date actuelle : " +
-	                        dossier.getDateExpiration());
+	                .body("La nouvelle date de prolongation doit depasser la date d'expiration actuelle : " +dossier.getDateExpiration());
 	    }
 
 	    if (!dossier.getEtatDossier().equals(EtatDoss.VALIDE)) {
