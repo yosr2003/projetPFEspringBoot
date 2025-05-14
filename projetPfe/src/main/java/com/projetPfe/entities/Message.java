@@ -1,7 +1,9 @@
 package com.projetPfe.entities;
 
 import java.time.Instant;
+import java.util.Map;
 
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,17 +20,25 @@ public class Message {
 	private Instant  timestamp ;
  	@Lob
     private String texteMessage;
-
+ 	private String texteReponse;
     private String intention;
+    
+//    @Convert(converter = MapToJsonConverter.class)
+//    private Map<String, String> entites;
+    
     @ManyToOne
 	@JoinColumn(name = "Conversation_id")
 	private SessionConversationnelle conversation;
+    
+    
 	public Message() {
 		super();
 	}
 	public Long getId_message() {
 		return id_message;
 	}
+	
+	
 	public void setId_message(Long id_message) {
 		this.id_message = id_message;
 	}
@@ -56,5 +66,17 @@ public class Message {
 	public void setConversation(SessionConversationnelle conversation) {
 		this.conversation = conversation;
 	}
+	public String getTexteReponse() {
+		return texteReponse;
+	}
+	public void setTexteReponse(String texteReponse) {
+		this.texteReponse = texteReponse;
+	}
+//	public Map<String, String> getEntites() {
+//		return entites;
+//	}
+//	public void setEntites(Map<String, String> entites) {
+//		this.entites = entites;
+//	}
     
 }

@@ -12,7 +12,7 @@ import com.projetPfe.entities.FraisType;
 import com.projetPfe.entities.TauxChange;
 import com.projetPfe.entities.Transfert;
 import com.projetPfe.entities.TransfertType;
-@Service
+
 public interface TransfertServiceI {
 
 	public List<Transfert> getAll();

@@ -11,7 +11,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 
 @Entity
@@ -41,10 +42,21 @@ public class Employe {
 		        inverseJoinColumns = @JoinColumn(name = "transfert_id")
 		    )
 		private List<Transfert> transferts;
-
-		public Long getIdUtilisateur() {
-			return id;
+		
+		@OneToMany(mappedBy = "employe")
+		private List<SessionConversationnelle> conversations;
+		
+		
+		public Employe() {
+			super();
 		}
+
+		
+		
+
+//		public Long getIdUtilisateur() {
+//			return id;
+//		}
 
 	
 
@@ -96,12 +108,17 @@ public class Employe {
 			this.transferts = transferts;
 		}
 
-
-
-		public Employe() {
-			super();
+		public void setConversations(List<SessionConversationnelle> conversations) {
+			this.conversations = conversations;
 		}
 
+		public Long getId() {
+			return id;
+		}
+
+
+
+		
 	
 
 		 

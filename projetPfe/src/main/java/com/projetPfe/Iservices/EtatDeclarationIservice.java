@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.projetPfe.entities.EtatDeclarationBCT;
 import com.projetPfe.entities.Transfert;
 
-@Service
+
 public interface EtatDeclarationIservice {
 
 	ResponseEntity<?> genererEtatDeclaration(String trimestre, String typeDeclaration) throws Exception;
