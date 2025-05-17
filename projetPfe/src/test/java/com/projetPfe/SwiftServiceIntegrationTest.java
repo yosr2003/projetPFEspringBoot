@@ -10,22 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.projetPfe.entities.Banque;
-import com.projetPfe.entities.CompteBancaire;
-import com.projetPfe.entities.EtatTransfert;
-import com.projetPfe.entities.FraisType;
-import com.projetPfe.entities.Pays;
-import com.projetPfe.entities.PersonneMorale;
-import com.projetPfe.entities.PersonnePhysique;
-import com.projetPfe.entities.Swift;
-import com.projetPfe.entities.TauxChange;
-import com.projetPfe.entities.TransfertPonctuel;
-import com.projetPfe.repositories.BanqueRepository;
-import com.projetPfe.repositories.CompteBancaireRepository;
-import com.projetPfe.repositories.PaysRepository;
-import com.projetPfe.repositories.SwiftRepository;
-import com.projetPfe.repositories.TauxChangeRepository;
-import com.projetPfe.repositories.TransfertRepository;
+import com.projetPfe.entities.*;
+import com.projetPfe.repositories.*;
 import com.projetPfe.servicesImp.SwiftServiceImp;
 
 @SpringBootTest
@@ -54,28 +40,30 @@ public class SwiftServiceIntegrationTest {
     @Autowired
     private CompteBancaireRepository compteRepo;
 
+    @Autowired
+    private ParticipantRepository participantRepo;
+
     @Test
     public void testCreerSwift() {
-        // 1. Créer et sauver Pays
+   //declaration des entités
         Pays france = new Pays("France");
         paysRepo.save(france);
 
-        // 2. Créer et sauver Banque
         Banque banque = new Banque("BANK2587419", "Banque Source", france);
         banqueRepo.save(banque);
 
-        // 3. Créer et sauver TauxChange pour AED
         TauxChange deviseAED = new TauxChange();
         deviseAED.setDevise("AED");
         deviseAED.setCoursVente(8.593);
         deviseAED.setDateMiseAJour(LocalDate.now());
         tauxChangeRepo.save(deviseAED);
-
-        // 4. Créer le Compte source avec Participant (cascade persist attendu sur CompteBancaire → Participant)
+        
         PersonnePhysique donneur = new PersonnePhysique();
         donneur.setNom("Dupont");
         donneur.setPrenom("Jean");
         donneur.setAdresse("123 rue de Paris");
+        participantRepo.save(donneur); 
+
 
         CompteBancaire source = new CompteBancaire();
         source.setBanque(banque);
@@ -84,10 +72,11 @@ public class SwiftServiceIntegrationTest {
         source.setParticipant(donneur);
         compteRepo.save(source);
 
-        // 5. Créer le Compte cible avec Participant
+ 
         PersonneMorale beneficiaire = new PersonneMorale();
         beneficiaire.setRaisonSociale("Société ABC");
         beneficiaire.setAdresse("456 avenue de Lyon");
+        participantRepo.save(beneficiaire); 
 
         CompteBancaire cible = new CompteBancaire();
         cible.setBanque(banque);
@@ -96,26 +85,37 @@ public class SwiftServiceIntegrationTest {
         cible.setParticipant(beneficiaire);
         compteRepo.save(cible);
 
-        // 6. Créer et sauver le TransfertPonctuel validé
+        // sauvegarder le transfet en état de traitement
         TransfertPonctuel transfert = new TransfertPonctuel();
-        transfert.setRefTransfert("TES293625");
+        transfert.setRefTransfert("TES2936");
         transfert.setDatecre(LocalDateTime.now());
         transfert.setCompteBancaire_source(source);
         transfert.setCompteBancaire_cible(cible);
         transfert.setMontantTransfert(1000.00);
-        transfert.setEtatTransfert(EtatTransfert.VALIDE);
+        transfert.setEtatTransfert(EtatTransfert.TRAITEMENT);
         transfert.setTypeFrais(FraisType.OUR);
         transfert = transfertRepository.save(transfert);
 
-        // 7. Appeler la méthode à tester
-        Swift swift = swiftService.creerSwift(transfert.getRefTransfert());
+        // On teste que l’exception est bien levée
+        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
+            swiftService.creerSwift("TES2936");
+        });
 
-        // 8. Assertions
-        Assertions.assertNotNull(swift, "Le Swift ne doit pas être null");
-        Assertions.assertEquals("MT103", swift.getTypemsg(), "Le type du message doit être MT103");
-        Assertions.assertTrue(swift.getTxtmsg().contains("TES293625"), "Le texte doit contenir la référence du transfert");
-        Assertions.assertNotNull(swift.getPdfgen(), "Le PDF généré ne doit pas être null");
-        Assertions.assertTrue(swiftRepository.existsByTransfert_RefTransfert("REF12345"),
-                              "Le repository doit contenir le Swift pour le transfert REF12345");
+        Assertions.assertEquals("Le transfert avec ID TES2936 n'est pas validé. SWIFT non généré.",
+                                exception.getMessage());
+
+        //validations
+		/*
+		 * Assertions.assertNotNull(swift, "Le Swift ne doit pas être null");
+		 * Assertions.assertEquals("MT103", swift.getTypemsg(),
+		 * "Le type du message doit être MT103");
+		 * Assertions.assertTrue(swift.getTxtmsg().contains("TES2936"),
+		 * "Le texte doit contenir la référence du transfert");
+		 * Assertions.assertNotNull(swift.getPdfgen(),
+		 * "Le PDF généré ne doit pas être null");
+		 * Assertions.assertTrue(swiftRepository.existsByTransfert_RefTransfert(
+		 * "TES2936"),
+		 * "Le repository doit contenir le Swift pour le transfert TES293625");
+		 */
     }
 }

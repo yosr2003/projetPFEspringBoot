@@ -159,8 +159,12 @@ public class EtatDeclarationBCTServiceImp implements EtatDeclarationIservice {
 			        xml.append("    <colonne6>").append(transfert.getMontantFinal()).append("</colonne6>\n");
 			        xml.append("    <colonne7>").append(transfert.getMontantTransfert()).append("</colonne7>\n");
 			        
+			        if (transfert instanceof TransfertPermanent tp) {
+			            xml.append("    <colonne8>").append(tp.getNatureOperation()).append("</colonne8>\n");
+			        } else {
+			            xml.append("    <colonne8>Non applicable</colonne8>\n");
+			        }
 
-		            xml.append("    <colonne8>").append(transfert.getNatureOperartion()).append("</colonne8>\n");
 
 			        Participant beneficiaire = transfert.getCompteBancaire_cible().getParticipant();
 			        if (beneficiaire instanceof PersonneMorale) {

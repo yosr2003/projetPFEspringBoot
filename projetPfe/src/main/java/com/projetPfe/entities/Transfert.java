@@ -33,7 +33,7 @@ public class Transfert {
 	private LocalDateTime datecre;
 	private LocalDateTime dateEnvoie;
 
-	private String natureOperartion;
+
 
 	
 	@Column(name = "montantFrais")
@@ -88,9 +88,7 @@ public class Transfert {
 
 
 
-	public String getNatureOperartion() {
-		return natureOperartion;
-	}
+
 
 
 	public void setDateEnvoie(LocalDateTime dateEnvoie) {
@@ -222,9 +220,6 @@ public class Transfert {
 	}
 
 
-	public void setNatureOperartion(String natureOperartion) {
-		this.natureOperartion = natureOperartion;
-	}
 
 	
 	
