@@ -68,10 +68,7 @@ public class Transfert {
 	@OneToOne(mappedBy = "transfert")
 	private Swift swift;
 	
-	@ManyToOne
-	@JoinColumn(name = "idDossDelegue")
-	private DossierDelegue dossierDelegue;
-	
+
 	
 
 
@@ -88,9 +85,7 @@ public class Transfert {
 	}
 
 
-	public void setDossierDelegue(DossierDelegue dossierDelegue) {
-		this.dossierDelegue = dossierDelegue;
-	}
+
 
 
 	public String getNatureOperartion() {
@@ -208,7 +203,7 @@ public class Transfert {
 
 
 	public void setEtatTransfert(EtatTransfert etatTransfert) {
-		etatTransfert = etatTransfert;
+		this.etatTransfert = etatTransfert;
 	}
 
 
