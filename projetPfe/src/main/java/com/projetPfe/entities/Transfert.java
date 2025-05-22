@@ -33,7 +33,7 @@ public class Transfert {
 	private LocalDateTime datecre;
 	private LocalDateTime dateEnvoie;
 
-	private String natureOperartion;
+
 
 	
 	@Column(name = "montantFrais")
@@ -68,10 +68,7 @@ public class Transfert {
 	@OneToOne(mappedBy = "transfert")
 	private Swift swift;
 	
-	@ManyToOne
-	@JoinColumn(name = "idDossDelegue")
-	private DossierDelegue dossierDelegue;
-	
+
 	
 
 
@@ -88,14 +85,10 @@ public class Transfert {
 	}
 
 
-	public void setDossierDelegue(DossierDelegue dossierDelegue) {
-		this.dossierDelegue = dossierDelegue;
-	}
 
 
-	public String getNatureOperartion() {
-		return natureOperartion;
-	}
+
+
 
 
 	public void setDateEnvoie(LocalDateTime dateEnvoie) {
@@ -208,7 +201,7 @@ public class Transfert {
 
 
 	public void setEtatTransfert(EtatTransfert etatTransfert) {
-		etatTransfert = etatTransfert;
+		this.etatTransfert = etatTransfert;
 	}
 
 
@@ -227,9 +220,6 @@ public class Transfert {
 	}
 
 
-	public void setNatureOperartion(String natureOperartion) {
-		this.natureOperartion = natureOperartion;
-	}
 
 	
 	
