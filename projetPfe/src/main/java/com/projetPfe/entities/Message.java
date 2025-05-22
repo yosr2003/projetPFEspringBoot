@@ -3,7 +3,10 @@ package com.projetPfe.entities;
 import java.time.Instant;
 import java.util.Map;
 
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapKeyColumn;
 
 @Entity
 public class Message {
@@ -20,12 +24,18 @@ public class Message {
 	private Instant  timestamp ;
  	@Lob
     private String texteMessage;
+ 	@Lob
  	private String texteReponse;
     private String intention;
-    
-//    @Convert(converter = MapToJsonConverter.class)
-//    private Map<String, String> entites;
-    
+    @ElementCollection
+    @CollectionTable(
+        name = "message_entites",
+        joinColumns = @JoinColumn(name = "message_id")
+    )
+    @MapKeyColumn(name = "entite_cle")
+    @Column(name = "entite_valeur")
+    private Map<String, String> entites;
+
     @ManyToOne
 	@JoinColumn(name = "Conversation_id")
 	private SessionConversationnelle conversation;
@@ -72,11 +82,11 @@ public class Message {
 	public void setTexteReponse(String texteReponse) {
 		this.texteReponse = texteReponse;
 	}
-//	public Map<String, String> getEntites() {
-//		return entites;
-//	}
-//	public void setEntites(Map<String, String> entites) {
-//		this.entites = entites;
-//	}
+	public Map<String, String> getEntites() {
+		return entites;
+	}
+	public void setEntites(Map<String, String> entites) {
+		this.entites = entites;
+	}
     
 }
