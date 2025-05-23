@@ -11,6 +11,10 @@ private String natureOperation;
 @JoinColumn(name = "DossierDelegue_id")
 private DossierDelegue dossierDelegue;
 
+public TransfertPermanent() {
+	super();
+}
+
 public String getNatureOperation() {
 	return natureOperation;
 }
@@ -19,9 +23,7 @@ public void setNatureOperation(String natureOperation) {
 	this.natureOperation = natureOperation;
 }
 
-public TransfertPermanent() {
-	super();
-}
+
 
 public DossierDelegue getDossierDelegue() {
 	return dossierDelegue;

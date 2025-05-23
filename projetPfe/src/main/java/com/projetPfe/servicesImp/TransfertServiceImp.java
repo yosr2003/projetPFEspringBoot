@@ -30,6 +30,8 @@ import com.projetPfe.entities.TransfertPermanent;
 import com.projetPfe.entities.TransfertPonctuel;
 import com.projetPfe.entities.TransfertType;
 import com.projetPfe.repositories.TauxChangeRepository;
+import com.projetPfe.repositories.TransfertPermanentRepository;
+import com.projetPfe.repositories.TransfertPonctuelRepository;
 import com.projetPfe.repositories.TransfertRepository;
 import com.projetPfe.repositories.dossierDelegueRepository;
 import com.projetPfe.repositories.CompteBancaireRepository;
@@ -40,6 +42,10 @@ public class TransfertServiceImp implements TransfertServiceI {
 	TauxChangeRepository tauxchangeRepo;
 	@Autowired 
 	TransfertRepository TransfertRepository;
+	@Autowired 
+	TransfertPermanentRepository TransfertPermanentRepo;
+	@Autowired 
+	TransfertPonctuelRepository TransfertPonctueltRepo;
 	@Autowired 
 	CompteBancaireRepository CompteBancaireRepository;
 	@Autowired 
@@ -145,19 +151,22 @@ public class TransfertServiceImp implements TransfertServiceI {
 	    }
 
 	    String refTransfert = prefix + String.valueOf((int) (Math.random() * 1000000));
+	    
 
 	    Transfert transfert = (dossierDelegue != null)
 	            ? new TransfertPermanent()
 	            : new TransfertPonctuel();
-
+	    transfert.setRefTransfert(refTransfert);
 	    if (transfert instanceof TransfertPermanent tp) {
 	        tp.setNatureOperation(natureOperation);
 	        tp.setDossierDelegue(dossierDelegue);
+	        TransfertPermanentRepo.save(tp);
 	    } else if (transfert instanceof TransfertPonctuel tp) {
 	        tp.setTypeTransfert(type);
+	        TransfertPonctueltRepo.save(tp);
 	    }
 
-	    transfert.setRefTransfert(refTransfert);
+	    
 	    transfert.setDatecre(LocalDateTime.now());
 	    transfert.setDateEnvoie(LocalDateTime.now());
 	    transfert.setMontantTransfert(montant);
@@ -182,7 +191,7 @@ public class TransfertServiceImp implements TransfertServiceI {
 	    } else {
 	        throw new Exception("Erreur lors du calcul des frais.");
 	    }
-
+	    
 	    return TransfertRepository.save(transfert);
 	}
 

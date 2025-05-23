@@ -8,15 +8,15 @@ import org.springframework.http.ResponseEntity;
 import com.projetPfe.entities.DossierDelegue;
 
 public interface IserviceDossierDelegue {
-	   ResponseEntity<Map<String, Object>> dupliquerDossier(String id);
+	public ResponseEntity<Map<String, Object>> dupliquerDossier(String id);
 
-	ResponseEntity<?> getAllDossiers();
+	public ResponseEntity<?> getAllDossiers();
 
-	ResponseEntity<?> getDossierById(String id);
+	public ResponseEntity<?> getDossierById(String id);
 
 
 
-	ResponseEntity<Map<String, Object>> cloturerDossier(String id, LocalDate dateCloture, String motifcloture);
+	public ResponseEntity<Map<String, Object>> cloturerDossier(String id, LocalDate dateCloture, String motifcloture);
 
-	ResponseEntity<?> genererRapportMouvement(String idDossier) throws Exception;
+	public ResponseEntity<?> genererRapportMouvement(String idDossier) throws Exception;
 }

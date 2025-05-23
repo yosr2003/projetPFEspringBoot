@@ -8,12 +8,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -39,11 +42,29 @@ public abstract class DossierDelegue {
 	@JsonIgnore
 	@OneToMany(mappedBy = "dossierDelegue")
 	private List<TransfertPermanent> transfertPermanent;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "rapport_id")
+    private RapportMouvementsFinanciers rapportMouvementFinanciers;
 
+	
 
 	public DossierDelegue() {
 		super();
 	}
+
+	
+
+	public RapportMouvementsFinanciers getRapportMouvementFinanciers() {
+		return rapportMouvementFinanciers;
+	}
+
+
+
+	public void setRapportMouvementFinanciers(RapportMouvementsFinanciers rapportMouvementFinanciers) {
+		this.rapportMouvementFinanciers = rapportMouvementFinanciers;
+	}
+
 
 
 	public String getIdDossier() {
