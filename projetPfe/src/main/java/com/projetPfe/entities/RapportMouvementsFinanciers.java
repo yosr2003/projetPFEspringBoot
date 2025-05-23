@@ -30,6 +30,10 @@ public class RapportMouvementsFinanciers {
 	public void setRapportMouvement(byte[] rapportMouvement) {
 		this.rapportMouvement = rapportMouvement;
 	}
+
+	public byte[] getRapportMouvement() {
+		return rapportMouvement;
+	}
 	
 	
 	

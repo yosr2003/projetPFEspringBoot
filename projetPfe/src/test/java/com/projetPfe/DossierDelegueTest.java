@@ -8,9 +8,11 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.net.http.HttpHeaders;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -34,25 +36,37 @@ import com.projetPfe.entities.DossierScolarité;
 import com.projetPfe.entities.EtatDoss;
 import com.projetPfe.entities.Pays;
 import com.projetPfe.entities.PersonneMorale;
+import com.projetPfe.entities.PersonnePhysique;
+import com.projetPfe.entities.RapportMouvementsFinanciers;
 import com.projetPfe.entities.TauxChange;
 import com.projetPfe.entities.Transfert;
 import com.projetPfe.entities.TransfertPermanent;
+import com.projetPfe.repositories.RapportMouvementFinanciersRepository;
+import com.projetPfe.repositories.TransfertPermanentRepository;
 import com.projetPfe.repositories.TransfertRepository;
 import com.projetPfe.repositories.dossierDelegueRepository;
 import com.projetPfe.servicesImp.DossierDelegueService;
+import com.projetPfe.servicesImp.RapportMvmntFinanciersService;
 
 
 @ExtendWith(MockitoExtension.class)
 public class DossierDelegueTest {
 	@InjectMocks
     private DossierDelegueService dossierDelegueService;
-
+	@InjectMocks
+    private RapportMvmntFinanciersService rapportService;
+	
     @Mock
     private dossierDelegueRepository dossierDelegueRepo;
     @Mock
     private TransfertRepository transfertRepo;
+    @Mock
+    private TransfertPermanentRepository transfertPermanentRepo;
+    @Mock
+    private RapportMouvementFinanciersRepository rapportRepo;
+    
     private DossierDelegue dossier;
-    private TransfertPermanent transfert;
+    private Transfert transfert;
     
     @Test
     void testCloturerDossier_NotFound() {
@@ -112,103 +126,86 @@ public class DossierDelegueTest {
     }
   @BeforeEach
   void setUp() {
-      dossier = new DossierInvestissement();
-      dossier.setIdDossier("123");
+	  dossier = new DossierInvestissement();
+      dossier.setIdDossier("DOSS001");
       dossier.setDateDebut(LocalDate.of(2023, 1, 1));
-      dossier.setDateExpiration(LocalDate.of(2023, 12, 31));
+      dossier.setDateExpiration(LocalDate.of(2024, 1, 1));
+      dossier.setDateCloture(LocalDate.of(2023, 12, 31));
+      dossier.setRapportMouvementFinanciers(null);
 
-      CompteBancaire compteSource = new CompteBancaire();
-      compteSource.setNumeroCompte("12345");
-      
+      Banque banque = new Banque();
+      Pays pays = new Pays();
+      pays.setPays("Tunisie");
+      banque.setPays(pays);
+
       PersonneMorale emetteur = new PersonneMorale();
       emetteur.setRaisonSociale("Société X");
-      
-      TauxChange deviseCAD = new TauxChange();
-      deviseCAD.setDevise("CAD");
-     
-      Pays allemagne = new Pays("Allemagne");
-      Banque deutscheBank = new Banque("DEUTDEFFXXX","Deutsche Bank",  allemagne);
-      
-      compteSource.setParticipant(emetteur);
-      compteSource.setDevise(deviseCAD);  
-      compteSource.setBanque(deutscheBank);
 
-      CompteBancaire compteCible = new CompteBancaire();
-      compteCible.setNumeroCompte("54321");
-      
-      PersonneMorale beneficiaire = new PersonneMorale();
-      beneficiaire.setRaisonSociale("Société Y");
-      
-      TauxChange deviseTND = new TauxChange();
-      deviseTND.setDevise("TND");
-      Pays tunisie = new Pays("Tunisie");
-      Banque biat = new Banque( "BIATTNTTXXX", "BIAT",tunisie);
-      
-      compteCible.setParticipant(beneficiaire);
-      compteCible.setDevise(deviseTND);  
-      compteCible.setBanque(biat);
+      PersonnePhysique beneficiaire = new PersonnePhysique();
+      beneficiaire.setNom("Ben");
+      beneficiaire.setPrenom("Ali");
+
+      CompteBancaire source = new CompteBancaire();
+      source.setNumeroCompte("12345");
+      source.setParticipant(emetteur);
+
+      CompteBancaire cible = new CompteBancaire();
+      cible.setBanque(banque);
+      cible.setParticipant(beneficiaire);
 
       transfert = new TransfertPermanent();
+      ((TransfertPermanent) transfert).setDossierDelegue(dossier);
       transfert.setDatecre(LocalDateTime.of(2023, 5, 10, 12, 0));
-      transfert.setNatureOperation("Virement");
       transfert.setMontantTransfert(new Double("1000.00"));
-      transfert.setCompteBancaire_source(compteSource);
-      transfert.setCompteBancaire_cible(compteCible);
-      transfert.setDossierDelegue(dossier);
-      List<TransfertPermanent> transferts=new ArrayList<>();
-      transferts.add(transfert);
-      dossier.setTransfertPermanent(transferts);
+      ((TransfertPermanent) transfert).setNatureOperation("Paiement");
+      transfert.setCompteBancaire_source(source);
+      transfert.setCompteBancaire_cible(cible);
   }
 
-	/*
-	 * @Test void testGenererRapportMouvement_Success() throws Exception {
-	 * when(dossierDelegueRepo.findById("123")).thenReturn(Optional.of(dossier));
-	 * when(transfertRepo.findAll()).thenReturn(List.of(transfert));
-	 * 
-	 * ResponseEntity<?> response =
-	 * dossierDelegueService.genererRapportMouvement("123");
-	 * 
-	 * assertEquals(HttpStatus.OK, response.getStatusCode());
-	 * assertTrue(response.getHeaders().getContentType().includes(MediaType.
-	 * APPLICATION_PDF)); assertNotNull(response.getBody()); }
-	 * 
-	 * @Test void testGenererRapportMouvement_ClotureAtteinteMaisNonExpire() throws
-	 * Exception { dossier.setDateCloture(LocalDate.now().minusDays(1)); // le
-	 * dossier a ete clôturé dossier.setDateExpiration(LocalDate.now().plusDays(5));
-	 * // avant d'atteindre sa date d'expiration
-	 * 
-	 * when(dossierDelegueRepo.findById("123")).thenReturn(Optional.of(dossier));
-	 * when(transfertRepo.findAll()).thenReturn(List.of(transfert));
-	 * 
-	 * ResponseEntity<?> response =
-	 * dossierDelegueService.genererRapportMouvement("123");
-	 * 
-	 * assertEquals(HttpStatus.OK, response.getStatusCode());
-	 * assertTrue(response.getHeaders().getContentType().includes(MediaType.
-	 * APPLICATION_PDF)); assertNotNull(response.getBody()); }
-	 */
-//  
-//  @Test
-//  void testGenererRapportMouvement_DossierNonCloture() throws Exception {
-//      dossier.setDatclo(null); // Non clôturé
-//      dossier.setDateExpiration(LocalDate.now().plusDays(5)); // encore actif
-//
-//      when(dossierDelegueRepo.findById("123")).thenReturn(Optional.of(dossier));
-//
-//      ResponseEntity<?> response = dossierDelegueService.genererRapportMouvement("123");
-//
-//      assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-//      assertEquals("Ce dossier n'est pas encore clôturer", response.getBody());
-//  }
-//  @Test
-//  void testGenererRapportMouvement_DejaRapport() throws Exception {
-//      dossier.setRapportMouvement("test rapport".getBytes());
-//      when(dossierDelegueRepo.findById("123")).thenReturn(Optional.of(dossier));
-//
-//      ResponseEntity<?> response = dossierDelegueService.genererRapportMouvement("123");
-//
-//      assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-//      assertEquals("Ce Dossier Délégué a déja un rapport de mouvement financiers", response.getBody());
-//  }
+  
+  @Test
+  void testGenererRapportMouvement_Success() throws Exception {
+      when(dossierDelegueRepo.findById(dossier.getIdDossier())).thenReturn(Optional.of(dossier));
+      when(transfertPermanentRepo.findAll()).thenReturn(List.of((TransfertPermanent)transfert));
+
+      ResponseEntity<?> response = rapportService.genererRapportMouvement(dossier.getIdDossier());
+
+      assertEquals(HttpStatus.OK, response.getStatusCode());
+      assertTrue(response.getBody() instanceof byte[]);
+      assertTrue(response.getHeaders().getContentType().includes(MediaType.APPLICATION_PDF));
+      assertNotNull(response.getBody());
+
+      verify(rapportRepo).save(any(RapportMouvementsFinanciers.class));
+      verify(dossierDelegueRepo).save(dossier);
+  }
+	  
+ 
+  
+  @Test
+  void testGenererRapportMouvement_DossierNonCloture() throws Exception {
+	  dossier.setDateCloture(null);// Non clôturé
+      dossier.setDateExpiration(LocalDate.now().plusDays(5));// encore actif
+     
+      when(dossierDelegueRepo.findById(dossier.getIdDossier())).thenReturn(Optional.of(dossier));
+      when(transfertPermanentRepo.findAll()).thenReturn(List.of((TransfertPermanent)transfert));
+      
+      ResponseEntity<?> response = rapportService.genererRapportMouvement(dossier.getIdDossier());
+      
+      assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+      assertEquals("Ce dossier n'est pas encore clôturé", response.getBody());
+  }
+  @Test
+  void testGenererRapportMouvement_AucunTransfert() throws Exception {
+      // on met une date de clôture valide
+      //dossier.setDateCloture(LocalDate.now().minusDays(1));
+      when(dossierDelegueRepo.findById(dossier.getIdDossier())).thenReturn(Optional.of(dossier));
+      when(transfertPermanentRepo.findAll()).thenReturn(Collections.emptyList());
+      
+      ResponseEntity<?> response = rapportService.genererRapportMouvement(dossier.getIdDossier());
+
+      assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+      assertEquals("Ce Dossier Délégué ne contient pas encore de transferts permanents", response.getBody());
+  }
+
 
 }
