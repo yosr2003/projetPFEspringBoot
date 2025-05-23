@@ -18,5 +18,5 @@ public interface IserviceDossierDelegue {
 
 	public ResponseEntity<Map<String, Object>> cloturerDossier(String id, LocalDate dateCloture, String motifcloture);
 
-	public ResponseEntity<?> genererRapportMouvement(String idDossier) throws Exception;
+	
 }

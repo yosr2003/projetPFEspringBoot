@@ -69,16 +69,7 @@ public class DossierDelegueControllers {
 	     return dossierScolariteServiceImp.prolongerDossierScolarite(id, dateProlongation, motifProlongation);
 	 }
 
-	 @PostMapping("/rapportMouvements/{id}")
-		public ResponseEntity<?> genereRapportMouvement(@PathVariable("id") String id) {
-		 try {
-			return dossDelService.genererRapportMouvement(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(" Une erreur est survenue lors de la génération du dossier de mouvements");
-			
-		} 
-		}
+	 
 
 	 
 	 

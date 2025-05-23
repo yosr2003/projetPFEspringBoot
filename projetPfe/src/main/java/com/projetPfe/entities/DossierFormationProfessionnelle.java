@@ -29,7 +29,7 @@ public DossierFormationProfessionnelle dupliquerAvecNouveauId(String newId) {
     copie.setEtatDossier(this.getEtatDossier());
     copie.setDateCre(LocalDateTime.now());
     copie.setMotifProlong(this.getMotifProlong());
-    copie.setRapportMouvement(this.getRapportMouvement());
+//    copie.setRapportMouvement(this.getRapportMouvement());
     copie.setNomFormation(this.nomFormation);
     return copie;
 }

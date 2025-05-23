@@ -30,7 +30,7 @@ public DossierEconomieSurSalaire dupliquerAvecNouveauId(String newId) {
     copie.setEtatDossier(this.getEtatDossier());
     copie.setDateCre(LocalDateTime.now());
     copie.setMotifProlong(this.getMotifProlong());
-    copie.setRapportMouvement(this.getRapportMouvement());
+//    copie.setRapportMouvement(this.getRapportMouvement());
     copie.setMontantMensuel(this.montantMensuel);
     return copie;
 }

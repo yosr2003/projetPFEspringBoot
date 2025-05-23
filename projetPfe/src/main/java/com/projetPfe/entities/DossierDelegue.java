@@ -36,8 +36,7 @@ public abstract class DossierDelegue {
 	private LocalDate dateDebut;
 	private LocalDate dateExpiration;
 
-	@Lob
-	private byte[] rapportMouvement; 
+	
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "dossierDelegue")
@@ -147,14 +146,7 @@ public abstract class DossierDelegue {
 	}
 
 
-	public byte[] getRapportMouvement() {
-		return rapportMouvement;
-	}
 
-
-	public void setRapportMouvement(byte[] rapportMouvement) {
-		this.rapportMouvement = rapportMouvement;
-	}
 
 
 	public List<TransfertPermanent> getTransfertPermanent() {

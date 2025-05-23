@@ -29,7 +29,7 @@ public DossierSoinMedical dupliquerAvecNouveauId(String newId) {
     copie.setEtatDossier(this.getEtatDossier());
     copie.setDateCre(LocalDateTime.now());
     copie.setMotifProlong(this.getMotifProlong());
-    copie.setRapportMouvement(this.getRapportMouvement());
+//    copie.setRapportMouvement(this.getRapportMouvement());
     copie.setTypeTraitement(this.typeTraitement);
     return copie;
 }
