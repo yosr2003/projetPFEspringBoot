@@ -41,7 +41,7 @@ public abstract class DossierDelegue {
 	@JsonIgnore
 	@OneToMany(mappedBy = "dossierDelegue")
 	private List<TransfertPermanent> transfertPermanent;
-	
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "rapport_id")
     private RapportMouvementsFinanciers rapportMouvementFinanciers;
