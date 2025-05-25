@@ -3,6 +3,7 @@ package com.projetPfe.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,8 @@ public class RapportMvmntFinanciersController {
 	@Autowired
 	private IRapportMvmntFinanciersService rapportService;
 	
+	
+	 @PreAuthorize("hasRole('ChargéClientele')")
 	@PostMapping("/{id}")
 	public ResponseEntity<?> genereRapportMouvement(@PathVariable("id") String id) {
 	 try {

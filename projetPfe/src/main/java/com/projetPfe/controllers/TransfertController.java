@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +42,8 @@ public class TransfertController {
 	        return transfertService.getAll();
 	    }
 	 
+	 
+	 @PreAuthorize("hasRole('ChargéClientele')") 
 	@GetMapping("/calculerFrais")
     public ResponseEntity<Object> calculerFrais(
     @RequestParam Double montant,
@@ -59,7 +62,7 @@ public class TransfertController {
     }
     }
 	
-	
+	@PreAuthorize("hasRole('ChargéClientele')")
 	@PostMapping
 	public ResponseEntity<?> creerTransfert(@RequestBody Map<String, Object> body) {
 	    try {

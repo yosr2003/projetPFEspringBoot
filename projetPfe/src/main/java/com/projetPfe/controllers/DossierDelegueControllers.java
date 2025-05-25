@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,16 +40,20 @@ public class DossierDelegueControllers {
 	        return dossDelService.getAllDossiers();
 	    }
 	
-	 
+	 @PreAuthorize("hasRole('ChargéClientele')")
 	 @PostMapping("/dupliquerDossier/{id}")
 	 public ResponseEntity<Map<String, Object>> dupliquerDossier(@PathVariable("id") String id){
 		 return dossDelService.dupliquerDossier(id);
 	 }
+	 
+	 
+	 @PreAuthorize("hasRole('ChargéClientele')")
 	 @GetMapping("/{id}")
 	 public ResponseEntity<?> getDossierById(@PathVariable String id) {
 	        return dossDelService.getDossierById(id);
 	    }
 	 
+	 @PreAuthorize("hasRole('ChargéClientele')")
 	 @PutMapping("/cloturer/{id}")
 	 public ResponseEntity<Map<String, Object>> cloturerDossier(
 	         @PathVariable String id,
@@ -60,6 +65,7 @@ public class DossierDelegueControllers {
 	     return dossDelService.cloturerDossier(id, dateCloture, motif);
 	 }
 
+	 @PreAuthorize("hasRole('ChargéClientele')")
 	 @PutMapping("/scolarite/prolonger/{id}")
 	 public ResponseEntity<?> prolongerDossierScolarite(
 	         @PathVariable String id,@RequestBody Map<String, Object> body) {

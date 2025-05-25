@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +36,7 @@ public class SwiftController {
 	@Autowired
 	private SwiftServiceImp swiftService;
 
-	
+	 @PreAuthorize("hasRole('BackOffice')")
 	  @PostMapping("/{transfertId}")
 	    public ResponseEntity<String> creerSwift(
 	            @PathVariable String transfertId) {
@@ -62,7 +63,7 @@ public class SwiftController {
 	        }
 	    }
 
-
+	    @PreAuthorize("hasRole('BackOffice')")
 	    @GetMapping("/{transfertId}")
 	    public ResponseEntity<?> consulterSwift(@PathVariable String transfertId) {
 	        try {
