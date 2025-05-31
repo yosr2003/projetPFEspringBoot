@@ -1,17 +1,22 @@
 package com.projetPfe.servicesImp;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.projetPfe.Iservices.dossierScolariteIService;
 import com.projetPfe.entities.DossierDelegue;
 import com.projetPfe.entities.DossierScolarité;
 import com.projetPfe.entities.EtatDoss;
+import com.projetPfe.entities.PieceJustificative;
 import com.projetPfe.repositories.dossierDelegueRepository;
 @Service
 public class DossierScolariteServiceImp implements dossierScolariteIService {
@@ -20,7 +25,8 @@ public class DossierScolariteServiceImp implements dossierScolariteIService {
 	dossierDelegueRepository dossierDelegueRepo;
 	
 	@Override
-	public ResponseEntity<?> prolongerDossierScolarite(String id, LocalDate dateProlongation, String motif) {
+	public ResponseEntity<?> prolongerDossierScolarite(String id, LocalDate dateProlongation, String motif, MultipartFile fichier){
+
 	    Optional<DossierDelegue> optional = dossierDelegueRepo.findById(id);
 	    if (optional.isEmpty()) {
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dossier non trouvé");
@@ -49,14 +55,34 @@ public class DossierScolariteServiceImp implements dossierScolariteIService {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 	                .body("Le dossier doit être validé pour être prolongé");
 	    }
+	    if (fichier == null || fichier.isEmpty()) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Une pièce justificative est requise pour la prolongation.");
+	    }
 
-	    dossier.setDateExpiration(dateProlongation);
-	    dossier.setMotifProlong(motif);
+	 
+	
+		PieceJustificative piece = new PieceJustificative();
+			        piece.setNomFichier(fichier.getOriginalFilename());
+			        piece.setDateDepot(LocalDateTime.now());
+			        try {
+			            piece.setContenu(fichier.getBytes());
+			        } catch (IOException e) {
+			            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+			                    .body("Impossible de lire le contenu du fichier justificatif");
+			        }
 
-	    dossierDelegueRepo.save(dossier);
+       DossierScolarité dossierScolarite = (DossierScolarité) dossier;
+	    
+	    dossierScolarite.setDateProlongation(dateProlongation);
+	    dossierScolarite.setMotifProlong(motif);
+	    
+	    
+	    dossierScolarite.getPiecesJustificatives().add(piece);
+	    dossierDelegueRepo.save(dossierScolarite);
 
-	    return ResponseEntity.ok(dossier);
+	    return ResponseEntity.ok(dossierScolarite);
 	}
+
 
 
 }
