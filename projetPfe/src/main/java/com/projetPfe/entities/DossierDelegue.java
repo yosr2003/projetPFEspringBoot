@@ -30,7 +30,7 @@ public abstract class DossierDelegue {
 	private LocalDate  dateCloture;
 	
 	private String motifcloture;
-	private String motifProlong;
+
 
 	private LocalDateTime  dateCre;
 	private LocalDate dateDebut;
@@ -106,14 +106,7 @@ public abstract class DossierDelegue {
 	}
 
 
-	public String getMotifProlong() {
-		return motifProlong;
-	}
 
-
-	public void setMotifProlong(String motifProlong) {
-		this.motifProlong = motifProlong;
-	}
 
 
 	public LocalDateTime getDateCre() {

@@ -2,6 +2,8 @@ package com.projetPfe.entities;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,10 +21,12 @@ public class PieceJustificative {
     private String nomFichier;
 
     @Lob
+    @JsonIgnore
     private byte[] contenu;
 
     @ManyToOne
-    private DossierScolarité dossierSC; 
+    @JsonIgnore
+    private DossierScolarité dossierScolarite; 
 
     private LocalDateTime dateDepot;
 
@@ -51,11 +55,11 @@ public class PieceJustificative {
 	}
 
 	public DossierScolarité getDossierSC() {
-		return dossierSC;
+		return dossierScolarite;
 	}
 
 	public void setDossierSC(DossierScolarité dossierSC) {
-		this.dossierSC = dossierSC;
+		this.dossierScolarite = dossierSC;
 	}
 
 	public LocalDateTime getDateDepot() {

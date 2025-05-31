@@ -25,7 +25,7 @@ public class DossierScolariteServiceImp implements dossierScolariteIService {
 	dossierDelegueRepository dossierDelegueRepo;
 	
 	@Override
-	public ResponseEntity<?> prolongerDossierScolarite(String id, LocalDate dateProlongation, String motif, MultipartFile fichier){
+	public ResponseEntity<?> prolongerDossierScolarite(String id, LocalDate dateProlongation, MultipartFile fichier){
 
 	    Optional<DossierDelegue> optional = dossierDelegueRepo.findById(id);
 	    if (optional.isEmpty()) {
@@ -41,7 +41,7 @@ public class DossierScolariteServiceImp implements dossierScolariteIService {
 	    }
 
 	    // Vérifications des paramètres
-	    if (dateProlongation == null || motif == null || motif.trim().isEmpty()) {
+	    if (dateProlongation == null ) {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 	                .body("Date de prolongation et motif requis");
 	    }
@@ -74,13 +74,14 @@ public class DossierScolariteServiceImp implements dossierScolariteIService {
        DossierScolarité dossierScolarite = (DossierScolarité) dossier;
 	    
 	    dossierScolarite.setDateProlongation(dateProlongation);
-	    dossierScolarite.setMotifProlong(motif);
+	    piece.setDossierSC(dossierScolarite);
+
 	    
 	    
 	    dossierScolarite.getPiecesJustificatives().add(piece);
 	    dossierDelegueRepo.save(dossierScolarite);
 
-	    return ResponseEntity.ok(dossierScolarite);
+	    return ResponseEntity.ok("Dossier prolongé avec succès.");
 	}
 
 

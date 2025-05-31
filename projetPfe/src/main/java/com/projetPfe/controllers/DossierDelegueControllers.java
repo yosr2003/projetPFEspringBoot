@@ -71,11 +71,10 @@ public class DossierDelegueControllers {
 	 public ResponseEntity<?> prolongerDossierScolarite(
 	         @PathVariable String id,
 	         @RequestParam("dateProlongation") String dateStr,
-	         @RequestParam("motifProlongation") String motif,
 	         @RequestParam("fichier") MultipartFile fichier) {
 
 	     LocalDate dateProlongation = LocalDate.parse(dateStr);
-	     return dossierScolariteServiceImp.prolongerDossierScolarite(id, dateProlongation, motif, fichier);
+	     return dossierScolariteServiceImp.prolongerDossierScolarite(id, dateProlongation, fichier);
 	 }
 
 

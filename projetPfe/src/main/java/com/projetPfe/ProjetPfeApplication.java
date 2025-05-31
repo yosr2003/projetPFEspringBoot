@@ -482,7 +482,7 @@ public class ProjetPfeApplication {
 		        doss1.setDateExpiration(LocalDate.of(2025, 1, 10));
 		        doss1.setDateCre(LocalDateTime.now());
 		        doss1.setEtatDossier(EtatDoss.TRAITEMENT);  // Enum que tu dois avoir défini
-		        doss1.setMotifProlong("Demande exceptionnelle approuvée");
+		
 		        doss1.setMontantMensuel(1200.0);
 
 		        DossierEconomieSurSalaire doss2 = new DossierEconomieSurSalaire();
@@ -500,7 +500,7 @@ public class ProjetPfeApplication {
 		        doss3.setDateExpiration(LocalDate.of(2024, 12, 31));
 		        doss3.setDateCre(LocalDateTime.now());
 		        doss3.setEtatDossier(EtatDoss.VALIDE);  // Enum à adapter
-		        doss3.setMotifProlong("Négociation en cours");
+		
 		        doss3.setMontantMensuel(1500.0);
 		        
 		        
@@ -511,7 +511,7 @@ public class ProjetPfeApplication {
 		        contrat1.setDateCre(LocalDateTime.now());
 		        contrat1.setEtatDossier(EtatDoss.TRAITEMENT);  // Enum à ajuster
 		        contrat1.setMontantContrat(50000.0);
-		        contrat1.setMotifProlong("Prolongation pour renouvellement automatique");
+		   
 
 		        DossierContratCommercial contrat2 = new DossierContratCommercial();
 		        contrat2.setIdDossier("DOSS_CC002");
@@ -529,7 +529,7 @@ public class ProjetPfeApplication {
 		        contrat3.setDateCre(LocalDateTime.now());
 		        contrat3.setEtatDossier(EtatDoss.VALIDE);
 		        contrat3.setMontantContrat(120000.0);
-		        contrat3.setMotifProlong("En attente d'approbation juridique");
+		   
 
 		        DossierEmpreint empreint1 = new DossierEmpreint();
 		        empreint1.setIdDossier("DOSS_EM001");
@@ -554,7 +554,7 @@ public class ProjetPfeApplication {
 		        empreint3.setDateCre(LocalDateTime.now());
 		        empreint3.setEtatDossier(EtatDoss.TRAITEMENT);
 		        empreint3.setMontantEmpreint(220000.0);
-		        empreint3.setMotifProlong("En attente d'acceptation du plan de remboursement");
+		 
 
 		        DossierFormationProfessionnelle dossierFP = new DossierFormationProfessionnelle();
 		        dossierFP.setIdDossier("DOSS_FP001");

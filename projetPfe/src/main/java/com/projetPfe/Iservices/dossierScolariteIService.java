@@ -13,8 +13,7 @@ public interface dossierScolariteIService {
 
 
 
-	ResponseEntity<?> prolongerDossierScolarite(String id, LocalDate dateProlongation, String motif,
-			MultipartFile fichier);
+	ResponseEntity<?> prolongerDossierScolarite(String id, LocalDate dateProlongation, MultipartFile fichier);
 
 
 }

@@ -20,7 +20,9 @@ import jakarta.persistence.OneToMany;
 public class DossierScolarité extends DossierDelegue{
 private String niveauEtude;
 private LocalDate dateProlongation;
+
 @OneToMany(mappedBy = "dossierScolarite", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+
 private List<PieceJustificative> piecesJustificatives = new ArrayList<>();
 
 public String getNiveauEtude() {
@@ -39,6 +41,8 @@ public void setDateProlongation(LocalDate dateProlongation) {
 	this.dateProlongation = dateProlongation;
 }
 
+
+
 @Override
 public DossierScolarité dupliquerAvecNouveauId(String newId) {
 	DossierScolarité copie = new DossierScolarité();
@@ -47,7 +51,6 @@ public DossierScolarité dupliquerAvecNouveauId(String newId) {
     copie.setDateExpiration(this.getDateExpiration());
     copie.setEtatDossier(this.getEtatDossier());
     copie.setDateCre(LocalDateTime.now());
-    copie.setMotifProlong(this.getMotifProlong());
     copie.setDateProlongation(this.getDateProlongation());
 //    copie.setRapportMouvement(this.getRapportMouvement());
     copie.setNiveauEtude(this.niveauEtude);
