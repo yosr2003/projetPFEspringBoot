@@ -72,15 +72,21 @@ public class EtatDeclarationBCTServiceImp implements EtatDeclarationIservice {
 		List<EtatDeclarationBCT> decalarations=etatDecRepo.findAll();
 		EtatDeclarationBCT etat = new EtatDeclarationBCT(trimestre);
 		List<Transfert> transferts = filtreTransfertsParTrimestre(trimestre,typeDeclaration);
+		System.out.println("le type est  " +typeDeclaration);
+		System.out.println("Nombre de transferts trouvés: " + transferts.size());
 		for (EtatDeclarationBCT etatDeclarationBCT : decalarations) {
 			List<Transfert>transfertsetats=etatDeclarationBCT.getTransferts();
 				String typeExistnat=getTypeFromFirstTransfert(transferts);
 				System.out.println(transfertsetats);
 			    String typeNouveau=getTypeFromFirstTransfert(transfertsetats);
 			    System.out.println(typeExistnat+" "+typeNouveau);
-				if (typeExistnat.equals(typeNouveau) && etatDeclarationBCT.getTrimestre().equals(etat.getTrimestre())) {
-	                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-	                        .body("Il existe déjà un rapport pour ce type de transferts et ce trimestre.");
+				if (typeExistnat != null && typeNouveau != null && typeExistnat.equals(typeNouveau) && etatDeclarationBCT.getTrimestre().equals(etat.getTrimestre())) {
+//	                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//	                        .body("Il existe déjà un rapport pour ce type de transferts et ce trimestre.");
+					return ResponseEntity.ok()
+				            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=etat_investissement.pdf")
+				            .contentType(MediaType.APPLICATION_PDF)
+				            .body(etatDeclarationBCT.getContenuPdf());
 	            
 			}
 		}

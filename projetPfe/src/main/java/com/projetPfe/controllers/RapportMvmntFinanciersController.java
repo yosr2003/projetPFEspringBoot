@@ -18,7 +18,7 @@ public class RapportMvmntFinanciersController {
 	private IRapportMvmntFinanciersService rapportService;
 	
 	
-	 @PreAuthorize("hasRole('ChargéClientele')")
+	@PreAuthorize("hasRole('ChargéClientele')")
 	@PostMapping("/{id}")
 	public ResponseEntity<?> genereRapportMouvement(@PathVariable("id") String id) {
 	 try {

@@ -51,10 +51,12 @@ public class Transfert {
 	@Column(name="montant_final")
 	private double MontantFinal;
 	
+	
 	@ManyToOne
 	@JoinColumn(name = "CompteBancaire_source_id")
 	private CompteBancaire CompteBancaire_source;
-
+	
+	
 	@ManyToOne
 	@JoinColumn(name = "CompteBancaire_cible_id")
 	private CompteBancaire CompteBancaire_cible;

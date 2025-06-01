@@ -51,9 +51,9 @@ public class Banque {
 	public void setBanque(String banque) {
 		Banque = banque;
 	}
-	public List<CompteBancaire> getCompteBancaires() {
-		return CompteBancaires;
-	}
+//	public List<CompteBancaire> getCompteBancaires() {
+//		return CompteBancaires;
+//	}
 	public void setCompteBancaires(List<CompteBancaire> compteBancaires) {
 		CompteBancaires = compteBancaires;
 	}

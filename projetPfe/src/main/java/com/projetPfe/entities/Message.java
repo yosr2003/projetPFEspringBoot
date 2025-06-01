@@ -27,6 +27,7 @@ public class Message {
  	@Lob
  	private String texteReponse;
     private String intention;
+    
     @ElementCollection
     @CollectionTable(
         name = "message_entites",
