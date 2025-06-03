@@ -201,5 +201,28 @@ public class RapportMvmntFinanciersService implements IRapportMvmntFinanciersSer
             table.addCell(elem.getElementsByTagName("colonne5").item(0).getTextContent());
             table.addCell(elem.getElementsByTagName("colonne6").item(0).getTextContent());
     	}
+        
+        @Override
+        public ResponseEntity<?> consulterRapportMouvement(String idDossier) {
+            Optional<DossierDelegue> dossierOpt = dossierDelegueRepo.findById(idDossier);
+
+            if (!dossierOpt.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ce Dossier Délégué n'existe pas.");
+            }
+
+            DossierDelegue dossier = dossierOpt.get();
+            RapportMouvementsFinanciers rapport = dossier.getRapportMouvementFinanciers();
+
+            if (rapport == null || rapport.getRapportMouvement() == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aucun rapport de mouvement n’a été généré pour ce dossier.");
+            }
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=rapport_mouvement_" + idDossier + ".pdf")
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .body(rapport.getRapportMouvement());
+        }
+
+        
 
 }

@@ -5,4 +5,6 @@ import org.springframework.http.ResponseEntity;
 public interface IRapportMvmntFinanciersService {
 	public ResponseEntity<?> genererRapportMouvement(String idDossier) throws Exception;
 
+	ResponseEntity<?> consulterRapportMouvement(String idDossier);
+
 }

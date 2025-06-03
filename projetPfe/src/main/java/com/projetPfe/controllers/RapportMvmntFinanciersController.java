@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,5 +30,18 @@ public class RapportMvmntFinanciersController {
 		
 	} 
 	}
+	
+	@PreAuthorize("hasRole('ChargéClientele')")
+	@GetMapping("/{id}")
+	public ResponseEntity<?> consulterRapportMouvement(@PathVariable("id") String id) {
+	    try {
+	        return rapportService.consulterRapportMouvement(id);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	            .body("Une erreur est survenue lors de la consultation du rapport de mouvements");
+	    }
+	}
+
 
 }
