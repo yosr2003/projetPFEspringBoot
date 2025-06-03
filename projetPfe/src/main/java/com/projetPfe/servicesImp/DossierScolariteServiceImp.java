@@ -82,7 +82,7 @@ public class DossierScolariteServiceImp implements dossierScolariteIService {
 	    dossierScolarite.getPiecesJustificatives().add(piece);
 	    dossierDelegueRepo.save(dossierScolarite);
 
-	    return ResponseEntity.ok("Dossier prolongé avec succès.");
+	    return ResponseEntity.ok().body(dossierScolarite);
 	}
 
 

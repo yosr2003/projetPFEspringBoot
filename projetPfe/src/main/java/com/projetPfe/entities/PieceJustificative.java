@@ -54,9 +54,7 @@ public class PieceJustificative {
 		this.contenu = contenu;
 	}
 
-	public DossierScolarité getDossierSC() {
-		return dossierScolarite;
-	}
+
 
 	public void setDossierSC(DossierScolarité dossierSC) {
 		this.dossierScolarite = dossierSC;
