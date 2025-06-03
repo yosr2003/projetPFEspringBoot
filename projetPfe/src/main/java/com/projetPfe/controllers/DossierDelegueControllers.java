@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.projetPfe.Iservices.IserviceDossierDelegue;
 import com.projetPfe.Iservices.dossierScolariteIService;
@@ -66,15 +67,18 @@ public class DossierDelegueControllers {
 	 }
 
 	 @PreAuthorize("hasRole('ChargéClientele')")
-	 @PutMapping("/scolarite/prolonger/{id}")
+	 @PutMapping(value = "/scolarite/prolonger/{id}", consumes = "multipart/form-data")
 	 public ResponseEntity<?> prolongerDossierScolarite(
-	         @PathVariable String id,@RequestBody Map<String, Object> body) {
-	     LocalDate dateProlongation = LocalDate.parse((String) body.get("dateProlongation"));
-	     String motifProlongation = (String) body.get("motifProlongation");
+	         @PathVariable String id,
+	         @RequestParam("dateProlongation") String dateStr,
+	         @RequestParam("fichier") MultipartFile fichier) {
 
-	     return dossierScolariteServiceImp.prolongerDossierScolarite(id, dateProlongation, motifProlongation);
+	     LocalDate dateProlongation = LocalDate.parse(dateStr);
+	     return dossierScolariteServiceImp.prolongerDossierScolarite(id, dateProlongation, fichier);
+
+
+
 	 }
-
 	 
 
 	 

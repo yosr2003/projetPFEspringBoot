@@ -28,7 +28,6 @@ public DossierContratCommercial dupliquerAvecNouveauId(String newId) {
     copie.setDateExpiration(this.getDateExpiration());
     copie.setEtatDossier(this.getEtatDossier());
     copie.setDateCre(LocalDateTime.now());
-    copie.setMotifProlong(this.getMotifProlong());
 //    copie.setRapportMouvement(this.getRapportMouvement());
     copie.setMontantContrat(this.montantContrat);
     return copie;

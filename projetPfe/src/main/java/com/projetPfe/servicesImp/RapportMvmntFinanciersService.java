@@ -58,6 +58,7 @@ public class RapportMvmntFinanciersService implements IRapportMvmntFinanciersSer
 		if (transferts.isEmpty()) {
 		    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 		        .body("Ce Dossier Délégué ne contient pas encore de transferts permanents");}
+
 	    DossierDelegue dossier = d.get();
 	    if (dossier.getRapportMouvementFinanciers() != null) {
 //	    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body
