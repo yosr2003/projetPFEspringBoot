@@ -28,7 +28,7 @@ public DossierFormationProfessionnelle dupliquerAvecNouveauId(String newId) {
     copie.setDateExpiration(this.getDateExpiration());
     copie.setEtatDossier(this.getEtatDossier());
     copie.setDateCre(LocalDateTime.now());
-    copie.setMotifProlong(this.getMotifProlong());
+
 //    copie.setRapportMouvement(this.getRapportMouvement());
     copie.setNomFormation(this.nomFormation);
     return copie;
