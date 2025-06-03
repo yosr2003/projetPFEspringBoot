@@ -62,8 +62,6 @@ public class RapportMvmntFinanciersService implements IRapportMvmntFinanciersSer
 		        .body("Ce Dossier Délégué ne contient pas encore de transferts permanents");
 		}
 
-	    
-
 	    DossierDelegue dossier = d.get();
 
 	    if (dossier.getRapportMouvementFinanciers() != null) {
