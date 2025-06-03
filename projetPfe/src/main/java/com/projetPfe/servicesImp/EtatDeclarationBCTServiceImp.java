@@ -58,7 +58,7 @@ public class EtatDeclarationBCTServiceImp implements EtatDeclarationIservice {
 	    Transfert premier = transferts.get(0);
 
 	    if (premier instanceof TransfertPonctuel) {
-	        return ((TransfertPonctuel) premier).getTypeTransfert().toString(); // ← ex: "SOINS_MEDICAL"
+	        return ((TransfertPonctuel) premier).getTypeTransfert().toString(); 
 	    } else if (premier instanceof TransfertPermanent) {
 	        DossierDelegue dossier = ((TransfertPermanent) premier).getDossierDelegue();
 	        if (dossier instanceof DossierSoinMedical) return "SOINS_MEDICAL";
