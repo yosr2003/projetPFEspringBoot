@@ -45,16 +45,15 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 	    private TransfertRepository TransfertRepository;
 	  @Autowired
 	    private TransfertPermanentRepository transfertPermanent;
+	  
+	  
 	@Override
 	public ResponseEntity<Map<String, Object>> dupliquerDossier(String id) {
 	    Optional<DossierDelegue> optionalDossier = dossierDelegueRepo.findById(id);
-
 	    if (optionalDossier.isPresent()) {
 	        DossierDelegue dossier = optionalDossier.get();
-
 	        if (dossier.getEtatDossier().equals(EtatDoss.VALIDE)) {
 	            String newId = genererIdentifiantUnique("DOS");
-
 	            // Utilisation du polymorphisme
 	            DossierDelegue copie = dossier.dupliquerAvecNouveauId(newId);
 	            dossierDelegueRepo.save(copie);
@@ -68,13 +67,13 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 
 	            return new ResponseEntity<>(response, HttpStatus.CREATED);
 	        } else {
-	            ResponseHeaderDTO header = new ResponseHeaderDTO(400, "BAD_REQUEST", "Échec : un dossier ne peut etre dupliqué que si il est valide et ce dossier n'est pas validé");
+	            ResponseHeaderDTO header = new ResponseHeaderDTO(400, "BAD_REQUEST", 
+	            "Échec : un dossier ne peut etre dupliqué que si il est valide et ce dossier n'est pas validé");
 	            Map<String, Object> response = new HashMap<>();
 	            response.put("header", header);
 	            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	        }
 	    }
-
 	    ResponseHeaderDTO header = new ResponseHeaderDTO(404, "NOT_FOUND", "Dossier non trouvé");
 	    Map<String, Object> response = new HashMap<>();
 	    response.put("header", header);
@@ -128,7 +127,6 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 	        response.put("header", new ResponseHeaderDTO(404, "NOT_FOUND", "Dossier inexistant"));
 	        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	    }
-
 	    DossierDelegue dossier = optionalDossier.get();
 
 	    if (!dossier.getEtatDossier().equals(EtatDoss.VALIDE)) {
@@ -136,15 +134,16 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 	        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	    }
 
-	    if (dateCloture != null && dateCloture.isAfter(dossier.getDateExpiration()) && dateCloture.isAfter(dossier.getDateDebut())) {
-	        response.put("header", new ResponseHeaderDTO(400, "BAD_REQUEST", "La date de clôture dépasse la date d'expiration et la date debut du dossier "));
+	    if (dateCloture != null && dateCloture.isAfter(dossier.getDateExpiration()) && 
+	    		dateCloture.isAfter(dossier.getDateDebut())) {
+	        response.put("header", new ResponseHeaderDTO(400, "BAD_REQUEST",
+	        		"La date de clôture dépasse la date d'expiration et la date debut du dossier "));
 	        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	    }
 
 	    dossier.setDateCloture(dateCloture);
 	    dossier.setMotifcloture(motifcloture);
 	    dossier.setEtatDossier(EtatDoss.CLOTURE);
-
 	    dossierDelegueRepo.save(dossier);
 
 	    response.put("header", new ResponseHeaderDTO(200, "SERVICE_OK", "Clôturé avec succès"));
