@@ -56,22 +56,33 @@ public class EtatDeclarationBCTServiceImp implements EtatDeclarationIservice {
 	        return null;
 
 	    Transfert premier = transferts.get(0);
+
 	    if (premier instanceof TransfertPonctuel) {
-	        return ((TransfertPonctuel) premier).getTypeTransfert().toString();
+	        return ((TransfertPonctuel) premier).getTypeTransfert().toString(); // ← ex: "SOINS_MEDICAL"
 	    } else if (premier instanceof TransfertPermanent) {
 	        DossierDelegue dossier = ((TransfertPermanent) premier).getDossierDelegue();
-	        if (dossier != null) {
-	            return dossier.getClass().getSimpleName(); // ici tu utilises le nom du dossier
-	        }
+	        if (dossier instanceof DossierSoinMedical) return "SOINS_MEDICAL";
+	        if (dossier instanceof DossierScolarité) return "SCOLARITE";
+	        if (dossier instanceof DossierEmpreint) return "EMPREINT";
+	        if (dossier instanceof DossierFormationProfessionnelle) return "FORMATION_PROFESSIONNELLE";
+	        if (dossier instanceof DossierContratCommercial) return "COMMERCIAL";
+	        if (dossier instanceof DossierInvestissement) return "IVESTISSMENT";
+	        if (dossier instanceof DossierEconomieSurSalaire) return "ECONOMIE_SUR_SALAIRE";
+	      
 	    }
 	    return null;
 	}
+
 	
 	@Override
 	public ResponseEntity<?> genererEtatDeclaration(String trimestre, String typeDeclaration) throws Exception {
 		List<EtatDeclarationBCT> decalarations=etatDecRepo.findAll();
 		EtatDeclarationBCT etat = new EtatDeclarationBCT(trimestre);
+		// filtrer les transferts par trimestre
 		List<Transfert> transferts = filtreTransfertsParTrimestre(trimestre,typeDeclaration);
+		System.out.println("Transferts filtrés : ");
+		transferts.forEach(t -> System.out.println(t));
+
 		System.out.println("le type est  " +typeDeclaration);
 		System.out.println("Nombre de transferts trouvés: " + transferts.size());
 		for (EtatDeclarationBCT etatDeclarationBCT : decalarations) {
@@ -81,13 +92,14 @@ public class EtatDeclarationBCTServiceImp implements EtatDeclarationIservice {
 			    String typeNouveau=getTypeFromFirstTransfert(transfertsetats);
 			    System.out.println(typeExistnat+" "+typeNouveau);
 				if (typeExistnat != null && typeNouveau != null && typeExistnat.equals(typeNouveau) && etatDeclarationBCT.getTrimestre().equals(etat.getTrimestre())) {
-//	                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//	                        .body("Il existe déjà un rapport pour ce type de transferts et ce trimestre.");
-					return ResponseEntity.ok()
-				            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=etat_investissement.pdf")
-				            .contentType(MediaType.APPLICATION_PDF)
-				            .body(etatDeclarationBCT.getContenuPdf());
-	            
+               return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                       .body("Il existe déjà un rapport pour ce type de transferts et ce trimestre.");
+					/*
+					 * return ResponseEntity.ok() .header(HttpHeaders.CONTENT_DISPOSITION,
+					 * "attachment; filename=etat_investissement.pdf")
+					 * .contentType(MediaType.APPLICATION_PDF)
+					 * .body(etatDeclarationBCT.getContenuPdf());
+					 */
 			}
 		}
 
@@ -136,7 +148,8 @@ public class EtatDeclarationBCTServiceImp implements EtatDeclarationIservice {
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=etat_investissement.pdf")
                 .contentType(MediaType.APPLICATION_PDF)
-                .body(outputStream.toByteArray());}return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("il n'ya pas de transferts a mettre dans le rapport");
+                .body(outputStream.toByteArray());}
+	       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("il n'ya pas de transferts a mettre dans le rapport");
 	}
 	
 	@Override
@@ -323,5 +336,31 @@ public class EtatDeclarationBCTServiceImp implements EtatDeclarationIservice {
     }
 	
 	
-	  
+	@Override
+	public ResponseEntity<?> getEtatDeclarationParTypeEtTrimestre(String trimestre, String typeDeclaration) {
+	    List<EtatDeclarationBCT> declarations = etatDecRepo.findAll();
+
+	    for (EtatDeclarationBCT etat : declarations) {
+	        List<Transfert> transferts = etat.getTransferts();
+	        if (transferts == null || transferts.isEmpty()) continue;
+
+	        String typeTransfertExistant = getTypeFromFirstTransfert(transferts);
+
+	        if (typeTransfertExistant != null &&
+	            typeTransfertExistant.equalsIgnoreCase(typeDeclaration) &&
+	            etat.getTrimestre().equalsIgnoreCase(trimestre)) {
+
+	 
+	            return ResponseEntity.ok()
+	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=etat_declaration_" + trimestre + ".pdf")
+	                .contentType(MediaType.APPLICATION_PDF)
+	                .body(etat.getContenuPdf());
+	        }
+	    }
+
+	    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+	            .body("Aucun état de déclaration trouvé pour ce type et ce trimestre.");
+	}
+
+
 }

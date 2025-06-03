@@ -15,6 +15,8 @@ public interface EtatDeclarationIservice {
 
 	StringBuilder  genererContenuXml(String trimestre,List<Transfert> transferts);
 
+	ResponseEntity<?> getEtatDeclarationParTypeEtTrimestre(String trimestre, String typeDeclaration);
+
 	
 
 }

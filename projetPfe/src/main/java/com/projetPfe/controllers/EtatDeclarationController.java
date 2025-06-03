@@ -18,7 +18,7 @@ public class EtatDeclarationController {
 	@Autowired
 	private EtatDeclarationIservice etaDecService;
 	     
-	 @PreAuthorize("hasRole('BackOffice')")	
+	 @PreAuthorize("hasRole('ChargéClientele')")	
 		@PostMapping
 	    public ResponseEntity<?> genererEtatDeclaration(@RequestBody Map<String, String> requestBody) {
 	    
@@ -31,5 +31,25 @@ public class EtatDeclarationController {
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(" Une erreur est survenue lors de la génération de l’état de déclaration");	
 			}
 	       }
+	 
+
+	 
+	 @PostMapping("/consulter")
+	 @PreAuthorize("hasRole('ChargéClientele')")
+	 public ResponseEntity<?> consulterEtatDeclaration(@RequestBody Map<String, String> requestBody) {
+	     String typeDeclaration = requestBody.get("typeDeclaration");
+	     String trimestre = requestBody.get("trimestre");
+
+	     try {
+	         return etaDecService.getEtatDeclarationParTypeEtTrimestre(trimestre, typeDeclaration);
+	     } catch (Exception e) {
+	         e.printStackTrace();
+	         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                 .body("Erreur lors de la consultation de l’état de déclaration.");
+	     }
+	 }
+
+
+
 
 }
