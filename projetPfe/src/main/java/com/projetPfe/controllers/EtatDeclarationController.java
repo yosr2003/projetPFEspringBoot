@@ -20,7 +20,7 @@ public class EtatDeclarationController {
 	@Autowired
 	private EtatDeclarationIservice etaDecService;
 	     
-	 @PreAuthorize("hasRole('ChargéClientele')")	
+	 @PreAuthorize("hasRole('BackOffice')")	
 		@PostMapping
 	    public ResponseEntity<?> genererEtatDeclaration(@RequestBody Map<String, String> requestBody) {
 	    
@@ -37,7 +37,7 @@ public class EtatDeclarationController {
 
 	 
 	 @GetMapping("/consulter")
-	 @PreAuthorize("hasRole('ChargéClientele')")
+	 @PreAuthorize("hasRole('BackOffice')")
 	 public ResponseEntity<?> consulterEtatDeclaration(
 	         @RequestParam String typeDeclaration,
 	         @RequestParam String trimestre) {

@@ -65,12 +65,14 @@ public class RapportMvmntFinanciersService implements IRapportMvmntFinanciersSer
 	    DossierDelegue dossier = d.get();
 
 	    if (dossier.getRapportMouvementFinanciers() != null) {
-	       // return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ce Dossier Délégué a déjà un rapport de mouvement financier");
+	       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ce Dossier Délégué a déjà un rapport de mouvement financier");
 	    	
-	    	return ResponseEntity.ok()
-		            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=etat_investissement.pdf")
-		            .contentType(MediaType.APPLICATION_PDF)
-		            .body(dossier.getRapportMouvementFinanciers().getRapportMouvement());
+			/*
+			 * return ResponseEntity.ok() .header(HttpHeaders.CONTENT_DISPOSITION,
+			 * "attachment; filename=etat_investissement.pdf")
+			 * .contentType(MediaType.APPLICATION_PDF)
+			 * .body(dossier.getRapportMouvementFinanciers().getRapportMouvement());
+			 */
 	    }
 
 	    if ((dossier.getDateCloture() != null && LocalDate.now().isBefore(dossier.getDateCloture()))
