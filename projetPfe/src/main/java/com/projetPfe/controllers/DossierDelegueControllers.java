@@ -49,10 +49,11 @@ public class DossierDelegueControllers {
 	 
 	 
 	 @PreAuthorize("hasRole('ChargéClientele')")
-	 @GetMapping("/{id}")
-	 public ResponseEntity<?> getDossierById(@PathVariable String id) {
-	        return dossDelService.getDossierById(id);
-	    }
+	 @GetMapping(value = "/{id}", produces = "application/pdf")
+	 public ResponseEntity<byte[]> getDossierById(@PathVariable String id) {
+	     return (ResponseEntity<byte[]>) dossDelService.getDossierById(id);
+	 }
+
 	 
 	 @PreAuthorize("hasRole('ChargéClientele')")
 	 @PutMapping("/cloturer/{id}")

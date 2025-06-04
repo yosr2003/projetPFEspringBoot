@@ -11,6 +11,7 @@ import java.util.List;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -72,6 +73,12 @@ public void ajouterInfosSpecifiquesAuRapport(Document doc) throws DocumentExcept
     doc.add(new Paragraph("Type de dossier : SCOLARITÉ"));
     doc.add(new Paragraph("Niveau d'étude : " + this.getNiveauEtude()));
 }
+
+
+
+
+
+
 
 }
 

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
 
 import jakarta.persistence.Entity;
 
@@ -40,4 +41,9 @@ public void ajouterInfosSpecifiquesAuRapport(Document doc) throws DocumentExcept
 	    doc.add(new Paragraph("secteur d'activité : " + this.getSecteurActivité()));
 	
 }
+
+
+
+
+
 }

@@ -159,5 +159,4 @@ public abstract class DossierDelegue {
 	public abstract void ajouterInfosSpecifiquesAuRapport(Document doc) throws DocumentException;
 
 
-	
 }

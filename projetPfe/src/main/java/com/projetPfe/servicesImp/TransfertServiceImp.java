@@ -1,5 +1,6 @@
 package com.projetPfe.servicesImp;
 
+import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -7,10 +8,17 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.projetPfe.Iservices.TransfertServiceI;
 import com.projetPfe.entities.CompteBancaire;
 import com.projetPfe.entities.DossierContratCommercial;
@@ -202,15 +210,102 @@ public class TransfertServiceImp implements TransfertServiceI {
      }
 
 
+	   @Override
+	   public ResponseEntity<?> consulterTransfert(String refTransfert) {
+	       Optional<Transfert> optionalTransfert = TransfertRepository.findByrefTransfert(refTransfert);
+	       if (optionalTransfert.isEmpty()) {
+	           return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Transfert introuvable");
+	       }
 
-	@Override
-	public ResponseEntity<?> consulterTransfert(String refTransfert) {
-		Optional<Transfert> t=TransfertRepository.findByrefTransfert(refTransfert);
-		if(t.isPresent()) {
-			return ResponseEntity.ok()
-	                .body(t);
-		}
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Transfert introuvable");
-	}
-	
+	       Transfert transfert = optionalTransfert.get();
+
+	       try {
+	           ByteArrayOutputStream out = new ByteArrayOutputStream();
+	           Document pdfDoc = new Document();
+	           PdfWriter.getInstance(pdfDoc, out);
+	           pdfDoc.open();
+
+	           // Titre principal
+	           Paragraph titre = new Paragraph("Détails du Transfert : " + refTransfert, new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD));
+	           titre.setAlignment(Paragraph.ALIGN_CENTER);
+	           titre.setSpacingAfter(20f);
+	           pdfDoc.add(titre);
+
+	           // Partie haute : résumé
+	           String typeTransfert = transfert instanceof TransfertPonctuel ? "Ponctuel" :
+	                                  transfert instanceof TransfertPermanent ? "Permanent" : "Inconnu";
+
+	           String dateCreation = transfert.getDatecre() != null ? transfert.getDatecre().toString() : "N/A";
+	           String dateEnvoi = transfert.getDateEnvoie() != null ? transfert.getDateEnvoie().toString() : "Pas encore envoyé";
+	           String typeFrais = transfert.getTypeFrais() != null ? transfert.getTypeFrais().name() : "N/A";
+
+	           Font fontLabel = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+	           Font fontNormal = new Font(Font.FontFamily.HELVETICA, 12);
+
+	           pdfDoc.add(new Paragraph("Type de Transfert : " + typeTransfert, fontLabel));
+	           pdfDoc.add(new Paragraph("Date de Création : " + dateCreation, fontLabel));
+	           pdfDoc.add(new Paragraph("Date d’Envoi : " + dateEnvoi, fontLabel));
+	           pdfDoc.add(new Paragraph("Type de Frais : " + typeFrais, fontLabel));
+
+	           pdfDoc.add(new Paragraph("\n"));
+
+	           // Tableau des détails
+	           PdfPTable table = new PdfPTable(2);
+	           table.setWidthPercentage(100);
+	           table.setSpacingBefore(10f);
+	           table.setWidths(new float[]{2, 3});
+
+	           Font fontAttribut = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+	           Font fontValeur = new Font(Font.FontFamily.HELVETICA, 12);
+
+	           ajouterLigne(table, "Réf Transfert", transfert.getRefTransfert(), fontAttribut, fontValeur);
+	           ajouterLigne(table, "Montant", String.valueOf(transfert.getMontantTransfert()), fontAttribut, fontValeur);
+	           ajouterLigne(table, "Montant frais", String.valueOf(transfert.getMontantFrais()), fontAttribut, fontValeur);
+	           ajouterLigne(table, "Montant final", String.valueOf(transfert.getMontantFinal()), fontAttribut, fontValeur);
+	           ajouterLigne(table, "État", transfert.getEtatTransfert() != null ? transfert.getEtatTransfert().name() : "N/A", fontAttribut, fontValeur);
+
+	           if (transfert.getCompteBancaire_source() != null) {
+	               ajouterLigne(table, "Compte source", transfert.getCompteBancaire_source().getNumeroCompte(), fontAttribut, fontValeur);
+	           }
+
+	           if (transfert.getCompteBancaire_cible() != null) {
+	               ajouterLigne(table, "Compte cible", transfert.getCompteBancaire_cible().getNumeroCompte(), fontAttribut, fontValeur);
+	           }
+
+	           if (transfert instanceof TransfertPonctuel) {
+	               TransfertPonctuel tp = (TransfertPonctuel) transfert;
+	               ajouterLigne(table, "Type Transfert Ponctuel", tp.getTypeTransfert() != null ? tp.getTypeTransfert().name() : "N/A", fontAttribut, fontValeur);
+	           }
+
+	           if (transfert instanceof TransfertPermanent) {
+	               TransfertPermanent tp = (TransfertPermanent) transfert;
+	               ajouterLigne(table, "Nature de l'opération", tp.getNatureOperation(), fontAttribut, fontValeur);
+	               if (tp.getDossierDelegue() != null) {
+	                   ajouterLigne(table, "Dossier délégué lié", tp.getDossierDelegue().getIdDossier(), fontAttribut, fontValeur);
+	               }
+	           }
+
+	           pdfDoc.add(table);
+	           pdfDoc.close();
+
+	           byte[] pdfBytes = out.toByteArray();
+	           HttpHeaders headers = new HttpHeaders();
+	           headers.setContentType(MediaType.APPLICATION_PDF);
+	           headers.setContentDispositionFormData("filename", "transfert_" + refTransfert + ".pdf");
+
+	           return ResponseEntity.ok().headers(headers).body(pdfBytes);
+
+	       } catch (Exception e) {
+	           e.printStackTrace();
+	           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la génération du PDF");
+	       }
+	   }
+
+	   // Utilitaire pour ajouter une ligne au tableau
+	   private void ajouterLigne(PdfPTable table, String attribut, String valeur, Font fontAttribut, Font fontValeur) {
+	       table.addCell(new Paragraph(attribut, fontAttribut));
+	       table.addCell(new Paragraph(valeur != null ? valeur : "N/A", fontValeur));
+	   }
+
+
 }

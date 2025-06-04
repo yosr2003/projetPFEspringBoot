@@ -23,6 +23,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -30,6 +32,7 @@ import com.projetPfe.Iservices.IserviceDossierDelegue;
 import com.projetPfe.dto.ResponseBodyDTO;
 import com.projetPfe.dto.ResponseHeaderDTO;
 import com.projetPfe.entities.DossierDelegue;
+import com.projetPfe.entities.DossierScolarité;
 import com.projetPfe.entities.EtatDoss;
 import com.projetPfe.entities.Participant;
 import com.projetPfe.entities.PersonneMorale;
@@ -154,13 +157,95 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 
 
 
-	
 	@Override
 	public ResponseEntity<?> getDossierById(String id) {
-		Optional<DossierDelegue> d= dossierDelegueRepo.findById(id);
-		if(d.isPresent()) {
-			return ResponseEntity.ok().body(d.get());}
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dossier inexistant");
+	    Optional<DossierDelegue> d = dossierDelegueRepo.findById(id);
+	    if (d.isEmpty()) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dossier inexistant");
+	    }
+
+	    DossierDelegue dossier = d.get();
+
+	    try {
+	        ByteArrayOutputStream out = new ByteArrayOutputStream();
+	        Document pdfDoc = new Document();
+	        PdfWriter.getInstance(pdfDoc, out);
+	        pdfDoc.open();
+
+	        // Titre centré
+	        Paragraph titre = new Paragraph("Informations du dossier avec la réference : " + id);
+	        titre.setAlignment(Paragraph.ALIGN_CENTER);
+	        titre.getFont().setSize(16);
+	        titre.setSpacingAfter(20f);
+	        pdfDoc.add(titre);
+
+	        // Infos en haut
+	        pdfDoc.add(new Paragraph("Type de dossier : " + dossier.getClass().getSimpleName()));
+	        pdfDoc.add(new Paragraph("Date Début : " + (dossier.getDateDebut() != null ? dossier.getDateDebut().toString() : "N/A")));
+	        pdfDoc.add(new Paragraph("Date Expiration : " + (dossier.getDateExpiration() != null ? dossier.getDateExpiration().toString() : "N/A")));
+	        pdfDoc.add(new Paragraph(" ")); // Espace après les paragraphes
+
+	        // Tableau pour les attributs communs
+	        PdfPTable table = new PdfPTable(2);
+	        table.setWidthPercentage(100);
+	        table.setSpacingBefore(10f);
+	        table.setWidths(new float[]{2, 3});
+
+	        Font fontAttribut = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+	        Font fontValeur = new Font(Font.FontFamily.HELVETICA, 12);
+
+	        // Attributs communs
+	        ajouterLigne(table, "ID Dossier", dossier.getIdDossier(), fontAttribut, fontValeur);
+	        ajouterLigne(table, "État", dossier.getEtatDossier().name(), fontAttribut, fontValeur);
+	        ajouterLigne(table, "Date Création", dossier.getDateCre() != null ? dossier.getDateCre().toString() : "N/A", fontAttribut, fontValeur);
+	        ajouterLigne(table, "Date Clôture", dossier.getDateCloture() != null ? dossier.getDateCloture().toString() : "N/A", fontAttribut, fontValeur);
+	        ajouterLigne(table, "Motif de clôture", dossier.getMotifcloture() != null ? dossier.getMotifcloture() : "N/A", fontAttribut, fontValeur);
+
+	        // Attributs spécifiques dynamiques
+	        Class<?> classeDossier = dossier.getClass();
+	        Class<?> classeParent = DossierDelegue.class;
+
+	        for (var field : classeDossier.getDeclaredFields()) {
+	            // Vérifie que c'est un attribut propre (pas hérité)
+	            if (field.getDeclaringClass() != classeParent) {
+	                field.setAccessible(true);
+
+	                if (dossier instanceof DossierScolarité && field.getName().equals("piecesJustificatives")) {
+	                    continue;
+	                }
+
+	                Object valeur = field.get(dossier);
+	                ajouterLigne(table, field.getName(), valeur != null ? valeur.toString() : "N/A", fontAttribut, fontValeur);
+	            }
+	        }
+
+	        // Ajouter une seule fois la ligne spéciale pour pièces justificatives
+	        if (dossier instanceof DossierScolarité) {
+	            ajouterLigne(table, "Pièces justificatives", "Fourni par le client", fontAttribut, fontValeur);
+	        }
+
+
+
+	        pdfDoc.add(table);
+	        pdfDoc.close();
+
+	        byte[] pdfBytes = out.toByteArray();
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setContentType(MediaType.APPLICATION_PDF);
+	        headers.setContentDispositionFormData("filename", "dossier_" + dossier.getIdDossier() + ".pdf");
+
+	        return ResponseEntity.ok().headers(headers).body(pdfBytes);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la génération du PDF");
+	    }
+	}
+
+	// Méthode utilitaire
+	private void ajouterLigne(PdfPTable table, String attribut, String valeur, Font fontAttribut, Font fontValeur) {
+	    table.addCell(new Paragraph(attribut, fontAttribut));
+	    table.addCell(new Paragraph(valeur != null ? valeur : "N/A", fontValeur));
 	}
 
 

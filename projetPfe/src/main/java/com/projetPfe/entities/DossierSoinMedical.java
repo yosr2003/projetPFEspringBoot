@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
 
 import jakarta.persistence.Entity;
 
@@ -28,8 +29,6 @@ public DossierSoinMedical dupliquerAvecNouveauId(String newId) {
     copie.setDateExpiration(this.getDateExpiration());
     copie.setEtatDossier(this.getEtatDossier());
     copie.setDateCre(LocalDateTime.now());
-
-//    copie.setRapportMouvement(this.getRapportMouvement());
     copie.setTypeTraitement(this.typeTraitement);
     return copie;
 }
@@ -40,4 +39,6 @@ public void ajouterInfosSpecifiquesAuRapport(Document doc) throws DocumentExcept
 	    doc.add(new Paragraph("Type de traitement : " + this.getTypeTraitement()));
 	
 }
+
+
 }
