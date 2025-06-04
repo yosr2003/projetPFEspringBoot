@@ -50,8 +50,8 @@ public class DossierDelegueControllers {
 	 
 	 @PreAuthorize("hasRole('ChargéClientele')")
 	 @GetMapping(value = "/{id}", produces = "application/pdf")
-	 public ResponseEntity<byte[]> getDossierById(@PathVariable String id) {
-	     return (ResponseEntity<byte[]>) dossDelService.getDossierById(id);
+	 public ResponseEntity<?> getDossierById(@PathVariable String id) {
+	     return dossDelService.getDossierById(id);
 	 }
 
 	 

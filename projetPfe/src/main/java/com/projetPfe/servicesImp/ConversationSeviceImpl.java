@@ -1,5 +1,6 @@
 package com.projetPfe.servicesImp;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +39,15 @@ public class ConversationSeviceImpl implements IConversationService{
 		if(e.isPresent()) {return conversationRepo.save(conversation);}
 		return null;
 		
+	}
+
+	@Override
+	public List<SessionConversationnelle> getCoversationsById(Long id) {
+		List<SessionConversationnelle> conversations= new ArrayList<>();
+		for (SessionConversationnelle c : conversationRepo.findAll()) {
+			if(c.getEmploye().getId()==id) {conversations.add(c);}
+		}
+		return conversations;
 	}
 
 }

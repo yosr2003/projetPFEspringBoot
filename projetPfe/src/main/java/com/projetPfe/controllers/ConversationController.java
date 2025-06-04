@@ -31,6 +31,11 @@ public class ConversationController {
 	        return conversationService.getAll();
 	    }
 	 
+	 @GetMapping("/Employe/{id}")
+	 public List<SessionConversationnelle>  getConversationsById(@PathVariable Long id) {
+	        return conversationService.getCoversationsById(id);
+	    }
+	 
 	 @PostMapping
 	 public SessionConversationnelle addConversation(@RequestBody SessionConversationnelle c){
 		 return conversationService.addConversation(c);

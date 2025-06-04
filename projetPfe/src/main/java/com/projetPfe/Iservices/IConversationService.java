@@ -7,6 +7,7 @@ import com.projetPfe.entities.SessionConversationnelle;
 public interface IConversationService {
 	public SessionConversationnelle getConversation(Long id);
 	public List<SessionConversationnelle> getAll();
+	public List<SessionConversationnelle> getCoversationsById(Long id);
 	public SessionConversationnelle addConversation(SessionConversationnelle conversation);
 
 }

@@ -160,8 +160,9 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 	@Override
 	public ResponseEntity<?> getDossierById(String id) {
 	    Optional<DossierDelegue> d = dossierDelegueRepo.findById(id);
-	    if (d.isEmpty()) {
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dossier inexistant");
+	    if (!d.isPresent()) {
+	    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ce Dossier Délégué n'existe pas");
+	        //return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dossier inexistant");
 	    }
 
 	    DossierDelegue dossier = d.get();
