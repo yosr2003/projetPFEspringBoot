@@ -104,8 +104,13 @@ public class TransfertController {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erreur : " + e.getMessage());
 	    }
 	}
-
-
+	
+	
+	 @PreAuthorize("hasRole('BackOffice')")
+	@GetMapping("/alerte")
+	public List<Transfert> alerteTransfertsAttente() {
+	    return transfertService.AlerteTransfertAttente();
+	}
 
 
 }
