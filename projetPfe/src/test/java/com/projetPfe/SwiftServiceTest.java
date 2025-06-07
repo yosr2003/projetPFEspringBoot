@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,37 +87,46 @@ public class SwiftServiceTest {
         cible.setParticipant(beneficiaire);
         compteRepo.save(cible);
 
-        // sauvegarder le transfet en état de traitement
+        // sauvegarder le transfet en état valide
         TransfertPonctuel transfert = new TransfertPonctuel();
         transfert.setRefTransfert("TES2936");
         transfert.setDatecre(LocalDateTime.now());
         transfert.setCompteBancaire_source(source);
         transfert.setCompteBancaire_cible(cible);
         transfert.setMontantTransfert(1000.00);
-        transfert.setEtatTransfert(EtatTransfert.TRAITEMENT);
+        transfert.setEtatTransfert(EtatTransfert.VALIDE);
         transfert.setTypeFrais(FraisType.OUR);
         transfert = transfertRepository.save(transfert);
 
-        // On teste que l’exception est bien levée
-        RuntimeException exception = Assertions.assertThrows(RuntimeException.class, () -> {
-            swiftService.creerSwift("TES2936");
-        });
+        ResponseEntity<byte[]> response2 = swiftService.creerSwift("TES2936");
 
-        Assertions.assertEquals("Le transfert avec ID TES2936 n'est pas validé. SWIFT non généré.",
-                                exception.getMessage());
+        // Vérifications
+        Assertions.assertEquals(HttpStatus.OK, response2.getStatusCode());
+        Assertions.assertEquals("application/pdf", response2.getHeaders().getContentType().toString());
+        Assertions.assertNotNull(response2.getBody());
+        Assertions.assertTrue(response2.getBody().length > 0, "Le contenu PDF ne doit pas être vide");
 
-        //validations
+        // Vérification en base : le Swift doit avoir été créé
+        Swift swiftCree = swiftRepository.findByTransfert(transfert)
+                              .orElse(null);
+        Assertions.assertNotNull(swiftCree, "Le message Swift doit être enregistré en base");
+        Assertions.assertTrue(swiftCree.getTxtmsg().contains("TES2936"), "Le message SWIFT doit contenir le code du transfert");
+        
+        
+        
+        
+        //var response = swiftService.creerSwift("TES2936");
+        
+        
+        
+            // Vérifications
 		/*
-		 * Assertions.assertNotNull(swift, "Le Swift ne doit pas être null");
-		 * Assertions.assertEquals("MT103", swift.getTypemsg(),
-		 * "Le type du message doit être MT103");
-		 * Assertions.assertTrue(swift.getTxtmsg().contains("TES2936"),
-		 * "Le texte doit contenir la référence du transfert");
-		 * Assertions.assertNotNull(swift.getPdfgen(),
-		 * "Le PDF généré ne doit pas être null");
-		 * Assertions.assertTrue(swiftRepository.existsByTransfert_RefTransfert(
-		 * "TES2936"),
-		 * "Le repository doit contenir le Swift pour le transfert TES293625");
+		 * Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,
+		 * response.getStatusCode()); String messageErreur = new
+		 * String(response.getBody()); Assertions.assertTrue(messageErreur.
+		 * contains("Le transfert avec ID TES2936 n'est pas validé. SWIFT non généré."))
+		 * ;
 		 */
+        
     }
 }

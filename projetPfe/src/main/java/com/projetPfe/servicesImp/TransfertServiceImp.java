@@ -111,12 +111,9 @@ public class TransfertServiceImp implements TransfertServiceI {
 	
 	
 	@Override
-	public Transfert creerTransfert(Double montant,String numeroCompteSource,String numeroCompteCible,FraisType typeFrais,String idDossierDelegue,String natureOperation,
-	                             TransfertType type)   
-	 
-	                                
-	                                
-	                                
+	public Transfert creerTransfert(Double montant,String numeroCompteSource,String numeroCompteCible,FraisType typeFrais,
+			String idDossierDelegue,String natureOperation, TransfertType type)   
+	    // vérification des conditions
 	                                 throws Exception {
 
 	    if (numeroCompteSource == null || numeroCompteSource.isEmpty()) {
@@ -173,8 +170,6 @@ public class TransfertServiceImp implements TransfertServiceI {
 	        tp.setTypeTransfert(type);
 	        TransfertPonctueltRepo.save(tp);
 	    }
-
-	    
 	    transfert.setDatecre(LocalDateTime.now());
 	    transfert.setDateEnvoie(LocalDateTime.now());
 	    transfert.setMontantTransfert(montant);
