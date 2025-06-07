@@ -1,5 +1,7 @@
 package com.projetPfe.Iservices;
 
+import org.springframework.http.ResponseEntity;
+
 import com.projetPfe.entities.Swift;
 
 public interface SwiftIservice {
@@ -8,6 +10,6 @@ public interface SwiftIservice {
 
 	Swift consulterSwift(String transfertId);
 
-	Swift creerSwift(String transfertId);
+	ResponseEntity<?> creerSwift(String transfertId);
 
 }

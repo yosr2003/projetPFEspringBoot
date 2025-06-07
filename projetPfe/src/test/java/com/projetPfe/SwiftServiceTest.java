@@ -17,7 +17,7 @@ import com.projetPfe.servicesImp.SwiftServiceImp;
 @SpringBootTest
 @Transactional
 @Rollback
-public class SwiftServiceIntegrationTest {
+public class SwiftServiceTest {
 
     @Autowired
     private SwiftServiceImp swiftService;

@@ -6,6 +6,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.Document;
@@ -56,7 +60,13 @@ public class SwiftServiceImp implements SwiftIservice {
 
 
 	    @Override
-	    public Swift creerSwift(String transfertId) {
+	    public ResponseEntity<byte[]>  creerSwift(String transfertId) {
+	    	  try {
+	    	   if (existeDejaPourTransfert(transfertId)) {
+	    	        return ResponseEntity.status(HttpStatus.CONFLICT)
+	    	                .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE)
+	    	                .body("Un message SWIFT existe déjà pour ce transfert.".getBytes());
+	    	    }
 	        Transfert transfert = transfertRepository.findById(transfertId)
 	                .orElseThrow(() -> new RuntimeException("Transfert introuvable avec ID: " + transfertId));
 
@@ -105,27 +115,23 @@ public class SwiftServiceImp implements SwiftIservice {
 	        // Génération du PDF
 	        byte[] pdfBytes = creerPdfswiftMT(swift);
 	        swift.setPdfgen(pdfBytes);
+	        swiftRepository.save(swift);
 
-	        try {
-	            enregistrerPdfSurDisque(pdfBytes, "swift_" + transfert.getRefTransfert() + ".pdf");
-	        } catch (IOException e) {
-	            // Bonne pratique : loguer l'erreur
-	            System.err.println("Erreur lors de l'enregistrement du PDF : " + e.getMessage());
-	            // Optionnel : tu peux rethrow l'exception si tu veux que le process échoue
-	        }
+	        String fileName = "swift_" + transfert.getRefTransfert() + ".pdf";
 
-	        return swiftRepository.save(swift);
+	        return ResponseEntity.ok()
+	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+	                .contentType(MediaType.APPLICATION_PDF)
+	                .body(pdfBytes);
+
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE)
+	                .body(("Erreur lors de la création du message SWIFT : " + e.getMessage()).getBytes());
+	    }
 	    }
 
-	    private void enregistrerPdfSurDisque(byte[] pdfBytes, String nomFichier) throws IOException {
-	        Path dossierPath = Paths.get(System.getProperty("user.home"), "Downloads", "pdf_swift");
-	        if (!Files.exists(dossierPath)) {
-	            Files.createDirectories(dossierPath);
-	        }
-	        Path cheminFichier = dossierPath.resolve(nomFichier);
-	        Files.write(cheminFichier, pdfBytes);
-	        System.out.println("✅ PDF enregistré avec succès à : " + cheminFichier.toString());
-	    }
+	
 	    
 
 	    @Override
