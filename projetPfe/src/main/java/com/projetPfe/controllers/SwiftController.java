@@ -38,30 +38,9 @@ public class SwiftController {
 
 	 @PreAuthorize("hasRole('BackOffice')")
 	  @PostMapping("/{transfertId}")
-	    public ResponseEntity<String> creerSwift(
-	            @PathVariable String transfertId) {
-
-	        boolean existeDeja = swiftService.existeDejaPourTransfert(transfertId);
-
-	        if (existeDeja) {
-	            String message = "Un message SWIFT existe déjà pour le transfert " + transfertId;
-	            return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
-	        }
-
-	        try {
-	            swiftService.creerSwift(transfertId);
-	            String message = "Message SWIFT créé avec succès pour le transfert " + transfertId +
-	                             " et PDF enregistré à : C:\\Users\\YosrAmamou\\Downloads\\pdf_swift";
-	            return ResponseEntity.status(HttpStatus.CREATED).body(message);
-	        } catch (RuntimeException e) {
-	            // Cas spécifique : transfert non validé
-	            if (e.getMessage().contains("n'est pas validé")) {
-	                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-	            }
-	            // Autres erreurs
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur lors de la création du SWIFT : " + e.getMessage());
-	        }
-	    }
+	 public ResponseEntity<byte[]> creerSwift(@PathVariable String transfertId) {
+		    return swiftService.creerSwift(transfertId); // Retourne le PDF
+		}
 
 	    @PreAuthorize("hasRole('BackOffice')")
 	    @GetMapping("/{transfertId}")
