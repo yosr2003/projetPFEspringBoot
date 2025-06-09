@@ -46,86 +46,77 @@ public class RapportMvmntFinanciersService implements IRapportMvmntFinanciersSer
 	
 	@Override
 	public ResponseEntity<?> genererRapportMouvement(String idDossier) throws Exception {
-		
+		// Vérifie si le dossier délégué existe
 		Optional<DossierDelegue> d = dossierDelegueRepo.findById(idDossier);
 	    if (!d.isPresent()) {
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ce Dossier Délégué n'existe pas");
 	    }
+	    // Récupère les transferts permanents liés à ce dossier
 		List<TransfertPermanent> transferts = transfertPermanentRepo.findAll();
 		transferts = transferts.stream()
 		        .filter(t -> t.getDossierDelegue() != null)
 		        .filter(t -> idDossier.equals(t.getDossierDelegue().getIdDossier()))
 		        .collect(Collectors.toList());
-
+		// Si aucun transfert trouvé, on ne peut pas générer de rapport
 		if (transferts.isEmpty()) {
 		    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 		        .body("Ce Dossier Délégué ne contient pas encore de transferts permanents");
 		}
 
 	    DossierDelegue dossier = d.get();
-
+	    // Vérifie si un rapport a déjà été généré
 	    if (dossier.getRapportMouvementFinanciers() != null) {
 	       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ce Dossier Délégué a déjà un rapport de mouvement financier");
-	    	
-			/*
-			 * return ResponseEntity.ok() .header(HttpHeaders.CONTENT_DISPOSITION,
-			 * "attachment; filename=etat_investissement.pdf")
-			 * .contentType(MediaType.APPLICATION_PDF)
-			 * .body(dossier.getRapportMouvementFinanciers().getRapportMouvement());
-			 */
 	    }
-
+	    // Vérifie si le dossier est clôturé ou non
 	    if ((dossier.getDateCloture() != null && LocalDate.now().isBefore(dossier.getDateCloture()))
 	        || (dossier.getDateCloture() == null && LocalDate.now().isBefore(dossier.getDateExpiration()))) {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ce dossier n'est pas encore clôturé");
 	    }
 
-
-	    StringBuilder xml = genererContenuXml(transferts.stream()
-	    	    .map(t -> (Transfert) t)
+	    // Génère le contenu XML du PDF relative aux transferts 
+	    StringBuilder xml = genererContenuXml(transferts.stream().map(t -> (Transfert) t)
 	    	    .collect(Collectors.toList()));
-
-	    org.w3c.dom.Document xmlDoc = DocumentBuilderFactory.newInstance()
-	            .newDocumentBuilder()
+	    // Prépare le document PDF avec iText
+	    org.w3c.dom.Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
 	            .parse(new ByteArrayInputStream(xml.toString().getBytes()));
-
-	    boolean isPersonneMorale = transferts.stream()
-	            .map(t -> t.getCompteBancaire_source().getParticipant())
-	            .allMatch(p -> p instanceof PersonneMorale);
-
 	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 	    com.itextpdf.text.Document pdfDoc = new com.itextpdf.text.Document();
 	    PdfWriter.getInstance(pdfDoc, outputStream);
+	    
+	    // Ajoute les infos spécifiques au dossier dans le PDF
 	    pdfDoc.open();
-
 	    pdfDoc.add(new Paragraph("RAPPORT DES MOUVEMENTS FINANCIERS D'UN DOSSIER DELEGUE"));
 	    pdfDoc.add(Chunk.NEWLINE);
-
-
 	    dossier.ajouterInfosSpecifiquesAuRapport(pdfDoc);
-
-	    pdfDoc.add(new Paragraph("Période allant du " +
-	            dossier.getDateDebut().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
-	            " au " + dossier.getDateExpiration().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+	    pdfDoc.add(new Paragraph("Période allant du " + dossier.getDateDebut().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +
+	               " au " + dossier.getDateExpiration().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
 	    pdfDoc.add(new Paragraph("N° Dossier : " + dossier.getIdDossier()));
-	    pdfDoc.add(new Paragraph("Pays du bénéficiaire : " +
-	            transferts.get(0).getCompteBancaire_cible().getBanque().getPays().getPays()));
+	    pdfDoc.add(new Paragraph("Pays du bénéficiaire : " + transferts.get(0).getCompteBancaire_cible().getBanque().getPays().getPays()));
 	    pdfDoc.add(Chunk.NEWLINE);
-
+	    
+	    
+	    
+	    // preparer le tableau de transferts dans le PDF
 	    PdfPTable table = new PdfPTable(6);
 	    table.setWidthPercentage(100);
+	    
+	    boolean isPersonneMorale = transferts.stream().map(t -> t.getCompteBancaire_source().getParticipant())
+	    		.allMatch(p -> p instanceof PersonneMorale);
+	    
 	    addHeaderRow(table, isPersonneMorale);
-
+	    
 	    for (int i = 0; i < xmlDoc.getElementsByTagName("ligne").getLength(); i++) {
 	        Node ligne = xmlDoc.getElementsByTagName("ligne").item(i);
 	        if (ligne.getNodeType() == Node.ELEMENT_NODE) {
 	            addDataRow(table, (Element) ligne);
+	            }
 	        }
-	    }
-
+	    
 	    pdfDoc.add(table);
 	    pdfDoc.close();
 	    
+	    // Sauvegarder lu rapport en base de données et retourne le PDF généré en pièce jointe
         RapportMouvementsFinanciers r= new RapportMouvementsFinanciers();
         r.setDossier(dossier);
         r.setRapportMouvement(outputStream.toByteArray());
