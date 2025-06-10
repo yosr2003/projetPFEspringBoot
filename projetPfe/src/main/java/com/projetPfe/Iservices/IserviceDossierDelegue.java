@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 
 import com.projetPfe.entities.DossierDelegue;
+import com.projetPfe.entities.Transfert;
+import com.projetPfe.entities.TransfertPermanent;
 
 public interface IserviceDossierDelegue {
 	public ResponseEntity<Map<String, Object>> dupliquerDossier(String id);
@@ -17,6 +19,6 @@ public interface IserviceDossierDelegue {
 
 
 	public ResponseEntity<Map<String, Object>> cloturerDossier(String id, LocalDate dateCloture, String motifcloture);
-
+	public ResponseEntity<?> creeDossier(DossierDelegue d,TransfertPermanent t,String typeDossier);
 	
 }

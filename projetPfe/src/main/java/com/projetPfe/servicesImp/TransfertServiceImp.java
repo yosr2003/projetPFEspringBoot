@@ -162,14 +162,7 @@ public class TransfertServiceImp implements TransfertServiceI {
 	            ? new TransfertPermanent()
 	            : new TransfertPonctuel();
 	    transfert.setRefTransfert(refTransfert);
-	    if (transfert instanceof TransfertPermanent tp) {
-	        tp.setNatureOperation(natureOperation);
-	        tp.setDossierDelegue(dossierDelegue);
-	        TransfertPermanentRepo.save(tp);
-	    } else if (transfert instanceof TransfertPonctuel tp) {
-	        tp.setTypeTransfert(type);
-	        TransfertPonctueltRepo.save(tp);
-	    }
+	    
 	    transfert.setDatecre(LocalDateTime.now());
 	    transfert.setDateEnvoie(LocalDateTime.now());
 	    transfert.setMontantTransfert(montant);
@@ -177,7 +170,7 @@ public class TransfertServiceImp implements TransfertServiceI {
 	    transfert.setCompteBancaire_source(compteSource);
 	    transfert.setCompteBancaire_cible(compteCible);
 	    transfert.setEtatTransfert(EtatTransfert.TRAITEMENT);
-
+	    
 	    TauxChange deviseSource = compteSource.getDevise();
 	    TauxChange deviseCible = compteCible.getDevise();
 
@@ -195,7 +188,16 @@ public class TransfertServiceImp implements TransfertServiceI {
 	        throw new Exception("Erreur lors du calcul des frais.");
 	    }
 	    
-	    return TransfertRepository.save(transfert);
+	    if (transfert instanceof TransfertPermanent tp) {
+	        tp.setNatureOperation(natureOperation);
+	        tp.setDossierDelegue(dossierDelegue);
+	        TransfertPermanentRepo.save(tp);
+	    } else if (transfert instanceof TransfertPonctuel tp) {
+	        tp.setTypeTransfert(type);
+	        TransfertPonctueltRepo.save(tp);
+	    }
+	    
+	    return transfert;
 	}
 
 

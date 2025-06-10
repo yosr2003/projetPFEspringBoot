@@ -3,6 +3,7 @@ package com.projetPfe.servicesImp;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -247,6 +248,29 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 	private void ajouterLigne(PdfPTable table, String attribut, String valeur, Font fontAttribut, Font fontValeur) {
 	    table.addCell(new Paragraph(attribut, fontAttribut));
 	    table.addCell(new Paragraph(valeur != null ? valeur : "N/A", fontValeur));
+	}
+
+
+
+	@Override
+	public ResponseEntity<?> creeDossier(DossierDelegue d, TransfertPermanent t,String typeDossier) {
+		DossierDelegue dossier;
+		switch (typeDossier.toLowerCase()) {
+		 case "scolarite":
+			 dossier = new DossierScolarité();
+	         ((DossierScolarité) dossier).setDateCre(LocalDateTime.now());
+	         ((DossierScolarité) dossier).setDateDebut(d.getDateDebut());
+	         ((DossierScolarité) dossier).setDateExpiration(d.getDateExpiration());
+	         ((DossierScolarité) dossier).setIdDossier(genererIdentifiantUnique("Doss"));
+	         ///((DossierScolarité) dossier).setNiveauEtude(d.get);
+	         break;
+//		 case "ponctuel":
+//	            dossier = new DossierPonctuel();
+//	            ((DossierPonctuel) dossier).setMotif((String) params.get("motif"));
+//	            break;
+
+		}
+		return null;
 	}
 
 
