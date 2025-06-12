@@ -74,11 +74,10 @@ public class TransfertController {
 	public ResponseEntity<?> creerTransfert(@RequestBody Map<String, Object> body) {
 	    try {
 	        Double montant = Double.valueOf(body.get("montant").toString());
-
-	        String numeroCompteSource = body.get("numeroCompteSource").toString();
-	        String numeroCompteCible = body.get("numeroCompteCible").toString();
-
-	        FraisType typeFrais = FraisType.valueOf(body.get("typeFrais").toString());
+	        String numeroCompteSource = body.get("numeroCompteSource") != null ? body.get("numeroCompteSource").toString() : null;
+	        String numeroCompteCible = body.get("numeroCompteCible") != null ? body.get("numeroCompteCible").toString() : null;
+	        
+	        FraisType typeFrais = FraisType.valueOf(body.get("typeFrais").toString().toUpperCase());
 
 	        String natureOperation = body.get("natureOperation") != null ? body.get("natureOperation").toString() : null;
 	        TransfertType type = body.get("type") != null ? TransfertType.valueOf(body.get("type").toString()) : null;

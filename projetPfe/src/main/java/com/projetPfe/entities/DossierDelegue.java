@@ -67,6 +67,7 @@ public abstract class DossierDelegue {
 	}
 
 
+	
 
 	public String getIdDossier() {
 		return idDossier;
