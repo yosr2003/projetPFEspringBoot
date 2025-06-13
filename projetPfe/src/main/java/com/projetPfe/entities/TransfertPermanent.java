@@ -33,4 +33,9 @@ public void setDossierDelegue(DossierDelegue dossierDelegue) {
 	this.dossierDelegue = dossierDelegue;
 }
 
+@Override
+public String toString() {
+	return "TransfertPermanent [natureOperation=" + natureOperation +"]";
+}
+
 }

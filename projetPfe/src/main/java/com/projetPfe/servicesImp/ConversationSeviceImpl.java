@@ -15,6 +15,8 @@ import com.projetPfe.repositories.ConversationRepository;
 import com.projetPfe.repositories.EmployeRepository;
 import com.projetPfe.repositories.MessageRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class ConversationSeviceImpl implements IConversationService{
 	@Autowired
@@ -62,6 +64,19 @@ public class ConversationSeviceImpl implements IConversationService{
 			if(c.getEmploye().getId()==id) {conversations.add(c);}
 		}
 		return conversations;
+	}
+    
+	@Transactional
+	@Override
+	public boolean supprimerConversation(Long idConversation) {
+		Optional<SessionConversationnelle> conversation = conversationRepo.findById(idConversation);
+		if(conversation.isPresent()) {
+			messageRepo.deleteAll(conversation.get().getMessages());
+			conversationRepo.delete(conversation.get());
+			return true;
+		}
+		
+		return false;
 	}
 
 }

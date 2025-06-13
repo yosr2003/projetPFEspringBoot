@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ public class ConversationController {
 	private IConversationService conversationService;
 	
 	 @GetMapping("/{id}")
-	 public SessionConversationnelle getDossierById(@PathVariable Long id) {
+	 public SessionConversationnelle getConversationById(@PathVariable Long id) {
 	        return conversationService.getConversation(id);
 	    }
 	 
@@ -40,6 +41,9 @@ public class ConversationController {
 	 public SessionConversationnelle addConversation(@RequestBody SessionConversationnelle c){
 		 return conversationService.addConversation(c);
 	 }
+	 @DeleteMapping("/{id}")
+	 public boolean addConversation(@PathVariable Long id){
+		 return conversationService.supprimerConversation(id);}
 	 
 
 }

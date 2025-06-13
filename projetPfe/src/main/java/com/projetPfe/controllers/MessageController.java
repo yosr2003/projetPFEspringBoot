@@ -33,9 +33,9 @@ public class MessageController {
 	        return messageService.getByConversation(id);
 	    }
 	
-	@PostMapping
-	 public Message addMessage(@RequestBody Message m){
-		 return messageService.addMessage(m);
+	@PostMapping("/{idConversation}")
+	 public Message addMessage(@RequestBody Message m,@PathVariable Long idConversation){
+		 return messageService.addMessage(m,idConversation);
 	 }
 	 
 

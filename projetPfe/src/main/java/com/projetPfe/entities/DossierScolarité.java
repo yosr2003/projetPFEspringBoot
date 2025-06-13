@@ -55,7 +55,6 @@ public DossierScolarité dupliquerAvecNouveauId(String newId) {
     copie.setEtatDossier(this.getEtatDossier());
     copie.setDateCre(LocalDateTime.now());
     copie.setDateProlongation(this.getDateProlongation());
-//    copie.setRapportMouvement(this.getRapportMouvement());
     copie.setNiveauEtude(this.niveauEtude);
     return copie;
 }

@@ -9,5 +9,6 @@ public interface IConversationService {
 	public List<SessionConversationnelle> getAll();
 	public List<SessionConversationnelle> getCoversationsById(Long id);
 	public SessionConversationnelle addConversation(SessionConversationnelle conversation);
+	public boolean supprimerConversation(Long idConversation); 
 
 }

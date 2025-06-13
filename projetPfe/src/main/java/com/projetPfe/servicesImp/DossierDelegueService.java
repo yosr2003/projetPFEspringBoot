@@ -25,16 +25,21 @@ import org.w3c.dom.Node;
 
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.projetPfe.Iservices.IserviceDossierDelegue;
+import com.projetPfe.Iservices.TransfertServiceI;
+import com.projetPfe.dto.DossierDTO;
 import com.projetPfe.dto.ResponseBodyDTO;
 import com.projetPfe.dto.ResponseHeaderDTO;
 import com.projetPfe.entities.DossierDelegue;
 import com.projetPfe.entities.DossierScolarité;
+import com.projetPfe.entities.DossierSoinMedical;
 import com.projetPfe.entities.EtatDoss;
+import com.projetPfe.entities.FraisType;
 import com.projetPfe.entities.Participant;
 import com.projetPfe.entities.PersonneMorale;
 import com.projetPfe.entities.PersonnePhysique;
@@ -43,6 +48,8 @@ import com.projetPfe.entities.TransfertPermanent;
 import com.projetPfe.repositories.*;
 @Service
 public class DossierDelegueService implements IserviceDossierDelegue{
+	@Autowired
+	private TransfertServiceI transefrtService;
 	  @Autowired
 	    private dossierDelegueRepository dossierDelegueRepo;
 	  @Autowired
@@ -163,7 +170,6 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 	    Optional<DossierDelegue> d = dossierDelegueRepo.findById(id);
 	    if (!d.isPresent()) {
 	    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ce Dossier Délégué n'existe pas");
-	        //return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dossier inexistant");
 	    }
 
 	    DossierDelegue dossier = d.get();
@@ -253,24 +259,41 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 
 
 	@Override
-	public ResponseEntity<?> creeDossier(DossierDelegue d, TransfertPermanent t,String typeDossier) {
-		DossierDelegue dossier;
-		switch (typeDossier.toLowerCase()) {
-		 case "scolarite":
-			 dossier = new DossierScolarité();
-	         ((DossierScolarité) dossier).setDateCre(LocalDateTime.now());
-	         ((DossierScolarité) dossier).setDateDebut(d.getDateDebut());
-	         ((DossierScolarité) dossier).setDateExpiration(d.getDateExpiration());
-	         ((DossierScolarité) dossier).setIdDossier(genererIdentifiantUnique("Doss"));
-	         ///((DossierScolarité) dossier).setNiveauEtude(d.get);
-	         break;
-//		 case "ponctuel":
-//	            dossier = new DossierPonctuel();
-//	            ((DossierPonctuel) dossier).setMotif((String) params.get("motif"));
-//	            break;
-
+	public ResponseEntity<?> creeDossier(DossierDTO d) {
+		if(d.getTransfert()==null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("vous devez fournir un transfert pour cree un dossier delegue"); 
 		}
-		return null;
+		DossierDelegue dossier;
+		TransfertPermanent transfert;
+		switch(d.getTypeDossier().toLowerCase()) {
+		 case "scolarite":
+			  dossier=new DossierScolarité();
+			  dossier.setIdDossier(genererIdentifiantUnique("DOSS_SC"));
+			  ((DossierScolarité) dossier).setNiveauEtude(d.getNiveauEtude());
+			  break;
+		 case "soin_medical":
+			  dossier =new DossierSoinMedical();
+			  dossier.setIdDossier(genererIdentifiantUnique("DOSS_SM"));
+			  ((DossierSoinMedical) dossier).setTypeTraitement(d.getTypeTraitement());
+			  break;
+	     default:
+	    	 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ce trype de dossier n'exitse pas"); 
+            
+		}
+		
+		dossier.setEtatDossier(EtatDoss.TRAITEMENT);
+		dossier.setDateCre(LocalDateTime.now());
+		dossier.setDateDebut(d.getDateDebut());
+		dossier.setDateExpiration(d.getDateExpiration());
+		dossierDelegueRepo.save(dossier);
+		try {
+			transfert=(TransfertPermanent) transefrtService.creerTransfert(d.getTransfert().getMontant(), d.getTransfert().getNumeroCompteSource(),  d.getTransfert().getNumeroCompteCible(), d.getTransfert().getTypeFrais(),dossier.getIdDossier(),d.getTransfert().getNatureOperation(), null);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage()); 
+			
+		}
+		
+		return ResponseEntity.ok().body(dossier); 
 	}
 
 

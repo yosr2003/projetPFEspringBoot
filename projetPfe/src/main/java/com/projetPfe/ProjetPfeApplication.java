@@ -484,14 +484,14 @@ public class ProjetPfeApplication {
 		        doss1.setEtatDossier(EtatDoss.TRAITEMENT);  // Enum que tu dois avoir défini
 		        doss1.setMontantMensuel(1200.0);
 
-//		        DossierEconomieSurSalaire doss2 = new DossierEconomieSurSalaire();
-//		        doss2.setIdDossier("DOSS002");
-//		        doss2.setDateDebut(LocalDate.of(2023, 6, 15));
-//		        doss2.setDateExpiration(LocalDate.of(2024, 6, 15));
-//		        doss2.setDateCre(LocalDateTime.now());
-//		        doss2.setEtatDossier(EtatDoss.CLOTURE);  // Enum à ajuster
-//		        doss2.setMotifcloture("Fin du contrat");
-//		        doss2.setMontantMensuel(900.0);
+		        DossierEconomieSurSalaire doss2 = new DossierEconomieSurSalaire();
+		        doss2.setIdDossier("DOSS002");
+		        doss2.setDateDebut(LocalDate.of(2023, 6, 15));
+		        doss2.setDateExpiration(LocalDate.of(2024, 6, 15));
+		        doss2.setDateCre(LocalDateTime.now());
+		        doss2.setEtatDossier(EtatDoss.CLOTURE);  // Enum à ajuster
+		        doss2.setMotifcloture("Fin du contrat");
+		        doss2.setMontantMensuel(900.0);
 
 		        DossierEconomieSurSalaire doss3 = new DossierEconomieSurSalaire();
 		        doss3.setIdDossier("DOSS003");
@@ -575,13 +575,13 @@ public class ProjetPfeApplication {
 		        dossierScol.setEtatDossier(EtatDoss.VALIDE);
 		        dossierScol.setNiveauEtude("Master Informatique");
 
-//		        DossierSoinMedical dossierSoin = new DossierSoinMedical();
-//		        dossierSoin.setIdDossier("DOSS_SM001");
-//		        dossierSoin.setDateDebut(LocalDate.of(2023, 3, 15));
-//		        dossierSoin.setDateExpiration(LocalDate.of(2024, 3, 15));
-//		        dossierSoin.setDateCre(LocalDateTime.now());
-//		        dossierSoin.setEtatDossier(EtatDoss.CLOTURE);
-//		        dossierSoin.setTypeTraitement("Chirurgie cardiaque");
+		        DossierSoinMedical dossierSoin = new DossierSoinMedical();
+		        dossierSoin.setIdDossier("DOSS_SM001");
+		        dossierSoin.setDateDebut(LocalDate.of(2023, 3, 15));
+		        dossierSoin.setDateExpiration(LocalDate.of(2024, 3, 15));
+		        dossierSoin.setDateCre(LocalDateTime.now());
+		        dossierSoin.setEtatDossier(EtatDoss.CLOTURE);
+		        dossierSoin.setTypeTraitement("Chirurgie cardiaque");
 
 
 

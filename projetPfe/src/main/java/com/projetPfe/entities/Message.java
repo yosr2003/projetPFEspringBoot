@@ -71,9 +71,12 @@ public class Message {
 	public void setIntention(String intention) {
 		this.intention = intention;
 	}
-	public SessionConversationnelle getConversation() {
-		return conversation;
-	}
+//	public SessionConversationnelle getConversation() {
+//		return conversation;
+//	}
+	public Long getConversation() {
+	return conversation.getId_conversation();
+    }
 	public void setConversation(SessionConversationnelle conversation) {
 		this.conversation = conversation;
 	}

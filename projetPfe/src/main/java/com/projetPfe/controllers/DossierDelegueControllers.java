@@ -21,7 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.projetPfe.Iservices.IserviceDossierDelegue;
 import com.projetPfe.Iservices.dossierScolariteIService;
-
+import com.projetPfe.dto.DossierDTO;
+import com.projetPfe.entities.DossierDelegue;
 import com.projetPfe.entities.DossierScolarité;
 
 
@@ -40,6 +41,12 @@ public class DossierDelegueControllers {
 	 public ResponseEntity<?> getAllDossiers() {
 	        return dossDelService.getAllDossiers();
 	    }
+	 
+	 @PreAuthorize("hasRole('ChargéClientele')")
+	 @PostMapping()
+	 public ResponseEntity<?> creeDossier(@RequestBody DossierDTO d) {
+			 return dossDelService.creeDossier(d);  
+	 }
 	
 	 @PreAuthorize("hasRole('ChargéClientele')")
 	 @PostMapping("/dupliquerDossier/{id}")
@@ -53,6 +60,8 @@ public class DossierDelegueControllers {
 	 public ResponseEntity<?> getDossierById(@PathVariable String id) {
 	     return dossDelService.getDossierById(id);
 	 }
+	 
+	 
 
 	 
 	 @PreAuthorize("hasRole('ChargéClientele')")
@@ -66,6 +75,8 @@ public class DossierDelegueControllers {
 
 	     return dossDelService.cloturerDossier(id, dateCloture, motif);
 	 }
+	 
+	
 
 	 @PreAuthorize("hasRole('ChargéClientele')")
 	 @PutMapping(value = "/scolarite/prolonger/{id}", consumes = "multipart/form-data")

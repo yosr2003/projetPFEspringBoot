@@ -137,37 +137,49 @@ public class TransfertServiceImp implements TransfertServiceI {
 			String idDossierDelegue,String natureOperation, TransfertType type)   
 	    // vérification des conditions
 	    throws Exception {
-		CompteBancaire compteCible;
-		CompteBancaire compteSource;
+		CompteBancaire compteCible= null;
+		CompteBancaire compteSource= null;
 		DossierDelegue dossierDelegue = null;
-
+		
 	    if (idDossierDelegue != null && !idDossierDelegue.isEmpty()) {
 	        dossierDelegue = DossierDelegueRepository.findById(idDossierDelegue)
 	                .orElseThrow(() -> new Exception("Dossier Délégué introuvable"));
-	        if(dossierDelegue.getEtatDossier()!=EtatDoss.OUVERT) {
-	        	throw new Exception("le dossier n'est pas ouvert");
-	        }else {
-	        	compteSource=dossierDelegue.getTransfertPermanent().get(0).getCompteBancaire_source();
-		        compteCible=dossierDelegue.getTransfertPermanent().get(0).getCompteBancaire_cible();
+	        System.out.println(dossierDelegue);
+	        List<TransfertPermanent> transferts = dossierDelegue.getTransfertPermanent();
+	        if(transferts != null && !transferts.isEmpty()) {
+	        	compteSource=transferts.get(0).getCompteBancaire_source();
+		        compteCible=transferts.get(0).getCompteBancaire_cible();
+		        System.out.println(compteSource.toString());}
+	        else {
+	        	if (numeroCompteSource == null || numeroCompteSource.isEmpty()) {
+		 	        throw new Exception("Numéro de compte source manquant");
+		 	    }
+		    	if(numeroCompteCible == null || numeroCompteCible.isEmpty()) {
+			 	    	throw new Exception("Numéro de compte cible manquant");
+			 	    }
+		    	   compteSource = CompteBancaireRepository.findById(numeroCompteSource)
+			 	            .orElseThrow(() -> new Exception("Compte source introuvable"));
+			       compteCible = CompteBancaireRepository.findById(numeroCompteCible)
+			 	            .orElseThrow(() -> new Exception("Compte cible introuvable"));
 	        }
-	      
-	    }else {
-	    	 if (numeroCompteSource == null || numeroCompteSource.isEmpty()) {
+	        
+	    }
+	    else{
+	    	
+	    	if (numeroCompteSource == null || numeroCompteSource.isEmpty()) {
 	 	        throw new Exception("Numéro de compte source manquant");
 	 	    }
-
-	 	    if (numeroCompteCible == null || numeroCompteCible.isEmpty()) {
-	 	        throw new Exception("Numéro de compte cible manquant");
-	 	    }
-
-	 	    compteSource = CompteBancaireRepository.findById(numeroCompteSource)
-	 	            .orElseThrow(() -> new Exception("Compte source introuvable"));
-	 	    compteCible = CompteBancaireRepository.findById(numeroCompteCible)
-	 	            .orElseThrow(() -> new Exception("Compte cible introuvable"));
-	    	
+	    	if(numeroCompteCible == null || numeroCompteCible.isEmpty()) {
+		 	    	throw new Exception("Numéro de compte cible manquant");
+		 	    }
+	    	   compteSource = CompteBancaireRepository.findById(numeroCompteSource)
+		 	            .orElseThrow(() -> new Exception("Compte source introuvable"));
+		       compteCible = CompteBancaireRepository.findById(numeroCompteCible)
+		 	            .orElseThrow(() -> new Exception("Compte cible introuvable"));
 	    }
-
-
+	    
+	 
+	    
 	    String refTransfert = creeReference(dossierDelegue);
 	    
 

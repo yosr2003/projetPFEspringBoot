@@ -20,9 +20,10 @@ public class MessageServiceImpl implements IMessageService{
 	private ConversationRepository convrsRepo;
 
 	@Override
-	public Message addMessage(Message m) {
-		Optional<SessionConversationnelle> conversation=convrsRepo.findById(m.getConversation().getId_conversation()); 
+	public Message addMessage(Message m,Long idConversation) {
+		Optional<SessionConversationnelle> conversation=convrsRepo.findById(idConversation); 
 		if(conversation.isPresent()) {
+	    m.setConversation(conversation.get());
 		return messageRepo.save(m);
 		}
 		return null;
@@ -40,7 +41,7 @@ public class MessageServiceImpl implements IMessageService{
 		if(conversation.isPresent()) {
 			List<Message> messages=messageRepo.findAll();
 			return messages.stream()
-			            .filter(m -> m.getConversation().getId_conversation().equals(id))
+			            .filter(m -> m.getConversation().equals(id))
 			            .collect(Collectors.toList());
 		}
 		

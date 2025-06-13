@@ -26,7 +26,7 @@ public abstract class DossierDelegue {
 	@Id
 	private String idDossier;
 	
-	//private String anneedoss;
+	
 	private EtatDoss etatDossier;
     
 	private LocalDate  dateCloture;
@@ -156,6 +156,15 @@ public abstract class DossierDelegue {
 	
     
     
+	@Override
+	public String toString() {
+		return "DossierDelegue [idDossier=" + idDossier + ", etatDossier=" + etatDossier + ", dateCloture="
+				+ dateCloture + ", motifcloture=" + motifcloture + ", dateCre=" + dateCre + ", dateDebut=" + dateDebut
+				+ ", dateExpiration=" + dateExpiration + ", transfertPermanent=" + transfertPermanent + "]";
+	}
+
+
+
 	public abstract DossierDelegue dupliquerAvecNouveauId(String newId);
 	public abstract void ajouterInfosSpecifiquesAuRapport(Document doc) throws DocumentException;
 

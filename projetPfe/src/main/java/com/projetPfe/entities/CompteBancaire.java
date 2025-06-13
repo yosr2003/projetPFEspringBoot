@@ -113,6 +113,14 @@ public class CompteBancaire {
 	}
 
 
+
+	@Override
+	public String toString() {
+		return "CompteBancaire [NumeroCompte=" + NumeroCompte + ", montant=" + montant + ", participant=" + participant
+				+ ", banque=" + banque + ", devise=" + devise + "]";
+	}
+
+
 	
 	
 }

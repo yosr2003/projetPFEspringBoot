@@ -5,7 +5,7 @@ import java.util.List;
 import com.projetPfe.entities.Message;
 
 public interface IMessageService {
-	public Message addMessage(Message m);
+	public Message addMessage(Message m,Long idConversation);
 	public List<Message> getAll();
 	public List<Message> getByConversation(Long id);
 	

@@ -5,6 +5,7 @@ package com.projetPfe.entities;
 import java.time.Instant;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,7 +27,7 @@ public class SessionConversationnelle {
 	@JoinColumn(name = "Employe_id")
 	private Employe employe;
 	
-	@OneToMany(mappedBy = "conversation")
+	@OneToMany(mappedBy = "conversation",cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Message> messages;
 	 	
 	private Instant  dateCreation ;
@@ -92,6 +93,10 @@ public class SessionConversationnelle {
 
 		public void setMessages(List<Message> messages) {
 			this.messages = messages;
+		}
+
+		public List<Message> getMessages() {
+			return messages;
 		}
 
 
