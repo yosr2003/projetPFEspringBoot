@@ -36,6 +36,7 @@ import com.projetPfe.dto.DossierDTO;
 import com.projetPfe.dto.ResponseBodyDTO;
 import com.projetPfe.dto.ResponseHeaderDTO;
 import com.projetPfe.entities.DossierDelegue;
+import com.projetPfe.entities.DossierEmpreint;
 import com.projetPfe.entities.DossierScolarité;
 import com.projetPfe.entities.DossierSoinMedical;
 import com.projetPfe.entities.EtatDoss;
@@ -261,7 +262,7 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 	@Override
 	public ResponseEntity<?> creeDossier(DossierDTO d) {
 		if(d.getTransfert()==null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("vous devez fournir un transfert pour cree un dossier delegue"); 
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("vous devez fournir un transfert pour creer un dossier delegue"); 
 		}
 		DossierDelegue dossier;
 		TransfertPermanent transfert;
@@ -276,8 +277,14 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 			  dossier.setIdDossier(genererIdentifiantUnique("DOSS_SM"));
 			  ((DossierSoinMedical) dossier).setTypeTraitement(d.getTypeTraitement());
 			  break;
+		 case "empreintExtérieuré ":
+			   dossier=new DossierEmpreint();
+			   dossier.setIdDossier(genererIdentifiantUnique("DOSS_EMP"));
+			   ((DossierEmpreint) dossier).setMontantEmpreint(d.getMontantEmpreint());
+		 
+			   
 	     default:
-	    	 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ce trype de dossier n'exitse pas"); 
+	    	 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ce type de dossier n'exitse pas"); 
             
 		}
 		
