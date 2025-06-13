@@ -277,7 +277,7 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 			  dossier.setIdDossier(genererIdentifiantUnique("DOSS_SM"));
 			  ((DossierSoinMedical) dossier).setTypeTraitement(d.getTypeTraitement());
 			  break;
-		 case "empreintExtérieuré ":
+		 case "empreintExtérieure ":
 			   dossier=new DossierEmpreint();
 			   dossier.setIdDossier(genererIdentifiantUnique("DOSS_EMP"));
 			   ((DossierEmpreint) dossier).setMontantEmpreint(d.getMontantEmpreint());
