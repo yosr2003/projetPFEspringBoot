@@ -9,6 +9,7 @@ public class DossierDTO {
 	    private String niveauEtude;
 	    private String typeTraitement;
 	    private TransfertPermanantDTO transfert;
+	    private Double montantEmpreint;
 	    
 		public String getTypeDossier() {
 			return typeDossier;
@@ -27,6 +28,9 @@ public class DossierDTO {
 		}
 		public TransfertPermanantDTO getTransfert() {
 			return transfert;
+		}
+		public Double getMontantEmpreint() {
+			return montantEmpreint;
 		}
 	    
 	    
