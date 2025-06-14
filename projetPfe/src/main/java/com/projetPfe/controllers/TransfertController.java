@@ -45,7 +45,7 @@ public class TransfertController {
 	 
 	 @PreAuthorize("hasRole('ChargéClientele')")
 	 @GetMapping("/{id}")
-	 public ResponseEntity<?> getDossierById(@PathVariable String id) {
+	 public ResponseEntity<?> getTransfertById(@PathVariable String id) {
 	        return transfertService.consulterTransfert(id);
 	    }
 	 

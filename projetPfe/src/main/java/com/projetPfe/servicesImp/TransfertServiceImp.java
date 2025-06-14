@@ -145,6 +145,9 @@ public class TransfertServiceImp implements TransfertServiceI {
 	        dossierDelegue = DossierDelegueRepository.findById(idDossierDelegue)
 	                .orElseThrow(() -> new Exception("Dossier Délégué introuvable"));
 	        System.out.println(dossierDelegue);
+	        if(dossierDelegue.getEtatDossier().equals(EtatDoss.CLOTURE)) {
+	        	throw new Exception("le dossier est cloture est ne peut donc plus recevoir de transferts");
+	        }
 	        List<TransfertPermanent> transferts = dossierDelegue.getTransfertPermanent();
 	        if(transferts != null && !transferts.isEmpty()) {
 	        	compteSource=transferts.get(0).getCompteBancaire_source();
@@ -228,7 +231,7 @@ public class TransfertServiceImp implements TransfertServiceI {
 	   public ResponseEntity<?> consulterTransfert(String refTransfert) {
 	       Optional<Transfert> optionalTransfert = TransfertRepository.findByrefTransfert(refTransfert);
 	       if (optionalTransfert.isEmpty()) {
-	           return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Transfert introuvable");
+	           return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ce transfert n'existe pas");
 	       }
 
 	       Transfert transfert = optionalTransfert.get();
