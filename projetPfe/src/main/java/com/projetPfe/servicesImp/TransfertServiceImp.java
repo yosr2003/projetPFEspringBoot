@@ -132,82 +132,141 @@ public class TransfertServiceImp implements TransfertServiceI {
 	    return prefix + String.valueOf((int) (Math.random() * 1000000));
 		
 	}
+	/*
+	 * @Override public Transfert creerTransfert(Double montant,String
+	 * numeroCompteSource,String numeroCompteCible,FraisType typeFrais, String
+	 * idDossierDelegue,String natureOperation, TransfertType type) // vérification
+	 * des conditions throws Exception { CompteBancaire compteCible= null;
+	 * CompteBancaire compteSource= null; DossierDelegue dossierDelegue = null;
+	 * 
+	 * if (idDossierDelegue != null && !idDossierDelegue.isEmpty()) { dossierDelegue
+	 * = DossierDelegueRepository.findById(idDossierDelegue) .orElseThrow(() -> new
+	 * Exception("Dossier Délégué introuvable"));
+	 * System.out.println(dossierDelegue);
+	 * if(dossierDelegue.getEtatDossier().equals(EtatDoss.CLOTURE)) { throw new
+	 * Exception("le dossier est cloture est ne peut donc plus recevoir de transferts"
+	 * ); } List<TransfertPermanent> transferts =
+	 * dossierDelegue.getTransfertPermanent(); if(transferts != null &&
+	 * !transferts.isEmpty()) {
+	 * compteSource=transferts.get(0).getCompteBancaire_source();
+	 * compteCible=transferts.get(0).getCompteBancaire_cible();
+	 * System.out.println(compteSource.toString());} else { if (numeroCompteSource
+	 * == null || numeroCompteSource.isEmpty()) { throw new
+	 * Exception("Numéro de compte source manquant"); } if(numeroCompteCible == null
+	 * || numeroCompteCible.isEmpty()) { throw new
+	 * Exception("Numéro de compte cible manquant"); } compteSource =
+	 * CompteBancaireRepository.findById(numeroCompteSource) .orElseThrow(() -> new
+	 * Exception("Compte source introuvable")); compteCible =
+	 * CompteBancaireRepository.findById(numeroCompteCible) .orElseThrow(() -> new
+	 * Exception("Compte cible introuvable")); }
+	 * 
+	 * } else{
+	 * 
+	 * if (numeroCompteSource == null || numeroCompteSource.isEmpty()) { throw new
+	 * Exception("Numéro de compte source manquant"); } if(numeroCompteCible == null
+	 * || numeroCompteCible.isEmpty()) { throw new
+	 * Exception("Numéro de compte cible manquant"); } compteSource =
+	 * CompteBancaireRepository.findById(numeroCompteSource) .orElseThrow(() -> new
+	 * Exception("Compte source introuvable")); compteCible =
+	 * CompteBancaireRepository.findById(numeroCompteCible) .orElseThrow(() -> new
+	 * Exception("Compte cible introuvable")); }
+	 * 
+	 * 
+	 * 
+	 * String refTransfert = creeReference(dossierDelegue);
+	 * 
+	 * 
+	 * Transfert transfert = (dossierDelegue != null) ? new TransfertPermanent() :
+	 * new TransfertPonctuel(); transfert.setRefTransfert(refTransfert);
+	 * 
+	 * transfert.setDatecre(LocalDateTime.now());
+	 * transfert.setDateEnvoie(LocalDateTime.now());
+	 * 
+	 * transfert.setMontantTransfert(montant); transfert.setTypeFrais(typeFrais);
+	 * 
+	 * transfert.setCompteBancaire_source(compteSource);
+	 * transfert.setCompteBancaire_cible(compteCible);
+	 * 
+	 * transfert.setEtatTransfert(EtatTransfert.TRAITEMENT);
+	 * 
+	 * TauxChange deviseSource = compteSource.getDevise(); TauxChange deviseCible =
+	 * compteCible.getDevise();
+	 * 
+	 * 
+	 * Optional<Object> result = calculerFrais(montant, deviseCible.getDevise(),
+	 * deviseSource.getDevise(), typeFrais.name()); if (result.isPresent()) {
+	 * Map<String, Object> data = (Map<String, Object>) result.get();
+	 * transfert.setFrais((Double) data.get("montantFrais"));
+	 * transfert.setMontantFinal((Double) data.get("montantFinal")); } else { throw
+	 * new Exception("Erreur lors du calcul des frais."); }
+	 * 
+	 * if (transfert instanceof TransfertPermanent tp) {
+	 * tp.setNatureOperation(natureOperation); tp.setDossierDelegue(dossierDelegue);
+	 * TransfertPermanentRepo.save(tp); } else if (transfert instanceof
+	 * TransfertPonctuel tp) { tp.setTypeTransfert(type);
+	 * TransfertPonctueltRepo.save(tp); }
+	 * 
+	 * return transfert; }
+	 */
+
+	
+	
 	@Override
-	public Transfert creerTransfert(Double montant,String numeroCompteSource,String numeroCompteCible,FraisType typeFrais,
-			String idDossierDelegue,String natureOperation, TransfertType type)   
-	    // vérification des conditions
-	    throws Exception {
-		CompteBancaire compteCible= null;
-		CompteBancaire compteSource= null;
-		DossierDelegue dossierDelegue = null;
-		
+	public Transfert creerTransfert(Double montant, String numeroCompteSource, String numeroCompteCible, 
+	                                FraisType typeFrais, String idDossierDelegue, 
+	                                String natureOperation, TransfertType type) throws Exception {
+	    
+	    CompteBancaire compteSource;
+	    CompteBancaire compteCible;
+	    DossierDelegue dossierDelegue = null;
+
 	    if (idDossierDelegue != null && !idDossierDelegue.isEmpty()) {
 	        dossierDelegue = DossierDelegueRepository.findById(idDossierDelegue)
 	                .orElseThrow(() -> new Exception("Dossier Délégué introuvable"));
-	        System.out.println(dossierDelegue);
-	        if(dossierDelegue.getEtatDossier().equals(EtatDoss.CLOTURE)) {
-	        	throw new Exception("le dossier est cloture est ne peut donc plus recevoir de transferts");
-	        }
-	        List<TransfertPermanent> transferts = dossierDelegue.getTransfertPermanent();
-	        if(transferts != null && !transferts.isEmpty()) {
-	        	compteSource=transferts.get(0).getCompteBancaire_source();
-		        compteCible=transferts.get(0).getCompteBancaire_cible();
-		        System.out.println(compteSource.toString());}
-	        else {
-	        	if (numeroCompteSource == null || numeroCompteSource.isEmpty()) {
-		 	        throw new Exception("Numéro de compte source manquant");
-		 	    }
-		    	if(numeroCompteCible == null || numeroCompteCible.isEmpty()) {
-			 	    	throw new Exception("Numéro de compte cible manquant");
-			 	    }
-		    	   compteSource = CompteBancaireRepository.findById(numeroCompteSource)
-			 	            .orElseThrow(() -> new Exception("Compte source introuvable"));
-			       compteCible = CompteBancaireRepository.findById(numeroCompteCible)
-			 	            .orElseThrow(() -> new Exception("Compte cible introuvable"));
-	        }
-	        
-	    }
-	    else{
-	    	
-	    	if (numeroCompteSource == null || numeroCompteSource.isEmpty()) {
-	 	        throw new Exception("Numéro de compte source manquant");
-	 	    }
-	    	if(numeroCompteCible == null || numeroCompteCible.isEmpty()) {
-		 	    	throw new Exception("Numéro de compte cible manquant");
-		 	    }
-	    	   compteSource = CompteBancaireRepository.findById(numeroCompteSource)
-		 	            .orElseThrow(() -> new Exception("Compte source introuvable"));
-		       compteCible = CompteBancaireRepository.findById(numeroCompteCible)
-		 	            .orElseThrow(() -> new Exception("Compte cible introuvable"));
-	    }
-	    
-	 
-	    
-	    String refTransfert = creeReference(dossierDelegue);
-	    
 
-	    Transfert transfert = (dossierDelegue != null)
-	            ? new TransfertPermanent()
-	            : new TransfertPonctuel();
+	        if (dossierDelegue.getEtatDossier() == EtatDoss.CLOTURE) {
+	            throw new Exception("Le dossier est clôturé et ne peut plus recevoir de transferts");
+	        }
+
+	        List<TransfertPermanent> transferts = dossierDelegue.getTransfertPermanent();
+	        if (transferts != null && !transferts.isEmpty()) {
+	            compteSource = transferts.get(0).getCompteBancaire_source();
+	            compteCible = transferts.get(0).getCompteBancaire_cible();
+	        } else {
+	            compteSource = findCompte(numeroCompteSource, "Compte source");
+	            compteCible = findCompte(numeroCompteCible, "Compte cible");
+	        }
+	    } else {
+	    	// cas ponctuel
+	        compteSource = findCompte(numeroCompteSource, "Compte source");
+	        compteCible = findCompte(numeroCompteCible, "Compte cible");
+	    }
+
+	    // Création du transfert
+	    String refTransfert = creeReference(dossierDelegue);
+	    Transfert transfert = (dossierDelegue != null) ? new TransfertPermanent() : new TransfertPonctuel();
+
 	    transfert.setRefTransfert(refTransfert);
-	    
 	    transfert.setDatecre(LocalDateTime.now());
 	    transfert.setDateEnvoie(LocalDateTime.now());
-	    
 	    transfert.setMontantTransfert(montant);
 	    transfert.setTypeFrais(typeFrais);
-	    
 	    transfert.setCompteBancaire_source(compteSource);
 	    transfert.setCompteBancaire_cible(compteCible);
-	    
 	    transfert.setEtatTransfert(EtatTransfert.TRAITEMENT);
-	    
-	    TauxChange deviseSource = compteSource.getDevise();
-	    TauxChange deviseCible = compteCible.getDevise();
+	    TauxChange deviseSource = compteSource.getDevise(); TauxChange deviseCible =
+	    		 compteCible.getDevise();
+	    		
 
-
-	    Optional<Object> result = calculerFrais(montant, deviseCible.getDevise(), deviseSource.getDevise(), typeFrais.name());
-	    
+	    Optional<Object> result = calculerFrais(montant, deviseCible.getDevise(),deviseSource.getDevise(), typeFrais.name());
+	    if (result.isPresent()) {
+	    	Map<String, Object> data = (Map<String, Object>) result.get();
+	    	transfert.setFrais((Double) data.get("montantFrais"));
+	     transfert.setMontantFinal((Double) data.get("montantFinal")); }
+	    else { throw
+	    	new Exception("Erreur lors du calcul des frais."); }
+	    	
+	    // Enregistrement
 	    if (transfert instanceof TransfertPermanent tp) {
 	        tp.setNatureOperation(natureOperation);
 	        tp.setDossierDelegue(dossierDelegue);
@@ -216,11 +275,20 @@ public class TransfertServiceImp implements TransfertServiceI {
 	        tp.setTypeTransfert(type);
 	        TransfertPonctueltRepo.save(tp);
 	    }
-	    
+
 	    return transfert;
 	}
+	
 
+	private CompteBancaire findCompte(String numeroCompte, String label) throws Exception {
+	    if (numeroCompte == null || numeroCompte.isEmpty()) {
+	        throw new Exception(label + " manquant");
+	    }
+	    return CompteBancaireRepository.findById(numeroCompte)
+	            .orElseThrow(() -> new Exception(label + " introuvable"));
+	}
 
+	
 	   @Override
       public List<Transfert> AlerteTransfertAttente() {
 		   return TransfertRepository.findByEtatTransfert(EtatTransfert.TRAITEMENT);
