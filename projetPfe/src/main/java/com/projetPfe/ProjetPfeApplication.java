@@ -782,34 +782,34 @@ public class ProjetPfeApplication {
 		        tp.setDateEnvoie(LocalDateTime.of(2025, 7, 1, 10, 30));
 		        
 		        TransfertPermanent tp2= new TransfertPermanent();
-		        tp.setRefTransfert("TSC002");
-		        tp.setDossierDelegue(dossierScol);
-		        tp.setCompteBancaire_source(compte2);
-		        tp.setCompteBancaire_cible(compte1);
-		        tp.setMontantTransfert(2500.0);
-		        tp.setTypeFrais(FraisType.BEN);
-		        tp.setFrais(50.0);
-		        tp.setMontantFrais(50.0);
-		        tp.setMontantFinal(21432.5);
-		        tp.setNatureOperation("hebergement");
-		        tp.setEtatTransfert(EtatTransfert.ENVOYE);
-		        tp.setDatecre(LocalDateTime.of(2025, 8, 1, 10, 30));
-		        tp.setDateEnvoie(LocalDateTime.of(2025, 9, 1, 10, 30));
+		        tp2.setRefTransfert("TSC002");
+		        tp2.setDossierDelegue(dossierScol);
+		        tp2.setCompteBancaire_source(compte2);
+		        tp2.setCompteBancaire_cible(compte1);
+		        tp2.setMontantTransfert(2500.0);
+		        tp2.setTypeFrais(FraisType.BEN);
+		        tp2.setFrais(50.0);
+		        tp2.setMontantFrais(50.0);
+		        tp2.setMontantFinal(21432.5);
+		        tp2.setNatureOperation("hebergement");
+		        tp2.setEtatTransfert(EtatTransfert.ENVOYE);
+		        tp2.setDatecre(LocalDateTime.of(2025, 8, 1, 10, 30));
+		        tp2.setDateEnvoie(LocalDateTime.of(2025, 9, 1, 10, 30));
 		        
 		        TransfertPermanent tp3= new TransfertPermanent();
-		        tp.setRefTransfert("TSC003");
-		        tp.setDossierDelegue(dossierScol);
-		        tp.setCompteBancaire_source(compte2);
-		        tp.setCompteBancaire_cible(compte1);
-		        tp.setMontantTransfert(2500.0);
-		        tp.setTypeFrais(FraisType.BEN);
-		        tp.setFrais(50.0);
-		        tp.setMontantFrais(50.0);
-		        tp.setMontantFinal(21432.5);
-		        tp.setNatureOperation("materielle scolaire");
-		        tp.setEtatTransfert(EtatTransfert.ENVOYE);
-		        tp.setDatecre(LocalDateTime.of(2025, 9, 1, 10, 30));
-		        tp.setDateEnvoie(LocalDateTime.of(2025, 9, 15, 10, 30));
+		        tp3.setRefTransfert("TSC003");
+		        tp3.setDossierDelegue(dossierScol);
+		        tp3.setCompteBancaire_source(compte2);
+		        tp3.setCompteBancaire_cible(compte1);
+		        tp3.setMontantTransfert(2500.0);
+		        tp3.setTypeFrais(FraisType.BEN);
+		        tp3.setFrais(50.0);
+		        tp3.setMontantFrais(50.0);
+		        tp3.setMontantFinal(21432.5);
+		        tp3.setNatureOperation("materielle scolaire");
+		        tp3.setEtatTransfert(EtatTransfert.ENVOYE);
+		        tp3.setDatecre(LocalDateTime.of(2025, 9, 1, 10, 30));
+		        tp3.setDateEnvoie(LocalDateTime.of(2025, 9, 15, 10, 30));
 		        
 		        
                 ////soins
@@ -871,7 +871,8 @@ public class ProjetPfeApplication {
 		      
 		        // Sauvegarde des dossiers
 		       dossierDelegueRepository.saveAll(Arrays.asList(doss1, contrat1, empreint1, dossierFP, dossierInv, dossierScol, dossierSoin));
-		       transfertpRepop.saveAll(null);
+		       transfertpRepop.saveAll(Arrays.asList(tps,tps2,tps3,tp,tp2,tp3,tpm,tpm2,tpm3,tfp2,tfp1,tfp3,tep1,tep2,tes1,tes2,tcc2,tcc1));
+		       
 
 		        
 		        
