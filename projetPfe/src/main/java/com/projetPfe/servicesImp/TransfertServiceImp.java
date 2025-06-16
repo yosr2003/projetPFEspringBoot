@@ -171,7 +171,7 @@ public class TransfertServiceImp implements TransfertServiceI {
 
 	    transfert.setRefTransfert(refTransfert);
 	    transfert.setDatecre(LocalDateTime.now());
-	    transfert.setDateEnvoie(LocalDateTime.now());
+
 	    transfert.setMontantTransfert(montant);
 	    transfert.setTypeFrais(typeFrais);
 	    transfert.setCompteBancaire_source(compteSource);

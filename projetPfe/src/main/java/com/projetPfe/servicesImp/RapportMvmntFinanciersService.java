@@ -25,6 +25,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.projetPfe.Iservices.IRapportMvmntFinanciersService;
 import com.projetPfe.entities.DossierDelegue;
+import com.projetPfe.entities.EtatDoss;
 import com.projetPfe.entities.Participant;
 import com.projetPfe.entities.PersonneMorale;
 import com.projetPfe.entities.PersonnePhysique;
@@ -69,8 +70,7 @@ public class RapportMvmntFinanciersService implements IRapportMvmntFinanciersSer
 	       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ce Dossier Délégué a déjà un rapport de mouvement financier");
 	    }
 	    // Vérifie si le dossier est clôturé ou non
-	    if ((dossier.getDateCloture() != null && LocalDate.now().isBefore(dossier.getDateCloture()))
-	        || (dossier.getDateCloture() == null && LocalDate.now().isBefore(dossier.getDateExpiration()))) {
+	    if ((!dossier.getEtatDossier().equals(EtatDoss.CLOTURE))){
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ce dossier n'est pas encore clôturé");
 	    }
 

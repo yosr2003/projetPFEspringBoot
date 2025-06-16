@@ -61,7 +61,7 @@ public class EtatDeclarationBCTServiceImp implements EtatDeclarationIservice {
 	        return ((TransfertPonctuel) premier).getTypeTransfert().toString(); 
 	    } else if (premier instanceof TransfertPermanent) {
 	        DossierDelegue dossier = ((TransfertPermanent) premier).getDossierDelegue();
-	        if (dossier instanceof DossierSoinMedical) return "SOINS_MEDICAL";
+	        if (dossier instanceof DossierSoinMedical) return "SOINS_MEDICAUX";
 	        if (dossier instanceof DossierScolarité) return "SCOLARITE";
 	        if (dossier instanceof DossierEmpreint) return "EMPREINT";
 	        if (dossier instanceof DossierFormationProfessionnelle) return "FORMATION_PROFESSIONNELLE";
@@ -255,7 +255,7 @@ public class EtatDeclarationBCTServiceImp implements EtatDeclarationIservice {
 	                     return dossier instanceof DossierInvestissement;
 	                 case "SCOLARITE":
 	                     return dossier instanceof DossierScolarité;
-	                 case "SOINS_MEDICAL":
+	                 case "SOINS_MEDICAUX":
 	                     return dossier instanceof DossierSoinMedical;
 	                 
 	                 default:

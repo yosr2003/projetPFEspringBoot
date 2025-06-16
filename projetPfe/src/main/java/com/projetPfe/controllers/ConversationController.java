@@ -3,6 +3,7 @@ package com.projetPfe.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,8 +43,14 @@ public class ConversationController {
 		 return conversationService.addConversation(c);
 	 }
 	 @DeleteMapping("/{id}")
-	 public boolean addConversation(@PathVariable Long id){
-		 return conversationService.supprimerConversation(id);}
-	 
+	 public ResponseEntity<Void> deleteConversation(@PathVariable Long id) {
+	     boolean deleted = conversationService.supprimerConversation(id);
+	     if (deleted) {
+	         return ResponseEntity.ok().build(); 
+	     } else {
+	         return ResponseEntity.notFound().build(); 
+	     }
+	 }
+
 
 }

@@ -149,7 +149,7 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 	    }
 
 	    if (dateCloture != null && dateCloture.isAfter(dossier.getDateExpiration()) && dateCloture.isAfter(dossier.getDateDebut())) {
-	        response.put("header", new ResponseHeaderDTO(400, "BAD_REQUEST", "La date de clôture dépasse la date d'expiration et la date debut du dossier "));
+	        response.put("header", new ResponseHeaderDTO(400, "BAD_REQUEST", "La date de clôture  doit etre entre la date d'expiration :  "+ dossier.getDateExpiration()+" et la date debut du dossier " + dossier.getDateDebut()));
 	        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	    }
 
@@ -262,7 +262,7 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 	@Override
 	public ResponseEntity<?> creeDossier(DossierDTO d) {
 		if(d.getTransfert()==null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("vous devez fournir un transfert pour creer un dossier delegue"); 
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("la creation d'un dossier delegue ne se fait qu'avec la creation d'un transefert"); 
 		}
 		DossierDelegue dossier;
 		TransfertPermanent transfert;

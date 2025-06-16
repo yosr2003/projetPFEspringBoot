@@ -69,14 +69,14 @@ public class ConversationSeviceImpl implements IConversationService{
 	@Transactional
 	@Override
 	public boolean supprimerConversation(Long idConversation) {
-		Optional<SessionConversationnelle> conversation = conversationRepo.findById(idConversation);
-		if(conversation.isPresent()) {
-			messageRepo.deleteAll(conversation.get().getMessages());
-			conversationRepo.delete(conversation.get());
-			return true;
-		}
-		
-		return false;
+	    Optional<SessionConversationnelle> conversation = conversationRepo.findById(idConversation);
+	    if (conversation.isPresent()) {
+	        messageRepo.deleteAll(conversation.get().getMessages());
+	        conversationRepo.delete(conversation.get());
+	        return true;
+	    }
+	    return false;
 	}
+
 
 }

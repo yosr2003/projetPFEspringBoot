@@ -71,7 +71,7 @@ public class SwiftServiceImp implements SwiftIservice {
 	                .orElseThrow(() -> new RuntimeException("Transfert introuvable avec ID: " + transfertId));
 
 	        if (transfert.getEtatTransfert() != EtatTransfert.VALIDE) {
-	            throw new RuntimeException("Le transfert avec ID " + transfertId + " n'est pas validé. SWIFT non généré.");
+	            throw new RuntimeException("le transfert avec ID " + transfertId + " n'est pas validé. le message SWIFT ne peut etre generé que pour un transfert en etat valide");
 	        }
 
 	        Swift swift = new Swift();
