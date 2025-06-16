@@ -52,9 +52,9 @@ public class DossierScolariteServiceImp implements dossierScolariteIService {
 	                .body("La nouvelle date de prolongation doit depasser la date d'expiration actuelle : " +dossier.getDateExpiration());
 	    }
 
-	    if (!dossier.getEtatDossier().equals(EtatDoss.VALIDE)) {
+	    if (!dossier.getEtatDossier().equals(EtatDoss.VALIDE)||!dossier.getEtatDossier().equals(EtatDoss.OUVERT) ) {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-	                .body("Le dossier doit être validé pour être prolongé");
+	                .body("Le dossier doit être validé ou ouvert pour être prolongé");
 	    }
 	    if (fichier == null || fichier.isEmpty()) {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Une pièce justificative est requise pour la prolongation.");

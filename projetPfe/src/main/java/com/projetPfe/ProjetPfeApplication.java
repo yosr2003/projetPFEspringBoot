@@ -20,10 +20,13 @@ import com.projetPfe.entities.DossierInvestissement;
 import com.projetPfe.entities.DossierScolarité;
 import com.projetPfe.entities.DossierSoinMedical;
 import com.projetPfe.entities.EtatDoss;
+import com.projetPfe.entities.EtatTransfert;
+import com.projetPfe.entities.FraisType;
 import com.projetPfe.entities.Pays;
 import com.projetPfe.entities.PersonneMorale;
 import com.projetPfe.entities.PersonnePhysique;
 import com.projetPfe.entities.TauxChange;
+import com.projetPfe.entities.TransfertPermanent;
 import com.projetPfe.repositories.BanqueRepository;
 import com.projetPfe.repositories.CompteBancaireRepository;
 import com.projetPfe.repositories.ParticipantRepository;
@@ -529,10 +532,10 @@ public class ProjetPfeApplication {
 
 		        DossierEmpreint empreint1 = new DossierEmpreint();
 		        empreint1.setIdDossier("DOSS_EM001");
-		        empreint1.setDateDebut(LocalDate.of(2023, 1, 10));
+		        empreint1.setDateDebut(LocalDate.of(2025, 7, 1));
 		        empreint1.setDateExpiration(LocalDate.of(2026, 1, 10));
 		        empreint1.setDateCre(LocalDateTime.now());
-		        empreint1.setEtatDossier(EtatDoss.ANNULE); // Enum personnalisé
+		        empreint1.setEtatDossier(EtatDoss.VALIDE); // Enum personnalisé
 
 		        DossierEmpreint empreint2 = new DossierEmpreint();
 		        empreint2.setIdDossier("DOSS_EM002");
@@ -550,40 +553,224 @@ public class ProjetPfeApplication {
 		        empreint3.setDateCre(LocalDateTime.now());
 		        empreint3.setEtatDossier(EtatDoss.TRAITEMENT);
 		        empreint3.setMontantEmpreint(220000.0);
-
+                ///formationp
 		        DossierFormationProfessionnelle dossierFP = new DossierFormationProfessionnelle();
 		        dossierFP.setIdDossier("DOSS_FP001");
-		        dossierFP.setDateDebut(LocalDate.of(2024, 1, 5));
-		        dossierFP.setDateExpiration(LocalDate.of(2024, 12, 5));
-		        dossierFP.setDateCre(LocalDateTime.now());
-		        dossierFP.setEtatDossier(EtatDoss.TRAITEMENT);
+		        dossierFP.setDateDebut(LocalDate.of(2025, 9, 1));
+		        dossierFP.setDateExpiration(LocalDate.of(2026, 6, 30));
+		        dossierFP.setDateCre(LocalDateTime.of(2025, 5, 1, 10, 30));
+		        dossierFP.setEtatDossier(EtatDoss.OUVERT);
 		        dossierFP.setNomFormation("Formation DevOps");
+		        
+		        TransfertPermanent tfp1 = new TransfertPermanent();
+		        tfp1.setRefTransfert("TFP001");
+		        tfp1.setDossierDelegue(dossierFP);
+		        tfp1.setCompteBancaire_source(compte2);  
+		        tfp1.setCompteBancaire_cible(compte11);
+		        tfp1.setMontantTransfert(8000.0);
+		        tfp1.setTypeFrais(FraisType.OUR);
+		        tfp1.setFrais(0.0);
+		        tfp1.setMontantFrais(0.0);
+		        tfp1.setMontantFinal(72000.0);
+		        tfp1.setNatureOperation("financement formation");
+		        tfp1.setEtatTransfert(EtatTransfert.ENVOYE);
+		        tfp1.setDatecre(LocalDateTime.of(2025, 6, 10, 10, 0));
+		        tfp1.setDateEnvoie(LocalDateTime.of(2025, 7, 10, 11, 0));
 
+		        TransfertPermanent tfp2 = new TransfertPermanent();
+		        tfp2.setRefTransfert("TFP002");
+		        tfp2.setDossierDelegue(dossierFP);
+		        tfp2.setCompteBancaire_source(compte2);
+		        tfp2.setCompteBancaire_cible(compte11);
+		        tfp2.setMontantTransfert(3000.0);
+		        tfp2.setTypeFrais(FraisType.BEN);
+		        tfp2.setFrais(50.0);
+		        tfp2.setMontantFrais(50.0);
+		        tfp2.setMontantFinal(27000.0);
+		        tfp2.setNatureOperation("frais matériel pédagogique");
+		        tfp2.setEtatTransfert(EtatTransfert.ENVOYE);
+		        tfp2.setDatecre(LocalDateTime.of(2025, 6, 10, 10, 0));
+		        tfp2.setDateEnvoie(LocalDateTime.of(2025, 7, 10, 11, 0));
+
+		        TransfertPermanent tfp3 = new TransfertPermanent();
+		        tfp3.setRefTransfert("TFP003");
+		        tfp3.setDossierDelegue(dossierFP);
+		        tfp3.setCompteBancaire_source(compte2);
+		        tfp3.setCompteBancaire_cible(compte11);
+		        tfp3.setMontantTransfert(2000.0);
+		        tfp3.setTypeFrais(FraisType.BEN);
+		        tfp3.setFrais(30.0);
+		        tfp3.setMontantFrais(30.0);
+		        tfp3.setMontantFinal(18000.0);
+		        tfp3.setNatureOperation("logistique formation");
+		        tfp3.setEtatTransfert(EtatTransfert.ENVOYE);
+		        tfp3.setDatecre(LocalDateTime.of(2025, 6, 10, 10, 0));
+		        tfp3.setDateEnvoie(LocalDateTime.of(2025, 7, 10, 11, 0));
+		        
+		        
+                /// investissmenet
 		        DossierInvestissement dossierInv = new DossierInvestissement();
 		        dossierInv.setIdDossier("DOSS_INV001");
-		        dossierInv.setDateDebut(LocalDate.of(2023, 7, 1));
-		        dossierInv.setDateExpiration(LocalDate.of(2025, 7, 1));
-		        dossierInv.setDateCre(LocalDateTime.now());
-		        dossierInv.setEtatDossier(EtatDoss.TRAITEMENT);
+		        dossierInv.setDateDebut(LocalDate.of(2025, 9, 1));
+		        dossierInv.setDateExpiration(LocalDate.of(2026, 6, 30));
+		        dossierInv.setDateCre(LocalDateTime.of(2025, 5, 1, 10, 30));
+		        dossierInv.setEtatDossier(EtatDoss.OUVERT);
 		        dossierInv.setSecteurActivité("Agroalimentaire");
+		        
+		        TransfertPermanent tpm = new TransfertPermanent();
+		        tpm.setRefTransfert("TINV001");
+		        tpm.setDossierDelegue(dossierInv);
+		        tpm.setCompteBancaire_source(compte10);
+		        tpm.setCompteBancaire_cible(compte8);
+		        tpm.setMontantTransfert(25000.0);
+		        tpm.setTypeFrais(FraisType.OUR);
+		        tpm.setFrais(0.0);
+		        tpm.setMontantFrais(0.0);
+		        tpm.setMontantFinal(214000.0);
+		        tpm.setNatureOperation("investissement initial");
+		        tpm.setEtatTransfert(EtatTransfert.ENVOYE);
+		        tpm.setDatecre(LocalDateTime.of(2025, 6, 10, 10, 0));
+		        tpm.setDateEnvoie(LocalDateTime.of(2025, 7, 10, 11, 0));
 
+		        TransfertPermanent tpm2 = new TransfertPermanent();
+		        tpm2.setRefTransfert("TINV002");
+		        tpm2.setDossierDelegue(dossierInv);
+		        tpm2.setCompteBancaire_source(compte10);
+		        tpm2.setCompteBancaire_cible(compte8);
+		        tpm2.setMontantTransfert(15000.0);
+		        tpm2.setTypeFrais(FraisType.BEN);
+		        tpm2.setFrais(200.0);
+		        tpm2.setMontantFrais(200.0);
+		        tpm2.setMontantFinal(129000.0);
+		        tpm2.setNatureOperation("investissement complémentaire");
+		        tpm2.setEtatTransfert(EtatTransfert.ENVOYE);
+		        tpm2.setDatecre(LocalDateTime.of(2025, 7, 20, 9, 30));
+		        tpm2.setDateEnvoie(LocalDateTime.of(2025, 8, 15, 10, 0));
+
+		        TransfertPermanent tpm3 = new TransfertPermanent();
+		        tpm3.setRefTransfert("TINV003");
+		        tpm3.setDossierDelegue(dossierInv);
+		        tpm3.setCompteBancaire_source(compte10);
+		        tpm3.setCompteBancaire_cible(compte8);
+		        tpm3.setMontantTransfert(10000.0);
+		        tpm3.setTypeFrais(FraisType.BEN);
+		        tpm3.setFrais(150.0);
+		        tpm3.setMontantFrais(150.0);
+		        tpm3.setMontantFinal(86000.0);
+		        tpm3.setNatureOperation("frais divers");
+		        tpm3.setEtatTransfert(EtatTransfert.ENVOYE);
+		        tpm3.setDatecre(LocalDateTime.of(2025, 8, 5, 14, 0));
+		        tpm3.setDateEnvoie(LocalDateTime.of(2025, 9, 1, 14, 0));
+		        
+		        
+                ///scolarite 
 		        DossierScolarité dossierScol = new DossierScolarité();
 		        dossierScol.setIdDossier("DOSS_SC001");
-		        dossierScol.setDateDebut(LocalDate.of(2024, 9, 1));
-		        dossierScol.setDateExpiration(LocalDate.of(2027, 6, 30));
-		        dossierScol.setDateCre(LocalDateTime.now());
-		        dossierScol.setEtatDossier(EtatDoss.VALIDE);
+		        dossierScol.setDateDebut(LocalDate.of(2025, 9, 1));
+		        dossierScol.setDateExpiration(LocalDate.of(2026, 6, 30));
+		        dossierScol.setDateCre(LocalDateTime.of(2025, 5, 1, 10, 30));
+		        dossierScol.setEtatDossier(EtatDoss.OUVERT);
 		        dossierScol.setNiveauEtude("Master Informatique");
-
+		        
+		        TransfertPermanent tp= new TransfertPermanent();
+		        tp.setRefTransfert("TSC001");
+		        tp.setDossierDelegue(dossierScol);
+		        tp.setCompteBancaire_source(compte2);
+		        tp.setCompteBancaire_cible(compte1);
+		        tp.setMontantTransfert(9000.0);
+		        tp.setTypeFrais(FraisType.OUR);
+		        tp.setFrais(0.0);
+		        tp.setMontantFrais(0.0);
+		        tp.setMontantFinal(77337.0);
+		        tp.setNatureOperation("frais d'inscription");
+		        tp.setEtatTransfert(EtatTransfert.ENVOYE);
+		        tp.setDatecre(LocalDateTime.of(2025, 5, 1, 10, 30));
+		        tp.setDateEnvoie(LocalDateTime.of(2025, 7, 1, 10, 30));
+		        
+		        TransfertPermanent tp2= new TransfertPermanent();
+		        tp.setRefTransfert("TSC002");
+		        tp.setDossierDelegue(dossierScol);
+		        tp.setCompteBancaire_source(compte2);
+		        tp.setCompteBancaire_cible(compte1);
+		        tp.setMontantTransfert(2500.0);
+		        tp.setTypeFrais(FraisType.BEN);
+		        tp.setFrais(50.0);
+		        tp.setMontantFrais(50.0);
+		        tp.setMontantFinal(21432.5);
+		        tp.setNatureOperation("hebergement");
+		        tp.setEtatTransfert(EtatTransfert.ENVOYE);
+		        tp.setDatecre(LocalDateTime.of(2025, 8, 1, 10, 30));
+		        tp.setDateEnvoie(LocalDateTime.of(2025, 9, 1, 10, 30));
+		        
+		        TransfertPermanent tp3= new TransfertPermanent();
+		        tp.setRefTransfert("TSC003");
+		        tp.setDossierDelegue(dossierScol);
+		        tp.setCompteBancaire_source(compte2);
+		        tp.setCompteBancaire_cible(compte1);
+		        tp.setMontantTransfert(2500.0);
+		        tp.setTypeFrais(FraisType.BEN);
+		        tp.setFrais(50.0);
+		        tp.setMontantFrais(50.0);
+		        tp.setMontantFinal(21432.5);
+		        tp.setNatureOperation("materielle scolaire");
+		        tp.setEtatTransfert(EtatTransfert.ENVOYE);
+		        tp.setDatecre(LocalDateTime.of(2025, 9, 1, 10, 30));
+		        tp.setDateEnvoie(LocalDateTime.of(2025, 9, 15, 10, 30));
+		        
+		        
+                ////soins
 		        DossierSoinMedical dossierSoin = new DossierSoinMedical();
 		        dossierSoin.setIdDossier("DOSS_SM001");
-		        dossierSoin.setDateDebut(LocalDate.of(2023, 3, 15));
-		        dossierSoin.setDateExpiration(LocalDate.of(2024, 3, 15));
-		        dossierSoin.setDateCre(LocalDateTime.now());
-		        dossierSoin.setEtatDossier(EtatDoss.CLOTURE);
+		        dossierSoin.setDateDebut(LocalDate.of(2025, 9, 1));
+		        dossierSoin.setDateExpiration(LocalDate.of(2026, 6, 30));
+		        dossierSoin.setDateCre(LocalDateTime.of(2025, 5, 1, 10, 30));
+		        dossierSoin.setEtatDossier(EtatDoss.OUVERT);
 		        dossierSoin.setTypeTraitement("Chirurgie cardiaque");
 
+		        TransfertPermanent tps = new TransfertPermanent();
+		        tps.setRefTransfert("TSM001");
+		        tps.setDossierDelegue(dossierSoin);
+		        tps.setCompteBancaire_source(compte2); // compte tunisien
+		        tps.setCompteBancaire_cible(compte11);
+		        tps.setMontantTransfert(12000.0);
+		        tps.setTypeFrais(FraisType.OUR);
+		        tps.setFrais(0.0);
+		        tps.setMontantFrais(0.0);
+		        tps.setMontantFinal(103200.0);
+		        tps.setNatureOperation("soins médicaux");
+		        tps.setEtatTransfert(EtatTransfert.ENVOYE);
+		        tps.setDatecre(LocalDateTime.of(2025, 6, 20, 9, 0));
+		        tps.setDateEnvoie(LocalDateTime.of(2025, 7, 5, 10, 0));
 
+		        TransfertPermanent tps2 = new TransfertPermanent();
+		        tps2.setRefTransfert("TSM002");
+		        tps2.setDossierDelegue(dossierSoin);
+		        tps2.setCompteBancaire_source(compte2);
+		        tps2.setCompteBancaire_cible(compte11);
+		        tps2.setMontantTransfert(5000.0);
+		        tps2.setTypeFrais(FraisType.BEN);
+		        tps2.setFrais(100.0);
+		        tps2.setMontantFrais(100.0);
+		        tps2.setMontantFinal(43000.0);
+		        tps2.setNatureOperation("hospitalisation");
+		        tps2.setEtatTransfert(EtatTransfert.ENVOYE);
+		        tps2.setDatecre(LocalDateTime.of(2025, 7, 15, 11, 30));
+		        tps2.setDateEnvoie(LocalDateTime.of(2025, 8, 1, 9, 0));
+
+		        TransfertPermanent tps3 = new TransfertPermanent();
+		        tps3.setRefTransfert("TSM003");
+		        tps3.setDossierDelegue(dossierSoin);
+		        tps3.setCompteBancaire_source(compte2);
+		        tps3.setCompteBancaire_cible(compte11);
+		        tp3.setMontantTransfert(3000.0);
+		        tp3.setTypeFrais(FraisType.BEN);
+		        tp3.setFrais(50.0);
+		        tp3.setMontantFrais(50.0);
+		        tp3.setMontantFinal(25800.0);
+		        tp3.setNatureOperation("frais de consultation");
+		        tp3.setEtatTransfert(EtatTransfert.ENVOYE);
+		        tp3.setDatecre(LocalDateTime.of(2025, 8, 10, 14, 0));
+		        tp3.setDateEnvoie(LocalDateTime.of(2025, 9, 1, 15, 0));
 
 
 		        
