@@ -34,6 +34,7 @@ import com.projetPfe.repositories.PaysRepository;
 import com.projetPfe.repositories.PersonneMoralRepository;
 import com.projetPfe.repositories.PersonnePhysiqueRepository;
 import com.projetPfe.repositories.TauxChangeRepository;
+import com.projetPfe.repositories.TransfertPermanentRepository;
 import com.projetPfe.repositories.dossierContratCommercialRepository;
 import com.projetPfe.repositories.dossierDelegueRepository;
 import com.projetPfe.repositories.dossierEconomieSurSalaireRepository;
@@ -53,7 +54,7 @@ public class ProjetPfeApplication {
 		
 	}
 	@Bean
-	CommandLineRunner initDatabase(dossierDelegueRepository dossierDelegueRepository,CompteBancaireRepository compteBancaireRepository,  PersonnePhysiqueRepository personnePhysiqueRepository,
+	CommandLineRunner initDatabase(dossierDelegueRepository dossierDelegueRepository,TransfertPermanentRepository transfertpRepop,CompteBancaireRepository compteBancaireRepository,  PersonnePhysiqueRepository personnePhysiqueRepository,
             PersonneMoralRepository personneMoraleRepository, dossierScolariteRepository scRepository, dossierEconomieSurSalaireRepository salaireRepository, dossierEmpreintRepository empRepository,  dossierFormationProfRepository  DossierFormationProfRepository, 
             dossierInvestissementRepository  dossierInvestissementRepository,  dossierContratCommercialRepository dossierContratCommercial, 
 			ParticipantRepository participantRepository,
@@ -869,7 +870,8 @@ public class ProjetPfeApplication {
 		        
 		      
 		        // Sauvegarde des dossiers
-		       // dossierDelegueRepository.saveAll(Arrays.asList(doss1, doss2, doss3,contrat1, contrat2, contrat3,empreint1, empreint2, empreint3,dossierFP, dossierInv, dossierScol, dossierSoin));
+		       dossierDelegueRepository.saveAll(Arrays.asList(doss1, contrat1, empreint1, dossierFP, dossierInv, dossierScol, dossierSoin));
+		       transfertpRepop.saveAll(null);
 
 		        
 		        
