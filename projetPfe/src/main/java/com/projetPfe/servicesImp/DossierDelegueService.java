@@ -264,6 +264,9 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 		if(d.getTransfert()==null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("la creation d'un dossier delegue ne se fait qu'avec la creation d'un transefert"); 
 		}
+		if(d.getDateExpiration().isBefore(d.getDateDebut())) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("la date debute doit preceder la date d'expiration"); 
+		}
 		DossierDelegue dossier;
 		TransfertPermanent transfert;
 		switch(d.getTypeDossier().toLowerCase()) {
