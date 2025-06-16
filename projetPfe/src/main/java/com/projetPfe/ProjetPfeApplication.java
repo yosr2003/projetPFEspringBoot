@@ -481,28 +481,59 @@ public class ProjetPfeApplication {
 		        
 		        DossierEconomieSurSalaire doss1 = new DossierEconomieSurSalaire();
 		        doss1.setIdDossier("DOSS001");
-		        doss1.setDateDebut(LocalDate.of(2024, 1, 10));
-		        doss1.setDateExpiration(LocalDate.of(2025, 1, 10));
+		        doss1.setDateDebut(LocalDate.of(2025, 7, 10));
+		        doss1.setDateExpiration(LocalDate.of(2026, 7, 10));
 		        doss1.setDateCre(LocalDateTime.now());
-		        doss1.setEtatDossier(EtatDoss.TRAITEMENT);  // Enum que tu dois avoir défini
+		        doss1.setEtatDossier(EtatDoss.VALIDE);  // valide mais non ouvert
 		        doss1.setMontantMensuel(1200.0);
+		        
+		        TransfertPermanent tes1 = new TransfertPermanent();
+		        tes1.setRefTransfert("TES001");
+		        tes1.setDossierDelegue(doss1);
+		        tes1.setCompteBancaire_source(compte2);
+		        tes1.setCompteBancaire_cible(compte11);
+		        tes1.setMontantTransfert(5000.0);
+		        tes1.setTypeFrais(FraisType.OUR);
+		        tes1.setFrais(0.0);
+		        tes1.setMontantFrais(0.0);
+		        tes1.setMontantFinal(43000.0);
+		        tes1.setNatureOperation("épargne mensuelle");
+		        tes1.setEtatTransfert(EtatTransfert.TRAITEMENT);
+		        tes1.setDatecre(LocalDateTime.of(2025, 6, 25, 10, 0));
+		        tes1.setDateEnvoie(null); // pas encore envoyé
 
-		        DossierEconomieSurSalaire doss2 = new DossierEconomieSurSalaire();
-		        doss2.setIdDossier("DOSS002");
-		        doss2.setDateDebut(LocalDate.of(2023, 6, 15));
-		        doss2.setDateExpiration(LocalDate.of(2024, 6, 15));
-		        doss2.setDateCre(LocalDateTime.now());
-		        doss2.setEtatDossier(EtatDoss.CLOTURE);  // Enum à ajuster
-		        doss2.setMotifcloture("Fin du contrat");
-		        doss2.setMontantMensuel(900.0);
+		        // Deuxième transfert en traitement, pas encore envoyé
+		        TransfertPermanent tes2 = new TransfertPermanent();
+		        tes2.setRefTransfert("TES002");
+		        tes2.setDossierDelegue(doss1);
+		        tes2.setCompteBancaire_source(compte2);
+		        tes2.setCompteBancaire_cible(compte11);
+		        tes2.setMontantTransfert(3000.0);
+		        tes2.setTypeFrais(FraisType.BEN);
+		        tes2.setFrais(50.0);
+		        tes2.setMontantFrais(50.0);
+		        tes2.setMontantFinal(25800.0);
+		        tes2.setNatureOperation("intérêts épargne");
+		        tes2.setEtatTransfert(EtatTransfert.TRAITEMENT);
+		        tes2.setDatecre(LocalDateTime.of(2025, 6, 28, 11, 30));
+		        tes2.setDateEnvoie(null);
 
-		        DossierEconomieSurSalaire doss3 = new DossierEconomieSurSalaire();
-		        doss3.setIdDossier("DOSS003");
-		        doss3.setDateDebut(LocalDate.of(2024, 3, 1));
-		        doss3.setDateExpiration(LocalDate.of(2024, 12, 31));
-		        doss3.setDateCre(LocalDateTime.now());
-		        doss3.setEtatDossier(EtatDoss.VALIDE);  // Enum à adapter
-		        doss3.setMontantMensuel(1500.0);
+//		        DossierEconomieSurSalaire doss2 = new DossierEconomieSurSalaire();
+//		        doss2.setIdDossier("DOSS002");
+//		        doss2.setDateDebut(LocalDate.of(2023, 6, 15));
+//		        doss2.setDateExpiration(LocalDate.of(2024, 6, 15));
+//		        doss2.setDateCre(LocalDateTime.now());
+//		        doss2.setEtatDossier(EtatDoss.CLOTURE);  // Enum à ajuster
+//		        doss2.setMotifcloture("Fin du contrat");
+//		        doss2.setMontantMensuel(900.0);
+//
+//		        DossierEconomieSurSalaire doss3 = new DossierEconomieSurSalaire();
+//		        doss3.setIdDossier("DOSS003");
+//		        doss3.setDateDebut(LocalDate.of(2024, 3, 1));
+//		        doss3.setDateExpiration(LocalDate.of(2024, 12, 31));
+//		        doss3.setDateCre(LocalDateTime.now());
+//		        doss3.setEtatDossier(EtatDoss.VALIDE);  // Enum à adapter
+//		        doss3.setMontantMensuel(1500.0);
 		        
 		        
 		        DossierContratCommercial contrat1 = new DossierContratCommercial();
@@ -512,47 +543,109 @@ public class ProjetPfeApplication {
 		        contrat1.setDateCre(LocalDateTime.now());
 		        contrat1.setEtatDossier(EtatDoss.TRAITEMENT);  // Enum à ajuster
 		        contrat1.setMontantContrat(50000.0);
+		        
+		        TransfertPermanent tcc1 = new TransfertPermanent();
+		        tcc1.setRefTransfert("TCC001");
+		        tcc1.setDossierDelegue(contrat1);
+		        tcc1.setCompteBancaire_source(compte2);
+		        tcc1.setCompteBancaire_cible(compte11);
+		        tcc1.setMontantTransfert(15000.0);
+		        tcc1.setTypeFrais(FraisType.OUR);
+		        tcc1.setFrais(0.0);
+		        tcc1.setMontantFrais(0.0);
+		        tcc1.setMontantFinal(129000.0);
+		        tcc1.setNatureOperation("avance contrat");
+		        tcc1.setEtatTransfert(EtatTransfert.TRAITEMENT);
+		        tcc1.setDatecre(LocalDateTime.of(2025, 6, 15, 10, 0));
+		        tcc1.setDateEnvoie(null); // pas encore envoyé
 
-		        DossierContratCommercial contrat2 = new DossierContratCommercial();
-		        contrat2.setIdDossier("DOSS_CC002");
-		        contrat2.setDateDebut(LocalDate.of(2023, 9, 15));
-		        contrat2.setDateExpiration(LocalDate.of(2024, 9, 15));
-		        contrat2.setDateCre(LocalDateTime.now());
-		        contrat2.setEtatDossier(EtatDoss.CLOTURE);
-		        contrat2.setMontantContrat(80000.0);
-		        contrat2.setMotifcloture("Projet terminé avec succès");
+		        // Deuxième transfert en traitement sans date d'envoi
+		        TransfertPermanent tcc2 = new TransfertPermanent();
+		        tcc2.setRefTransfert("TCC002");
+		        tcc2.setDossierDelegue(contrat1);
+		        tcc2.setCompteBancaire_source(compte2);
+		        tcc2.setCompteBancaire_cible(compte11);
+		        tcc2.setMontantTransfert(10000.0);
+		        tcc2.setTypeFrais(FraisType.BEN);
+		        tcc2.setFrais(50.0);
+		        tcc2.setMontantFrais(50.0);
+		        tcc2.setMontantFinal(86000.0);
+		        tcc2.setNatureOperation("frais administratifs");
+		        tcc2.setEtatTransfert(EtatTransfert.TRAITEMENT);
+		        tcc2.setDatecre(LocalDateTime.of(2025, 6, 20, 15, 0));
+		        tcc2.setDateEnvoie(null);
 
-		        DossierContratCommercial contrat3 = new DossierContratCommercial();
-		        contrat3.setIdDossier("DOSS_CC003");
-		        contrat3.setDateDebut(LocalDate.of(2024, 4, 1));
-		        contrat3.setDateExpiration(LocalDate.of(2024, 12, 1));
-		        contrat3.setDateCre(LocalDateTime.now());
-		        contrat3.setEtatDossier(EtatDoss.VALIDE);
-		        contrat3.setMontantContrat(120000.0);
+//		        DossierContratCommercial contrat2 = new DossierContratCommercial();
+//		        contrat2.setIdDossier("DOSS_CC002");
+//		        contrat2.setDateDebut(LocalDate.of(2023, 9, 15));
+//		        contrat2.setDateExpiration(LocalDate.of(2024, 9, 15));
+//		        contrat2.setDateCre(LocalDateTime.now());
+//		        contrat2.setEtatDossier(EtatDoss.CLOTURE);
+//		        contrat2.setMontantContrat(80000.0);
+//		        contrat2.setMotifcloture("Projet terminé avec succès");
+//
+//		        DossierContratCommercial contrat3 = new DossierContratCommercial();
+//		        contrat3.setIdDossier("DOSS_CC003");
+//		        contrat3.setDateDebut(LocalDate.of(2024, 4, 1));
+//		        contrat3.setDateExpiration(LocalDate.of(2024, 12, 1));
+//		        contrat3.setDateCre(LocalDateTime.now());
+//		        contrat3.setEtatDossier(EtatDoss.VALIDE);
+//		        contrat3.setMontantContrat(120000.0);
 
 		        DossierEmpreint empreint1 = new DossierEmpreint();
 		        empreint1.setIdDossier("DOSS_EM001");
 		        empreint1.setDateDebut(LocalDate.of(2025, 7, 1));
 		        empreint1.setDateExpiration(LocalDate.of(2026, 1, 10));
 		        empreint1.setDateCre(LocalDateTime.now());
-		        empreint1.setEtatDossier(EtatDoss.VALIDE); // Enum personnalisé
+		        empreint1.setEtatDossier(EtatDoss.VALIDE);
+		        
+		        TransfertPermanent tep1 = new TransfertPermanent();
+		        tep1.setRefTransfert("TEM001");
+		        tep1.setDossierDelegue(empreint1);
+		        tep1.setCompteBancaire_source(compte2);
+		        tep1.setCompteBancaire_cible(compte11);
+		        tep1.setMontantTransfert(15000.0);
+		        tep1.setTypeFrais(FraisType.OUR);
+		        tep1.setFrais(0.0);
+		        tep1.setMontantFrais(0.0);
+		        tep1.setMontantFinal(129000.0);
+		        tep1.setNatureOperation("prêt matériel");
+		        tep1.setEtatTransfert(EtatTransfert.TRAITEMENT);
+		        tep1.setDatecre(LocalDateTime.of(2025, 6, 15, 10, 0));
+		        tep1.setDateEnvoie(null); // pas encore envoyé
 
-		        DossierEmpreint empreint2 = new DossierEmpreint();
-		        empreint2.setIdDossier("DOSS_EM002");
-		        empreint2.setDateDebut(LocalDate.of(2022, 6, 1));
-		        empreint2.setDateExpiration(LocalDate.of(2025, 6, 1));
-		        empreint2.setDateCre(LocalDateTime.now());
-		        empreint2.setEtatDossier(EtatDoss.CLOTURE);
-		        empreint2.setMontantEmpreint(95000.0);
-		        empreint2.setMotifcloture("Remboursement complet");
+		        // Deuxième transfert en traitement sans date d'envoi
+		        TransfertPermanent tep2 = new TransfertPermanent();
+		        tep2.setRefTransfert("TEM002");
+		        tep2.setDossierDelegue(empreint1);
+		        tep2.setCompteBancaire_source(compte2);
+		        tep2.setCompteBancaire_cible(compte11);
+		        tep2.setMontantTransfert(8000.0);
+		        tep2.setTypeFrais(FraisType.BEN);
+		        tep2.setFrais(50.0);
+		        tep2.setMontantFrais(50.0);
+		        tep2.setMontantFinal(68800.0);
+		        tep2.setNatureOperation("frais dossier");
+		        tep2.setEtatTransfert(EtatTransfert.TRAITEMENT);
+		        tep2.setDatecre(LocalDateTime.of(2025, 6, 20, 15, 0));
+		        tep2.setDateEnvoie(null); 
 
-		        DossierEmpreint empreint3 = new DossierEmpreint();
-		        empreint3.setIdDossier("DOSS_EM003");
-		        empreint3.setDateDebut(LocalDate.of(2024, 3, 20));
-		        empreint3.setDateExpiration(LocalDate.of(2027, 3, 20));
-		        empreint3.setDateCre(LocalDateTime.now());
-		        empreint3.setEtatDossier(EtatDoss.TRAITEMENT);
-		        empreint3.setMontantEmpreint(220000.0);
+//		        DossierEmpreint empreint2 = new DossierEmpreint();
+//		        empreint2.setIdDossier("DOSS_EM002");
+//		        empreint2.setDateDebut(LocalDate.of(2022, 6, 1));
+//		        empreint2.setDateExpiration(LocalDate.of(2025, 6, 1));
+//		        empreint2.setDateCre(LocalDateTime.now());
+//		        empreint2.setEtatDossier(EtatDoss.CLOTURE);
+//		        empreint2.setMontantEmpreint(95000.0);
+//		        empreint2.setMotifcloture("Remboursement complet");
+//
+//		        DossierEmpreint empreint3 = new DossierEmpreint();
+//		        empreint3.setIdDossier("DOSS_EM003");
+//		        empreint3.setDateDebut(LocalDate.of(2024, 3, 20));
+//		        empreint3.setDateExpiration(LocalDate.of(2027, 3, 20));
+//		        empreint3.setDateCre(LocalDateTime.now());
+//		        empreint3.setEtatDossier(EtatDoss.TRAITEMENT);
+//		        empreint3.setMontantEmpreint(220000.0);
                 ///formationp
 		        DossierFormationProfessionnelle dossierFP = new DossierFormationProfessionnelle();
 		        dossierFP.setIdDossier("DOSS_FP001");
