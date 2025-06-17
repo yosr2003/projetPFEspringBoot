@@ -143,7 +143,7 @@ public class DossierDelegueService implements IserviceDossierDelegue{
 
 	    DossierDelegue dossier = optionalDossier.get();
 
-	    if (!dossier.getEtatDossier().equals(EtatDoss.VALIDE) || !dossier.getEtatDossier().equals(EtatDoss.OUVERT)) {
+	    if (!dossier.getEtatDossier().equals(EtatDoss.VALIDE)) {
 	        response.put("header", new ResponseHeaderDTO(400, "BAD_REQUEST", "Le dossier n'est pas validé"));
 	        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	    }
